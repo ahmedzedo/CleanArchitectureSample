@@ -36,22 +36,18 @@ namespace CleanArchitecture.WebAPI.Common
 
         public ObjectResult Problem<T>(IResponse<T> response)
         {
-            return Problem($"{response.Error?.Message} {GetDetailsSubErrors(response)}",
-                          $"{response.Source} Path:{HttpContext.Request.Path}/{HttpContext.Request.Method} Host:{HttpContext.Request.Host} Protocol:{HttpContext.Request.Protocol}",
-                          response.StatusCode,
-                          response.Error!.Message);
-
-            static string GetDetailsSubErrors(IResponse<T> response)
+            return new ObjectResult(new ExtendedProblemdetails()
             {
-                string detailsSubErrors = string.Empty;
-
-                if (response.Error != null && response.Error.SubErrors != null && response.Error.SubErrors.Count > 0)
-                {
-                    detailsSubErrors = $"Inner Errors: {string.Join(',', response.Error.SubErrors.Select(s => $"{s.Key} - {s.Value}").ToList())}";
-                }
-
-                return detailsSubErrors;
-            }
+                Title = "An error Occured",
+                Status = response.StatusCode,
+                Detail = response.Error?.Message,
+                Instance = $"{response.Source} Path:{HttpContext.Request.Path}/{HttpContext.Request.Method} Host:{HttpContext.Request.Host} Protocol:{HttpContext.Request.Protocol}",
+                SubErrors = response.Error?.SubErrors
+            });
+        }
+        public class ExtendedProblemdetails : ProblemDetails
+        {
+            public Dictionary<string, string>? SubErrors { get; set; } = [];
         }
 
 

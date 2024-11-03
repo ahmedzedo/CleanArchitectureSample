@@ -21,8 +21,8 @@ public interface ICrossCacheService
                                       CancellationToken cancellationToken = default) where T : class, new();
 
     Task<T> GetOrCreateCacheAsync<T>(string cacheKey,
-                                                  Func<Task<T>> getResonse,
-                                                  CancellationToken cancellationToken = default) where T : class, new();
+                                     Func<Task<T>> getResonse,
+                                     CancellationToken cancellationToken = default) where T : class, new();
 
     Task RemoveAsync(string key, CacheStore cacheStore, CancellationToken cancellationToken = default);
 

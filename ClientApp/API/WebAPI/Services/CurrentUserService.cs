@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Common.Abstracts.Account;
+using Microsoft.IdentityModel.JsonWebTokens;
 using System.Security.Claims;
 
 namespace CleanArchitecture.WebAPI.Services
@@ -17,8 +18,8 @@ namespace CleanArchitecture.WebAPI.Services
         #endregion
 
         #region Properties
-        public string UserId => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier) ?? "Anonymous";
-        public string Username => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Name) ?? "Anonymous";
+        public string UserId => _httpContextAccessor.HttpContext?.User?.FindFirstValue("NameId") ?? "Anonymous";
+        public string Username => _httpContextAccessor.HttpContext?.User?.FindFirstValue(JwtRegisteredClaimNames.Name) ?? "Anonymous";
         #endregion
 
     }
