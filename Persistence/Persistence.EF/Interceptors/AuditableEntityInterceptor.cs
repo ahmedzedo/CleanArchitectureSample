@@ -1,5 +1,5 @@
 ﻿using CleanArchitecture.Application.Common.Abstracts.Account;
-using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Common.Entities;
 using Common.SystemTypes.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

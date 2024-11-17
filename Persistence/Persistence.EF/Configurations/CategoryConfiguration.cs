@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Domain.Product.Entites;
+﻿using CleanArchitecture.Domain.Products.Entites;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

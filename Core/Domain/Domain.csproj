@@ -10,19 +10,16 @@
 
   <ItemGroup>
     <Compile Remove="Enums\**" />
-    <Compile Remove="Exceptions\**" />
     <EmbeddedResource Remove="Enums\**" />
-    <EmbeddedResource Remove="Exceptions\**" />
     <None Remove="Enums\**" />
-    <None Remove="Exceptions\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Cart\Events\" />
+    <Folder Include="Carts\Events\" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="12.4.0" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
   </ItemGroup>
 
   <ItemGroup>

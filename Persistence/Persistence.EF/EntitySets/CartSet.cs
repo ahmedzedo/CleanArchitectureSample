@@ -1,6 +1,6 @@
 ﻿using CleanArchitecture.Application.Carts.IEntitySets;
-using CleanArchitecture.Domain.Cart.Entities;
-using CleanArchitecture.Domain.Product.Entites;
+using CleanArchitecture.Domain.Carts.Entities;
+using CleanArchitecture.Domain.Products.Entites;
 using CleanArchitecture.Persistence.EF;
 using Microsoft.EntityFrameworkCore;
 

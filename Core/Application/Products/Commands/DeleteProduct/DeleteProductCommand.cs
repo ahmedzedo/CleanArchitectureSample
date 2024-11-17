@@ -1,5 +1,5 @@
 ﻿using CleanArchitecture.Application.Common.Security;
-using CleanArchitecture.Domain.Product.Events;
+using CleanArchitecture.Domain.Products.Events;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Common.Messaging;
 using CleanArchitecture.Application.Common.Models;

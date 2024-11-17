@@ -36,7 +36,7 @@ namespace CleanArchitecture.Persistence.EF.Migrations
                     b.ToTable("CategoryProduct", (string)null);
                 });
 
-            modelBuilder.Entity("CleanArchitecture.Domain.Cart.Entities.Cart", b =>
+            modelBuilder.Entity("CleanArchitecture.Domain.Carts.Entities.Cart", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,7 +63,7 @@ namespace CleanArchitecture.Persistence.EF.Migrations
                     b.ToTable("Cart");
                 });
 
-            modelBuilder.Entity("CleanArchitecture.Domain.Cart.Entities.CartItem", b =>
+            modelBuilder.Entity("CleanArchitecture.Domain.Carts.Entities.CartItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -100,7 +100,7 @@ namespace CleanArchitecture.Persistence.EF.Migrations
                     b.ToTable("CartItem");
                 });
 
-            modelBuilder.Entity("CleanArchitecture.Domain.Product.Entites.Category", b =>
+            modelBuilder.Entity("CleanArchitecture.Domain.Products.Entites.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -163,7 +163,7 @@ namespace CleanArchitecture.Persistence.EF.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("CleanArchitecture.Domain.Product.Entites.Product", b =>
+            modelBuilder.Entity("CleanArchitecture.Domain.Products.Entites.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -203,7 +203,7 @@ namespace CleanArchitecture.Persistence.EF.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("CleanArchitecture.Domain.Product.Entites.ProductItem", b =>
+            modelBuilder.Entity("CleanArchitecture.Domain.Products.Entites.ProductItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -465,28 +465,28 @@ namespace CleanArchitecture.Persistence.EF.Migrations
 
             modelBuilder.Entity("CategoryProduct", b =>
                 {
-                    b.HasOne("CleanArchitecture.Domain.Product.Entites.Product", null)
+                    b.HasOne("CleanArchitecture.Domain.Products.Entites.Product", null)
                         .WithMany()
                         .HasForeignKey("AvailableProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CleanArchitecture.Domain.Product.Entites.Category", null)
+                    b.HasOne("CleanArchitecture.Domain.Products.Entites.Category", null)
                         .WithMany()
                         .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CleanArchitecture.Domain.Cart.Entities.CartItem", b =>
+            modelBuilder.Entity("CleanArchitecture.Domain.Carts.Entities.CartItem", b =>
                 {
-                    b.HasOne("CleanArchitecture.Domain.Cart.Entities.Cart", "Cart")
+                    b.HasOne("CleanArchitecture.Domain.Carts.Entities.Cart", "Cart")
                         .WithMany("CartItems")
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CleanArchitecture.Domain.Product.Entites.ProductItem", "ProductItem")
+                    b.HasOne("CleanArchitecture.Domain.Products.Entites.ProductItem", "ProductItem")
                         .WithMany()
                         .HasForeignKey("ProductItemId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -497,9 +497,9 @@ namespace CleanArchitecture.Persistence.EF.Migrations
                     b.Navigation("ProductItem");
                 });
 
-            modelBuilder.Entity("CleanArchitecture.Domain.Product.Entites.ProductItem", b =>
+            modelBuilder.Entity("CleanArchitecture.Domain.Products.Entites.ProductItem", b =>
                 {
-                    b.HasOne("CleanArchitecture.Domain.Product.Entites.Product", "Product")
+                    b.HasOne("CleanArchitecture.Domain.Products.Entites.Product", "Product")
                         .WithMany("ProductItems")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -535,12 +535,12 @@ namespace CleanArchitecture.Persistence.EF.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CleanArchitecture.Domain.Cart.Entities.Cart", b =>
+            modelBuilder.Entity("CleanArchitecture.Domain.Carts.Entities.Cart", b =>
                 {
                     b.Navigation("CartItems");
                 });
 
-            modelBuilder.Entity("CleanArchitecture.Domain.Product.Entites.Product", b =>
+            modelBuilder.Entity("CleanArchitecture.Domain.Products.Entites.Product", b =>
                 {
                     b.Navigation("ProductItems");
                 });

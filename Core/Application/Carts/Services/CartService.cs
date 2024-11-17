@@ -1,7 +1,7 @@
 ﻿using CleanArchitecture.Application.Common.Abstracts.Business;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
-using CleanArchitecture.Domain.Cart.Entities;
-using CleanArchitecture.Domain.Product.Entites;
+using CleanArchitecture.Domain.Carts.Entities;
+using CleanArchitecture.Domain.Products.Entites;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.Carts.Services
@@ -22,7 +22,8 @@ namespace CleanArchitecture.Application.Carts.Services
         #endregion
 
         #region Methods
-        public async Task<Cart?> GetUserCartAsync(Guid userId, CancellationToken cancellationToken = default)
+        public async Task<Cart?> GetUserCartAsync(Guid userId,
+                                                  CancellationToken cancellationToken = default)
         {
             return await DbContext.Carts//.IncludeItemDetails()
                                             .Include(i => i.Include(c => c.CartItems)
@@ -37,10 +38,12 @@ namespace CleanArchitecture.Application.Carts.Services
 
         }
 
-        public async Task<Cart> AddOrUpdateCartItemAsync(Cart cart, Guid productItemId, int count, CancellationToken cancellationToken = default)
+        public async Task<Cart> AddOrUpdateCartItemAsync(Cart cart,
+                                                         Guid productItemId,
+                                                         int count,
+                                                         CancellationToken cancellationToken = default)
         {
             ProductItem productItem = await DbContext.Products.GetProductItemAsync(productItemId);
-
             var cartItem = cart.CartItems.FirstOrDefault(c => c.ProductItemId == productItem.Id);
 
             if (cartItem == null)
@@ -61,6 +64,15 @@ namespace CleanArchitecture.Application.Carts.Services
             Cart cart = new(userId);
 
             return await DbContext.Carts.AddAsync(cart);
+        }
+
+        public async Task<Cart?> GetCartByIdIncludedItemById(Guid cartId,
+                                                              Guid cartItemId,
+                                                              CancellationToken cancellationToken = default)
+        {
+            return await DbContext.Carts.Include(c => c.CartItems.Where(ci => ci.Id == cartItemId))
+                                        .FirstOrDefaultAsync(c => c.Id == cartId,
+                                                             cancellationToken);
         }
         #endregion
     }

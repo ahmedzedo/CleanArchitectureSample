@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Common.Errors;
+using CleanArchitecture.Application.Common.Extensions;
 using CleanArchitecture.Application.Common.Messaging;
 using FluentValidation;
 using FluentValidation.Results;
@@ -33,25 +34,13 @@ namespace CleanArchitecture.Application.Common.Behaviours
 
                 if (failures.Count != 0)
                 {
-                    return Response.Failure<TResponse>(ValidationErrors.FluentValidationErrors(ConvertFailuresToDictionary(failures)),
+                    return Response.Failure<TResponse>(ValidationErrors.FluentValidationErrors(failures.ToDictionary()),
                                                        $"at {request.GetType().AssemblyQualifiedName}");
                 }
             }
             return await next();
         }
-
-        private static Dictionary<string, string> ConvertFailuresToDictionary(List<ValidationFailure> failures) =>
-            failures.GroupJoin(failures,
-                               propertyName => propertyName.PropertyName,
-                               errorMessage => errorMessage.PropertyName,
-                               (propertyName, errorMessages) =>
-                               new
-                               {
-                                   propertyName.PropertyName,
-                                   errorMessage = errorMessages.Select(s => s.ErrorMessage)
-                               })
-                    .DistinctBy(s => s.PropertyName)
-                    .ToDictionary(s => $"[{s.PropertyName}]:", s => $"{{{string.Join(',', s.errorMessage)}}}");
+       
         #endregion
     }
 }

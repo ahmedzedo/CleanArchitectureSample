@@ -1,5 +1,5 @@
 ﻿using CleanArchitecture.Application.Common.Security;
-using CleanArchitecture.Domain.Product.Entites;
+using CleanArchitecture.Domain.Products.Entites;
 using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Common.Messaging;
@@ -38,9 +38,9 @@ namespace CleanArchitecture.Application.Categories.Queries.GetAllCategories
             {
                 return Response.Failure<IReadOnlyCollection<Category>>(Error.NullArgument);
             }
-            IReadOnlyCollection<Category> Items = await DbContext.Categories.ToListAsync(cancellationToken);
+            var Items = await DbContext.Categories.ToListAsync(cancellationToken);
 
-            return Response.Success(Items, Items.Count);
+            return Response.Success<IReadOnlyCollection<Category>>(Items.AsReadOnly(), Items.Count);
         }
         #endregion
     }

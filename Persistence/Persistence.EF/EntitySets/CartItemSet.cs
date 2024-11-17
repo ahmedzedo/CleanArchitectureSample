@@ -1,5 +1,5 @@
 ﻿using CleanArchitecture.Application.Carts.IEntitySets;
-using CleanArchitecture.Domain.Cart.Entities;
+using CleanArchitecture.Domain.Carts.Entities;
 
 namespace CleanArchitecture.Persistence.EF.EntitySets
 {

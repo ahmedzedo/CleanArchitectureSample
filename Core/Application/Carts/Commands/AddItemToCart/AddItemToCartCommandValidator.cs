@@ -7,9 +7,9 @@ namespace CleanArchitecture.Application.Carts.Commands.AddItemToCart
         public AddItemToCartCommandValidator()
         {
             RuleFor(i => i.ProductItemId)
-                .NotEmpty();
-            RuleFor(i => i.Count)
                 .NotEmpty()
+                .WithMessage("product Item Id Couldn't be Empty");
+            RuleFor(i => i.Count)
                 .GreaterThan(0);
         }
     }

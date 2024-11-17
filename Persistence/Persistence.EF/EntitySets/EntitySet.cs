@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Query;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using static Common.Linq.IQueryableExtension;
-using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Persistence.EF;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
+using CleanArchitecture.Domain.Common.Entities;
 
 namespace CleanArchitecture.Persistence.EF.EntitySets
 {

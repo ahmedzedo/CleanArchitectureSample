@@ -1,5 +1,5 @@
 ﻿using CleanArchitecture.Application.Common.Abstracts.Persistence;
-using CleanArchitecture.Domain.Cart.Entities;
+using CleanArchitecture.Domain.Carts.Entities;
 
 namespace CleanArchitecture.Application.Carts.IEntitySets
 {

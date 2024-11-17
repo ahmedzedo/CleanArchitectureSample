@@ -4,7 +4,7 @@ using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Common.Caching;
 using CleanArchitecture.Application.Common.Messaging;
 using CleanArchitecture.Application.Common.Models;
-using CleanArchitecture.Domain.Cart.Entities;
+using CleanArchitecture.Domain.Carts.Entities;
 using CleanArchitecture.Domain.Constants;
 
 namespace CleanArchitecture.Application.Carts.Commands.AddItemToCart
@@ -43,7 +43,7 @@ namespace CleanArchitecture.Application.Carts.Commands.AddItemToCart
         public async override Task<Response<Guid>> HandleRequest(AddItemToCartCommand request, CancellationToken cancellationToken)
         {
             Guid userId = Guid.Parse(request.UserId!);
-            Cart? cart = request.CartId.HasValue ? await CartService.GetUserCartAsync(userId, cancellationToken) : null;
+            Cart? cart = await CartService.GetUserCartAsync(userId, cancellationToken);
 
             cart ??= await CartService.AddUserCartAsync(userId);
             await CartService.AddOrUpdateCartItemAsync(cart, request.ProductItemId, request.Count, cancellationToken);

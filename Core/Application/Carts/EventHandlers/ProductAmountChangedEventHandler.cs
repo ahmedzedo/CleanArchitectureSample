@@ -1,6 +1,6 @@
 ﻿using CleanArchitecture.Application.Common.Abstracts.DomainEvent;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
-using CleanArchitecture.Domain.Product.Events;
+using CleanArchitecture.Domain.Products.Events;
 using Microsoft.Extensions.Logging;
 
 namespace CleanArchitecture.Application.Carts.EventHandlers

@@ -1,6 +1,6 @@
 ﻿using CleanArchitecture.Application.Common.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using CleanArchitecture.Domain.Product.Entites;
+using CleanArchitecture.Domain.Products.Entites;
 using CleanArchitecture.Persistence.EF;
 using CleanArchitecture.Application.Products.IEntitySets;
 
@@ -22,7 +22,7 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
             //                             .SelectMany(p => p.ProductItems)
             //                             .FirstOrDefaultAsync(pi => pi.Id == productItemId)
             return await Context.Set<ProductItem>().AsTracking().FirstOrDefaultAsync(pi => pi.Id == productItemId)
-                          ?? throw new NotFoundException("this item not found", productItemId);
+                          ?? throw new NotFoundException(nameof(productItemId), productItemId);
         }
         #endregion
     }

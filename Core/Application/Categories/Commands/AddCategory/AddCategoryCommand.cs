@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CleanArchitecture.Application.Common.Security;
-using CleanArchitecture.Domain.Product.Entites;
+using CleanArchitecture.Domain.Products.Entites;
 using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Common.Messaging;

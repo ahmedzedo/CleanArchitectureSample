@@ -4,6 +4,9 @@ using CleanArchitecture.Application.Common.Caching;
 using CleanArchitecture.Application.Common.Messaging;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Constants;
+using CleanArchitecture.Application.Carts.Services;
+using CleanArchitecture.Domain.Carts.Entities;
+using CleanArchitecture.Application.Common.Errors;
 
 namespace CleanArchitecture.Application.Carts.Commands.RemoveCartItem
 {
@@ -12,25 +15,28 @@ namespace CleanArchitecture.Application.Carts.Commands.RemoveCartItem
     [Cache(KeyPrefix = nameof(CacheKeysPrefixes.Cart), CacheStore = CacheStore.All, ToInvalidate = true)]
     public record RemoveCartItemCommand : BaseCommand<bool>
     {
-        public Guid Id { get; init; }
+        public Guid CartItemId { get; init; }
         public Guid CartId { get; init; }
 
     }
     #endregion
 
     #region Request Handler
-    public class RemoveCartItemCommandHandler : BaseCommandHandler<RemoveCartItemCommand, bool>
+    public sealed class RemoveCartItemCommandHandler : BaseCommandHandler<RemoveCartItemCommand, bool>
     {
         #region Dependencies
 
+        private ICartService CartService { get; }
 
         #endregion
 
         #region Constructor
-        public RemoveCartItemCommandHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext)
+        public RemoveCartItemCommandHandler(IServiceProvider serviceProvider,
+                                            IApplicationDbContext dbContext,
+                                            ICartService cartService)
            : base(serviceProvider, dbContext)
         {
-
+            CartService = cartService;
         }
         #endregion
 
@@ -38,20 +44,30 @@ namespace CleanArchitecture.Application.Carts.Commands.RemoveCartItem
 
         public override async Task<Response<bool>> HandleRequest(RemoveCartItemCommand request, CancellationToken cancellationToken)
         {
-            var cart = await DbContext.Carts.Include(c => c.CartItems.Where(ci => ci.Id == request.Id))
-                                            .FirstOrDefaultAsync(c => c.Id == request.CartId,
-                                                                 cancellationToken);
+            Cart? cart = await CartService.GetCartByIdIncludedItemById(request.CartId, request.CartItemId, cancellationToken);
 
-            if (cart is null || cart.CartItems.Count == 0 || cart.UserId != Guid.Parse(request.UserId!))
+            if (cart is null)
             {
-                return Response.Failure(CartsErrors.CartItemNotFoundError);
+                return Response.Failure(CartsErrors.CartNotFoundError);
             }
-            cart.RemoveCartItem(cart.CartItems.First());
 
+            if (cart.UserId != Guid.Parse(request.UserId!))
+            {
+                return Response.Failure(SecurityAccessErrors.ForbiddenAccess);
+            }
+
+            if (cart.CartItems.Count == 0 )
+            {
+                return Response.Failure(CartsErrors.CartEmptyError);
+            }
+
+            cart.RemoveCartItem(cart.CartItems.First());
             int affectedRows = await DbContext.SaveChangesAsync(cancellationToken);
 
             return affectedRows > 0 ? Response.Success(affectedRows) : Response.Failure(Error.InternalServerError);
         }
+
+
         #endregion
     }
     #endregion

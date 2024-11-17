@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Domain.Cart.Entities;
+﻿using CleanArchitecture.Domain.Carts.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

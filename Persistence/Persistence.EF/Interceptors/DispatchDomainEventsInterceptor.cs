@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Domain.Common;
+﻿using CleanArchitecture.Domain.Common.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;

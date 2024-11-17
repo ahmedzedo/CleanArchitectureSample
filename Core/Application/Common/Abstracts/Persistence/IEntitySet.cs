@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Domain.Common;
+﻿using CleanArchitecture.Domain.Common.Entities;
 using Common.Linq.Model;
 using Microsoft.EntityFrameworkCore.Query;
 using System.ComponentModel;

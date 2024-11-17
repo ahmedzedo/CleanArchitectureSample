@@ -1,5 +1,5 @@
 ﻿using CleanArchitecture.Application.Common.Abstracts.Account;
-using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Common.Entities;
 using Common.DependencyInjection.Extensions;
 using MediatR;
 using Microsoft.Extensions.Logging;

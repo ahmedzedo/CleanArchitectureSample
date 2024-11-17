@@ -1,6 +1,6 @@
 ﻿using CleanArchitecture.Application.Common.Abstracts.Persistence;
-using CleanArchitecture.Domain.Cart.Entities;
-using CleanArchitecture.Domain.Product.Entites;
+using CleanArchitecture.Domain.Carts.Entities;
+using CleanArchitecture.Domain.Products.Entites;
 
 namespace CleanArchitecture.Application.Carts.IEntitySets
 {

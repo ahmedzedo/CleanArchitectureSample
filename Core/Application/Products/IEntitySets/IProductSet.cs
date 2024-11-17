@@ -1,5 +1,5 @@
 ﻿using CleanArchitecture.Application.Common.Abstracts.Persistence;
-using CleanArchitecture.Domain.Product.Entites;
+using CleanArchitecture.Domain.Products.Entites;
 
 namespace CleanArchitecture.Application.Products.IEntitySets
 {

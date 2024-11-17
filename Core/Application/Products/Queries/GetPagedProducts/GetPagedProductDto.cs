@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Domain.Product.Entites;
+﻿using CleanArchitecture.Domain.Products.Entites;
 
 namespace CleanArchitecture.Application.Products.Queries.GetPagedProducts
 {
