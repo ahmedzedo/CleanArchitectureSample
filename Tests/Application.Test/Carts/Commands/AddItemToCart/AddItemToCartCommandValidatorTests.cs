@@ -1,18 +1,13 @@
-﻿using CleanArchitecture.Application.Common.Behaviours;
-using Moq;
-using Xunit;
-using FluentValidation;
-using FluentValidation.Results;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using CleanArchitecture.Application.Carts.Commands.AddItemToCart;
-using CleanArchitecture.Application.Common.Messaging;
-using FluentAssertions;
-using System.Net;
+﻿using CleanArchitecture.Application.Carts.Commands.AddItemToCart;
+using CleanArchitecture.Application.Common.Behaviours;
 using CleanArchitecture.Application.Common.Errors;
 using CleanArchitecture.Application.Common.Extensions;
+using CleanArchitecture.Application.Common.Messaging;
+using FluentAssertions;
+using FluentValidation;
+using FluentValidation.Results;
+using Moq;
+using System.Net;
 
 namespace Application.Test.Carts.Commands.AddItemToCart
 {

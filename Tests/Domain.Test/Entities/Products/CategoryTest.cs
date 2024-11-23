@@ -1,10 +1,5 @@
 ﻿using CleanArchitecture.Domain.Common.Exceptions;
 using CleanArchitecture.Domain.Products.Entites;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitecture.Domain.Test.Entities.Products
 {
@@ -98,7 +93,7 @@ namespace CleanArchitecture.Domain.Test.Entities.Products
         {
             //Arrange
             var category = new Category("categoryAr", "categoryEn", "categoryfr", "breifAr", "briefEn", "breifFr", DateTime.Now, true);
-            Product? product = null;
+            Product? product = null!;
             //Act
             var addProduct = () => category.AddProduct(product);
             //Assert
@@ -111,10 +106,10 @@ namespace CleanArchitecture.Domain.Test.Entities.Products
             //Arrange
             var category = new Category("categoryAr", "categoryEn", "categoryfr", "breifAr", "briefEn", "breifFr", DateTime.Now, true);
             Product product = new("productAr", "productEn", "PrdoductFr");
-           
+
             //Act
             var addProduct = () => category.AddProduct(product);
-           
+
             //Assert
             Assert.Throws<ArgumentNullOrEmptyEnumerableException>(addProduct);
         }

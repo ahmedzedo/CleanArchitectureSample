@@ -1,5 +1,4 @@
-﻿using CleanArchitecture.Infrastructure.Identity;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 
 namespace CleanArchitecture.Infrastructure.Identity

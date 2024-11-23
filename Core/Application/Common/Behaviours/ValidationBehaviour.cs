@@ -2,7 +2,6 @@
 using CleanArchitecture.Application.Common.Extensions;
 using CleanArchitecture.Application.Common.Messaging;
 using FluentValidation;
-using FluentValidation.Results;
 
 namespace CleanArchitecture.Application.Common.Behaviours
 {
@@ -40,7 +39,7 @@ namespace CleanArchitecture.Application.Common.Behaviours
             }
             return await next();
         }
-       
+
         #endregion
     }
 }

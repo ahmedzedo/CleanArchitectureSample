@@ -4,7 +4,6 @@ using CleanArchitecture.Application.Common.Extensions;
 using CleanArchitecture.Application.Common.Messaging;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
 using System.Reflection;
 
 

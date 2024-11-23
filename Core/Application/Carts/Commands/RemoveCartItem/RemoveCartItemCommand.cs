@@ -1,12 +1,12 @@
-﻿using CleanArchitecture.Application.Common.Security;
+﻿using CleanArchitecture.Application.Carts.Services;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Common.Caching;
+using CleanArchitecture.Application.Common.Errors;
 using CleanArchitecture.Application.Common.Messaging;
 using CleanArchitecture.Application.Common.Models;
-using CleanArchitecture.Domain.Constants;
-using CleanArchitecture.Application.Carts.Services;
+using CleanArchitecture.Application.Common.Security;
 using CleanArchitecture.Domain.Carts.Entities;
-using CleanArchitecture.Application.Common.Errors;
+using CleanArchitecture.Domain.Constants;
 
 namespace CleanArchitecture.Application.Carts.Commands.RemoveCartItem
 {

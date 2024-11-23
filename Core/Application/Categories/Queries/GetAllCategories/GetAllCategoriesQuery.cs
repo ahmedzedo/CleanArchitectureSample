@@ -1,10 +1,10 @@
-﻿using CleanArchitecture.Application.Common.Security;
-using CleanArchitecture.Domain.Products.Entites;
-using CleanArchitecture.Domain.Constants;
-using CleanArchitecture.Application.Common.Abstracts.Persistence;
+﻿using CleanArchitecture.Application.Common.Abstracts.Persistence;
+using CleanArchitecture.Application.Common.Caching;
 using CleanArchitecture.Application.Common.Messaging;
 using CleanArchitecture.Application.Common.Models;
-using CleanArchitecture.Application.Common.Caching;
+using CleanArchitecture.Application.Common.Security;
+using CleanArchitecture.Domain.Constants;
+using CleanArchitecture.Domain.Products.Entites;
 
 namespace CleanArchitecture.Application.Categories.Queries.GetAllCategories
 {

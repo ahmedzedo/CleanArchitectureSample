@@ -1,12 +1,9 @@
-﻿using CleanArchitecture.Application.Common.Exceptions;
+﻿using CleanArchitecture.Application.Common.Abstracts.Business;
+using CleanArchitecture.Application.Common.Messaging;
 using Common.DependencyInjection.Extensions;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
-using CleanArchitecture.Application.Common.Abstracts.Persistence;
-using CleanArchitecture.Application.Common.Messaging;
-using CleanArchitecture.Application.Common.Abstracts.Business;
 
 namespace CleanArchitecture.WebAPI.Configuration
 {
@@ -16,7 +13,7 @@ namespace CleanArchitecture.WebAPI.Configuration
         {
             services.AddValidatorsFromAssembly(AppDomain.CurrentDomain.GetAssembly(nameof(Application)));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssembly(nameof(Application)));
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssembly(nameof(Application))));           
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssembly(nameof(Application))));
             services.RegisterAllForBaseDynamic(ServiceLifetime.Transient, nameof(Application), typeof(IRequestResponsePipeline<,>));
             services.RegisterAllForBaseDynamic(ServiceLifetime.Transient, nameof(Application), typeof(IRequestPreProcessor<>));
             services.RegisterAllForBaseDynamic(ServiceLifetime.Transient, nameof(Application), typeof(IRequestPostProcessor<>));

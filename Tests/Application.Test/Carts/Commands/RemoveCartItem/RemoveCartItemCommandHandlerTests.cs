@@ -1,21 +1,11 @@
-﻿using Xunit;
-using CleanArchitecture.Application.Carts.Commands.RemoveCartItem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Moq;
+﻿using AutoMapper;
 using CleanArchitecture.Application.Carts.Services;
-using CleanArchitecture.Domain.Carts.Entities;
-using CleanArchitecture.Application.Carts.Commands.AddItemToCart;
-using AutoMapper;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using FluentAssertions;
-using System.Net;
-using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Common.Errors;
+using CleanArchitecture.Domain.Carts.Entities;
+using FluentAssertions;
+using Moq;
+using System.Net;
 
 namespace CleanArchitecture.Application.Carts.Commands.RemoveCartItem.Tests
 {
@@ -68,7 +58,7 @@ namespace CleanArchitecture.Application.Carts.Commands.RemoveCartItem.Tests
             };
 
             var cart = new Cart(Guid.NewGuid());
-            
+
             _cartServiceMock.Setup(service => service.GetCartByIdIncludedItemById(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
                            .ReturnsAsync(cart);
             // Act

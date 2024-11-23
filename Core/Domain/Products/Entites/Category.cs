@@ -17,7 +17,7 @@ namespace CleanArchitecture.Domain.Products.Entites
         {
             ArgumentException.ThrowIfNullOrEmpty(nameAr);
             NameAr = nameAr;
-            
+
             ArgumentException.ThrowIfNullOrEmpty(nameEn);
             NameEn = nameEn;
 

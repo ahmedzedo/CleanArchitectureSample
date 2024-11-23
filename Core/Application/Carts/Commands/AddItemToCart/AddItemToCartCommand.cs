@@ -1,9 +1,9 @@
-﻿using CleanArchitecture.Application.Common.Security;
-using CleanArchitecture.Application.Carts.Services;
+﻿using CleanArchitecture.Application.Carts.Services;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Common.Caching;
 using CleanArchitecture.Application.Common.Messaging;
 using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Application.Common.Security;
 using CleanArchitecture.Domain.Carts.Entities;
 using CleanArchitecture.Domain.Constants;
 

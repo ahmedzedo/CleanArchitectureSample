@@ -1,7 +1,6 @@
 ﻿using CleanArchitecture.Application.Common.Abstracts.Caching;
 using CleanArchitecture.Infrastructure.Caching;
 using CleanArchitecture.Infrastructure.Caching.RedisSetupConfigurationOptions;
-using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

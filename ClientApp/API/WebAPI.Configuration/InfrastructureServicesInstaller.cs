@@ -1,16 +1,11 @@
-﻿using CleanArchitecture.Application.Common.Abstracts.Caching;
-using CleanArchitecture.Application.Common.Abstracts.Persistence;
-using CleanArchitecture.Infrastructure.Caching;
-using CleanArchitecture.Infrastructure.Caching.RedisSetupConfigurationOptions;
+﻿using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Persistence.EF;
 using CleanArchitecture.Persistence.EF.Interceptors;
 using Common.DependencyInjection.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace CleanArchitecture.WebAPI.Configuration
 {
@@ -31,6 +26,6 @@ namespace CleanArchitecture.WebAPI.Configuration
             services.RegisterAllChildsDynamic(ServiceLifetime.Transient, nameof(Application), nameof(Persistence.EF), typeof(IEntitySet<>));
             services.AddScoped<ApplicationDbContextInitializer>();
         }
-      
+
     }
 }

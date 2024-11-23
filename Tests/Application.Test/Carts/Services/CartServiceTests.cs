@@ -5,11 +5,6 @@ using CleanArchitecture.Domain.Carts.Entities;
 using CleanArchitecture.Domain.Products.Entites;
 using FluentAssertions;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Test.Carts.Services
 {
@@ -24,7 +19,7 @@ namespace Application.Test.Carts.Services
             applicationDbContextMock = new Mock<IApplicationDbContext>();
             applicationDbContextMock.Setup(d => d.Products).Returns(productSetMock.Object);
             cartService = new CartService(It.IsAny<IServiceProvider>(), applicationDbContextMock.Object);
-            
+
         }
 
         [Fact]

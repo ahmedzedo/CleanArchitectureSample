@@ -1,7 +1,7 @@
-﻿using CleanArchitecture.Application.Users.Commands.Dtos;
-using CleanArchitecture.Application.Common.Abstracts.Account;
+﻿using CleanArchitecture.Application.Common.Abstracts.Account;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Common.Messaging;
+using CleanArchitecture.Application.Users.Commands.Dtos;
 
 namespace CleanArchitecture.Application.Users.Commands.CreateUser
 {

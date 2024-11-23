@@ -1,7 +1,7 @@
-﻿using CleanArchitecture.Application.Common.Security;
-using CleanArchitecture.Application.Common.Abstracts.Persistence;
+﻿using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Common.Messaging;
 using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Application.Common.Security;
 using CleanArchitecture.Domain.Constants;
 
 namespace CleanArchitecture.Application.Products.Commands.ChangeProductItemAmount

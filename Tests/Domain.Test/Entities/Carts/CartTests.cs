@@ -1,5 +1,4 @@
 using CleanArchitecture.Domain.Carts.Entities;
-using CleanArchitecture.Domain.Carts.Exceptions;
 using CleanArchitecture.Domain.Common.Exceptions;
 using CleanArchitecture.Domain.Products.Entites;
 

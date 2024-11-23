@@ -1,5 +1,4 @@
-﻿using Common.CustomTypes;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace Common.CustomTypes.Extensions
 {

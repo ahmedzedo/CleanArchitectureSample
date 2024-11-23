@@ -1,19 +1,13 @@
-﻿using CleanArchitecture.Application.Carts.Commands.AddItemToCart;
+﻿using CleanArchitecture.Application.Carts.Commands.RemoveCartItem;
 using CleanArchitecture.Application.Common.Behaviours;
 using CleanArchitecture.Application.Common.Errors;
-using CleanArchitecture.Application.Common.Messaging;
-using FluentValidation.Results;
-using FluentValidation;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using CleanArchitecture.Application.Carts.Commands.RemoveCartItem;
-using FluentAssertions;
 using CleanArchitecture.Application.Common.Extensions;
+using CleanArchitecture.Application.Common.Messaging;
+using FluentAssertions;
+using FluentValidation;
+using FluentValidation.Results;
+using Moq;
+using System.Net;
 
 namespace Application.Test.Carts.Commands.RemoveCartItem
 {
@@ -53,7 +47,7 @@ namespace Application.Test.Carts.Commands.RemoveCartItem
         public async Task Handle_ShouldReturnValidationError_WhenCartItemIdIsEmpty()
         {
             // Arrange
-            var command = new RemoveCartItemCommand { CartItemId = Guid.Empty  };  // Invalid because ProductItemId is empty
+            var command = new RemoveCartItemCommand { CartItemId = Guid.Empty };  // Invalid because ProductItemId is empty
             var validator = new Mock<IValidator<RemoveCartItemCommand>>();
             var failures = new List<ValidationFailure> { new(nameof(command.CartItemId), "Cart Item Id Couldn't be Empty") };
 

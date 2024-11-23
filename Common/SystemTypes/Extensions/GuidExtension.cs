@@ -5,7 +5,7 @@
         public static Guid AsSequentialGuid(this Guid guid)
         {
             var guidArray = guid.ToByteArray();
-            var baseDate = new DateTime(1900, 1, 1);
+            var baseDate = new DateTime(1900, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             var now = DateTime.Now;
 
             // Get the days and milliseconds which will be used to build the byte string 

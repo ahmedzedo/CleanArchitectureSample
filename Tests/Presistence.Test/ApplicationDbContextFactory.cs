@@ -1,23 +1,12 @@
 ﻿using CleanArchitecture.Application.Common.Abstracts.Account;
-using CleanArchitecture.Application.Common.Abstracts.Business;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
-using CleanArchitecture.Application.Products.IEntitySets;
 using CleanArchitecture.Persistence.EF;
-using CleanArchitecture.Persistence.EF.EntitySets;
 using CleanArchitecture.Persistence.EF.Interceptors;
 using Common.DependencyInjection.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Presistence.Test

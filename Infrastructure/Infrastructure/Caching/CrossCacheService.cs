@@ -106,7 +106,7 @@ public class CrossCacheService : ICrossCacheService
                                               cacheStore,
                                               crossCacheEntryOption,
                                               cancellationToken);
-            
+
             if (response is null)
             {
                 _logger.LogInformation("Caching: {CacheKey} not found in cache. Fetching from database.", cacheKey);

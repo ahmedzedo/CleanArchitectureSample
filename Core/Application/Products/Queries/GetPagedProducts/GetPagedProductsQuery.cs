@@ -1,10 +1,10 @@
-﻿using CleanArchitecture.Application.Common.Security;
-using Common.Linq.Model;
-using Microsoft.EntityFrameworkCore;
-using CleanArchitecture.Domain.Constants;
-using CleanArchitecture.Application.Common.Abstracts.Persistence;
+﻿using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Common.Messaging;
 using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Application.Common.Security;
+using CleanArchitecture.Domain.Constants;
+using Common.Linq.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.Products.Queries.GetPagedProducts
 {

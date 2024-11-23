@@ -1,20 +1,12 @@
-using Moq;
-using Xunit;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
+using AutoMapper;
 using CleanArchitecture.Application.Carts.Commands.AddItemToCart;
 using CleanArchitecture.Application.Carts.Services;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
-using CleanArchitecture.Domain.Carts.Entities;
 using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Domain.Carts.Entities;
 using FluentAssertions;
+using Moq;
 using System.Reflection;
-using CleanArchitecture.Application.Common.Errors;
-using System.Net;
-using CleanArchitecture.Application.Common.Behaviours;
 namespace Application.Test.Carts.Commands.AddItemToCart
 {
     public class AddItemToCartCommandHandlerTests
