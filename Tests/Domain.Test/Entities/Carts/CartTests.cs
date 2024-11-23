@@ -12,13 +12,13 @@ namespace CleanArchitecture.Domain.Test.Entities.Cartss
         {
             //Arrange
             Cart Cart = new(Guid.NewGuid());
-            CartItem? cartItem = null;
+            CartItem? cartItem = default;
 
             //Act
             Action<CartItem> addCartItemAction = (item) => Cart.AddCartItem(item);
 
             //Assert
-            Assert.Throws<ArgumentNullException>(() => addCartItemAction(cartItem));
+            Assert.Throws<ArgumentNullException>(() => addCartItemAction(cartItem!));
         }
         [Fact]
         public void AddCartItem_ItemExistsInCart_ThrowArgumentAlreadyExistException()
@@ -43,7 +43,7 @@ namespace CleanArchitecture.Domain.Test.Entities.Cartss
         {
             //Arrange
             Cart Cart = new(Guid.NewGuid());
-            List<CartItem>? cartItems = null;
+            List<CartItem>? cartItems = null!;
 
             //Act
             Action<List<CartItem>> addCartItemAction = (items) => Cart.AddCartItems(items);

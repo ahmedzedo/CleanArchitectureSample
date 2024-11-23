@@ -10,8 +10,8 @@ namespace CleanArchitecture.Application.Carts.Commands.UpdateCartItem
 {
     #region Request
     [Authorize(Policy = Permissions.Cart.Update)]
-    [Cache(CacheStore = CacheStore.All, ToInvalidate = true, KeyPrefix = nameof(CacheKeysPrefixes.Cart))]
-    public record UpdateCartItemCommand : BaseCommand<bool>, ICacheable
+    [InvalidCache(CacheStore = CacheStore.All, KeyPrefix = nameof(CacheKeysPrefixes.Cart))]
+    public record UpdateCartItemCommand : BaseCommand<bool>, ICacheInvalidator
     {
         public Guid Id { get; init; }
         public Guid CartId { get; init; }
@@ -38,20 +38,20 @@ namespace CleanArchitecture.Application.Carts.Commands.UpdateCartItem
 
         #region Request Handle
 
-        public override async Task<Response<bool>> HandleRequest(UpdateCartItemCommand request, CancellationToken cancellationToken)
+        public override async Task<IResult<bool>> HandleRequest(UpdateCartItemCommand request, CancellationToken cancellationToken)
         {
             var cart = await DbContext.Carts.Include(c => c.CartItems.Where(ci => ci.Id == request.Id))
                                             .FirstOrDefaultAsync(c => c.Id == request.CartId, cancellationToken);
 
             if (cart == null || cart.Id != request.CartId || cart.CartItems.Count == 0)
             {
-                return Response.Failure(CartsErrors.CartItemNotFoundError);
+                return Result.Failure(CartsErrors.CartItemNotFoundError);
             }
             cart.CartItems.First().ChangeCount(request.Count);
             DbContext.Carts.Update(cart);
             int affectedRows = await DbContext.SaveChangesAsync(cancellationToken);
 
-            return affectedRows > 0 ? Response.Success(affectedRows) : Response.Failure<bool>(Error.InternalServerError);
+            return affectedRows > 0 ? Result.Success(affectedRows) : Result.Failure<bool>(Error.InternalServerError);
 
         }
         #endregion

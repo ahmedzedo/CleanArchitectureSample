@@ -7,7 +7,7 @@ namespace CleanArchitecture.Application.Carts
     {
         public static Error CartNotFoundError => new(HttpStatusCode.NotFound, "Cart Not Found");
         public static Error CartItemNotFoundError => new(HttpStatusCode.NotFound, "Cart Item Not Found");
-        public static Error CartEmptyError => new(HttpStatusCode.NoContent, "Cart Empty");
+        public static Error CartEmptyError => new(HttpStatusCode.NotFound, "Cart Empty");
 
     }
 }

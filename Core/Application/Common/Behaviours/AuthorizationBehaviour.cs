@@ -8,7 +8,7 @@ using System.Reflection;
 namespace CleanArchitecture.Application.Common.Behaviours
 {
     public class AuthorizationBehaviour<TRequest, TResponse> : IRequestResponsePipeline<TRequest, TResponse>
-        where TRequest : IBaseRequest<Response<TResponse>>
+        where TRequest : IBaseRequest<IResult<TResponse>>
     {
         #region Dependencies
         private IIdentityService IdentityService { get; }
@@ -22,7 +22,7 @@ namespace CleanArchitecture.Application.Common.Behaviours
         #endregion
 
         #region Handle
-        public async Task<Response<TResponse>> Handle(TRequest request, MyRequestResponseHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+        public async Task<IResult<TResponse>> Handle(TRequest request, MyRequestResponseHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             var authorizeAttributes = request.GetType().GetCustomAttributes<AuthorizeAttribute>();
 
@@ -33,7 +33,7 @@ namespace CleanArchitecture.Application.Common.Behaviours
 
                 if (user is null)
                 {
-                    return Response.Failure<TResponse>(SecurityAccessErrors.NotAuthenticatedUser);
+                    return Result.Failure<TResponse>(SecurityAccessErrors.NotAuthenticatedUser);
                 }
 
                 // Role-based authorization
@@ -60,7 +60,7 @@ namespace CleanArchitecture.Application.Common.Behaviours
                     // Must be a member of at least one role in roles
                     if (!authorized)
                     {
-                        return Response.Failure<TResponse>(SecurityAccessErrors.ForbiddenAccess);
+                        return Result.Failure<TResponse>(SecurityAccessErrors.ForbiddenAccess);
                     }
                 }
 
@@ -79,7 +79,7 @@ namespace CleanArchitecture.Application.Common.Behaviours
 
                             if (!IsUserHasPermission)
                             {
-                                return Response.Failure<TResponse>(SecurityAccessErrors.ForbiddenAccess);
+                                return Result.Failure<TResponse>(SecurityAccessErrors.ForbiddenAccess);
                             }
                         }
                         else
@@ -88,7 +88,7 @@ namespace CleanArchitecture.Application.Common.Behaviours
 
                             if (!authorized)
                             {
-                                return Response.Failure<TResponse>(SecurityAccessErrors.ForbiddenAccess);
+                                return Result.Failure<TResponse>(SecurityAccessErrors.ForbiddenAccess);
                             }
                         }
                     }

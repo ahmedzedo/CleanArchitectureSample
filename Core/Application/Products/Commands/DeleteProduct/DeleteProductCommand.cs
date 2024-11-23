@@ -35,7 +35,7 @@ namespace CleanArchitecture.Application.Products.Commands.DeleteProduct
         #endregion
 
         #region Request Handle
-        public async override Task<Response<bool>> HandleRequest(DeleteProductCommand request, CancellationToken cancellationToken)
+        public async override Task<IResult<bool>> HandleRequest(DeleteProductCommand request, CancellationToken cancellationToken)
         {
             int affectedRows = 0;
 
@@ -43,7 +43,7 @@ namespace CleanArchitecture.Application.Products.Commands.DeleteProduct
 
             if (product is null)
             {
-                return Response.Failure(Error.ItemNotFound($"ProductId:{request.Id}"));
+                return Result.Failure(Error.ItemNotFound($"ProductId:{request.Id}"));
             }
             if (DbContext.Products.Delete(product))
             {
@@ -51,7 +51,7 @@ namespace CleanArchitecture.Application.Products.Commands.DeleteProduct
                 affectedRows = await DbContext.SaveChangesAsync(cancellationToken);
             }
 
-            return affectedRows > 0 ? Response.Success(affectedRows) : Response.Failure(Error.InternalServerError);
+            return affectedRows > 0 ? Result.Success(affectedRows) : Result.Failure(Error.InternalServerError);
         }
         #endregion
     }

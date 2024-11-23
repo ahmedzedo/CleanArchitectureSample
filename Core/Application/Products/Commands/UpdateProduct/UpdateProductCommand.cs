@@ -43,7 +43,7 @@ namespace CleanArchitecture.Application.Products.Commands.UpdateProduct
         #endregion
 
         #region RequestHandle
-        public override async Task<Response<bool>> HandleRequest(UpdateProductCommand request, CancellationToken cancellationToken)
+        public override async Task<IResult<bool>> HandleRequest(UpdateProductCommand request, CancellationToken cancellationToken)
         {
             var product = await DbContext.Products.AsTracking()
                                                   .Include(p => p.ProductItems)
@@ -51,7 +51,7 @@ namespace CleanArchitecture.Application.Products.Commands.UpdateProduct
                                                   .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
             if (product is null)
             {
-                return Response.Failure(Error.ItemNotFound($"ProductId:{request.Id}"));
+                return Result.Failure(Error.ItemNotFound($"ProductId:{request.Id}"));
             }
             var category = await DbContext.Categories.AsTracking()
                                                      .Where(r => request.CategoriesIds.Contains(r.Id))
@@ -69,7 +69,7 @@ namespace CleanArchitecture.Application.Products.Commands.UpdateProduct
             DbContext.Products.Update(product);
             int affectedRows = await DbContext.SaveChangesAsync(cancellationToken);
 
-            return affectedRows > 0 ? Response.Success(affectedRows) : Response.Failure(Error.InternalServerError);
+            return affectedRows > 0 ? Result.Success(affectedRows) : Result.Failure(Error.InternalServerError);
 
         }
         #endregion

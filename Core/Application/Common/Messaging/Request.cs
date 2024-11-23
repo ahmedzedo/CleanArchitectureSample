@@ -27,7 +27,7 @@ namespace CleanArchitecture.Application.Common.Messaging
     #endregion
 
     #region Class AppRequest
-    public record AppRequest<TResponse> : BaseRequest<Response<TResponse>>
+    public record AppRequest<TResponse> : BaseRequest<IResult<TResponse>>, IAppRequest<TResponse>
     {
         #region Constructor
         public AppRequest()
@@ -39,7 +39,7 @@ namespace CleanArchitecture.Application.Common.Messaging
     #endregion
 
     #region Class BaseCommand
-    public record BaseCommand<TResponse> : AppRequest<TResponse>, IBaseCommand
+    public record BaseCommand<TResponse> : AppRequest<TResponse>, IBaseCommand<TResponse>
     {
         #region Constructor
         public BaseCommand()
@@ -51,7 +51,7 @@ namespace CleanArchitecture.Application.Common.Messaging
     #endregion
 
     #region Class BaseQuery
-    public record BaseQuery<TResponse> : AppRequest<TResponse>, IBaseQuery
+    public record BaseQuery<TResponse> : AppRequest<TResponse>, IBaseQuery<TResponse>
     {
         #region Constructor
         public BaseQuery()
@@ -63,7 +63,7 @@ namespace CleanArchitecture.Application.Common.Messaging
     #endregion
 
     #region Class PagedListQuery
-    public record PagedListQuery<TResponse> : BaseQuery<TResponse>, IBaseQuery
+    public record PagedListQuery<TResponse> : BaseQuery<TResponse>, IPagedListQuery<TResponse>
     {
         #region Properites
         public int PageIndex { get; set; } = 0;

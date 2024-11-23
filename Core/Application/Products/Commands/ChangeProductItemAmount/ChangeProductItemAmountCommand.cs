@@ -35,7 +35,7 @@ namespace CleanArchitecture.Application.Products.Commands.ChangeProductItemAmoun
         #endregion
 
         #region RequestHandle
-        public override async Task<Response<bool>> HandleRequest(ChangeProductItemAmountCommand request, CancellationToken cancellationToken)
+        public override async Task<IResult<bool>> HandleRequest(ChangeProductItemAmountCommand request, CancellationToken cancellationToken)
         {
             var product = await DbContext.Products.AsTracking()
                                                   .Include(p => p.ProductItems.Where(pi => pi.Id == request.ProductItmeId))
@@ -43,14 +43,14 @@ namespace CleanArchitecture.Application.Products.Commands.ChangeProductItemAmoun
 
             if (product is null || product.ProductItems.Count == 0)
             {
-                return Response.Failure(Error.ItemNotFound($"ProductId:{request.ProductId} contains the ProductItemid:{request.ProductItmeId}"));
+                return Result.Failure(Error.ItemNotFound($"ProductId:{request.ProductId} contains the ProductItemid:{request.ProductItmeId}"));
             }
 
             product.ProductItems.First().ChangeAmount(request.Amount);
             DbContext.Products.Update(product);
             int affectedRows = await DbContext.SaveChangesAsync(cancellationToken);
 
-            return affectedRows > 0 ? Response.Success(affectedRows) : Response.Failure(Error.InternalServerError);
+            return affectedRows > 0 ? Result.Success(affectedRows) : Result.Failure(Error.InternalServerError);
 
         }
         #endregion

@@ -2,7 +2,7 @@
 
 namespace CleanArchitecture.Application.Common.Messaging
 {
-    public interface IResponse<T>
+    public interface IResult<T>
     {
         public T? Data { get; set; }
         public int Count { get; set; }

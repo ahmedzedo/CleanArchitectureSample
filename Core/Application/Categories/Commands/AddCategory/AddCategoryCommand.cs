@@ -51,13 +51,13 @@ namespace CleanArchitecture.Application.Categories.Commands.AddCategory
         #endregion
 
         #region Handel Request
-        public async override Task<Response<Guid>> HandleRequest(AddCategoryCommand request, CancellationToken cancellationToken)
+        public async override Task<IResult<Guid>> HandleRequest(AddCategoryCommand request, CancellationToken cancellationToken)
         {
             Category category = Mapper.Map<Category>(request);
             await DbContext.Categories.AddAsync(category, cancellationToken);
             int affectedRows = await DbContext.SaveChangesAsync(cancellationToken);
 
-            return affectedRows > 0 ? Response.Success(category.Id, affectedRows) : Response.Failure<Guid>(Error.InternalServerError);
+            return affectedRows > 0 ? Result.Success(category.Id, affectedRows) : Result.Failure<Guid>(Error.InternalServerError);
         }
         #endregion
     }

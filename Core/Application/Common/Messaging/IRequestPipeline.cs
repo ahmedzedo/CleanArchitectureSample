@@ -10,10 +10,10 @@
     #endregion
 
     #region Request Response Pipline
-    public delegate Task<Response<TResponse>> MyRequestResponseHandlerDelegate<TResponse>();
+    public delegate Task<IResult<TResponse>> MyRequestResponseHandlerDelegate<TResponse>();
     public interface IRequestResponsePipeline<TRequest, TResponse>
     {
-        Task<Response<TResponse>> Handle(TRequest request,
+        Task<IResult<TResponse>> Handle(TRequest request,
                                           MyRequestResponseHandlerDelegate<TResponse> next, CancellationToken cancellationToken);
     }
     #endregion

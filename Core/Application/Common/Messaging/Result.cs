@@ -7,15 +7,15 @@ using System.Runtime.CompilerServices;
 
 namespace CleanArchitecture.Application.Common.Messaging
 {
-    public static class Response
+    public static class Result
     {
         #region Static Methods
 
-        public static Response<T> Failure<T>(Error error, string? source)
+        public static Result<T> Failure<T>(Error error, string? source)
         {
-            return new Response<T>(error.Code, error.Message, false, error, source);
+            return new Result<T>(error.Code, error.Message, false, error, source);
         }
-        public static Response<T> Failure<T>(Error error,
+        public static Result<T> Failure<T>(Error error,
                                              [CallerMemberName] string memberName = "",
                                              [CallerLineNumber] int sourceLineNumber = 0)
         {
@@ -23,9 +23,9 @@ namespace CleanArchitecture.Application.Common.Messaging
             Type? type = GetCallerType(frame);
             var source = GetSource(memberName, sourceLineNumber, type);
 
-            return new Response<T>(error.Code, error.Message, false, error, source);
+            return new Result<T>(error.Code, error.Message, false, error, source);
         }
-        public static Response<bool> Failure(Error error,
+        public static Result<bool> Failure(Error error,
                                              [CallerMemberName] string memberName = "",
                                              [CallerLineNumber] int sourceLineNumber = 0)
         {
@@ -34,15 +34,15 @@ namespace CleanArchitecture.Application.Common.Messaging
             var source = GetSource(memberName, sourceLineNumber, type);
 
 
-            return new Response<bool>(error.Code, error.Message, false, error, source);
+            return new Result<bool>(error.Code, error.Message, false, error, source);
         }
-        public static Response<T> Success<T>(T? data = default, int count = 0, string message = "OK")
+        public static Result<T> Success<T>(T? data = default, int count = 0, string message = "OK")
         {
-            return new Response<T>(data, count, 200, message, true, default, default);
+            return new Result<T>(data, count, 200, message, true, default, default);
         }
-        public static Response<bool> Success(int affectedRows)
+        public static Result<bool> Success(int affectedRows)
         {
-            return new Response<bool>(true, affectedRows, 200, "OK", true, default, default);
+            return new Result<bool>(true, affectedRows, 200, "OK", true, default, default);
         }
 
 
@@ -62,7 +62,7 @@ namespace CleanArchitecture.Application.Common.Messaging
         #endregion
     }
 
-    public sealed record Response<T> : IResponse<T>
+    public sealed record Result<T> : IResult<T>
     {
         #region  Properties
         public T? Data { get; set; }
@@ -79,11 +79,11 @@ namespace CleanArchitecture.Application.Common.Messaging
         #region Constructors
 
         [JsonConstructor]
-        public Response()
+        public Result()
         {
 
         }
-        public Response(int code,
+        public Result(int code,
                         string message,
                         bool isSuccess,
                         Error? error,
@@ -91,7 +91,7 @@ namespace CleanArchitecture.Application.Common.Messaging
         {
 
         }
-        public Response(T? data,
+        public Result(T? data,
                         int count,
                         int code,
                         string message,

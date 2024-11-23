@@ -6,7 +6,7 @@ namespace CleanArchitecture.Infrastructure.Identity
 {
     public static class IdentityResultExtensions
     {
-        public static Response<bool> ToApplicationResult(this IdentityResult result)
+        public static Result<bool> ToApplicationResult(this IdentityResult result)
         {
 
             var errors = result.Errors
@@ -14,8 +14,8 @@ namespace CleanArchitecture.Infrastructure.Identity
                  .ToDictionary(e => e.Code, e => e.Description);
 
             return result.Succeeded
-                ? Response.Success(true)
-                : Response.Failure(SecurityAccessErrors.CreationUserFailed(errors));
+                ? Result.Success(true)
+                : Result.Failure(SecurityAccessErrors.CreationUserFailed(errors));
         }
     }
 }

@@ -18,10 +18,12 @@ public interface ICrossCacheService
                                       Func<Task<T>> getResonse,
                                       CrossCacheEntryOption crossCacheEntryOption,
                                       CacheStore cacheStore,
+                                      Predicate<T>? validateValue = default,
                                       CancellationToken cancellationToken = default) where T : class, new();
 
     Task<T> GetOrCreateCacheAsync<T>(string cacheKey,
                                      Func<Task<T>> getResonse,
+                                     Predicate<T>? validateValue = default,
                                      CancellationToken cancellationToken = default) where T : class, new();
 
     Task RemoveAsync(string key, CacheStore cacheStore, CancellationToken cancellationToken = default);

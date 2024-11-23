@@ -32,7 +32,7 @@ namespace CleanArchitecture.Application.Users.Commands.Login
         #endregion
 
         #region Request Handle
-        public override async Task<Response<TokenResponse>> HandleRequest(LoginCommand request,
+        public override async Task<IResult<TokenResponse>> HandleRequest(LoginCommand request,
                                                                            CancellationToken cancellationToken)
         {
             return await IdentityService.GetTokenAsync(request.UserName!);

@@ -33,7 +33,7 @@ namespace CleanArchitecture.Application.Users.Commands.CreateUser
         #endregion
 
         #region Request Handle
-        public override async Task<Response<Guid>> HandleRequest(CreateUserCommand request,
+        public override async Task<IResult<Guid>> HandleRequest(CreateUserCommand request,
                                                                   CancellationToken cancellationToken)
         {
             var user = new UserDto
@@ -45,11 +45,11 @@ namespace CleanArchitecture.Application.Users.Commands.CreateUser
                 ThirdName = request.ThirdName,
                 FamilyName = request.FamilyName
             };
-            (IResponse<bool> result, string userId) = await IdentityService.CreateUserAsync(user, request.Password);
+            (IResult<bool> result, string userId) = await IdentityService.CreateUserAsync(user, request.Password);
 
             return result.IsSuccess && result.Error == null
-                ? Response.Success(Guid.Parse(userId), 1)
-                : Response.Failure<Guid>(result.Error!);
+                ? Result.Success(Guid.Parse(userId), 1)
+                : Result.Failure<Guid>(result.Error!);
         }
 
 

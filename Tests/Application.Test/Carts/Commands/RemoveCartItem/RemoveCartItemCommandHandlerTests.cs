@@ -103,7 +103,7 @@ namespace CleanArchitecture.Application.Carts.Commands.RemoveCartItem.Tests
 
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().NotBeNull();
-            result.Error!.Code.Should().Be((int)HttpStatusCode.NoContent);
+            result.Error!.Code.Should().Be((int)HttpStatusCode.NotFound);
             result.Error.Message.Should().Be(CartsErrors.CartEmptyError.Message);
         }
     }

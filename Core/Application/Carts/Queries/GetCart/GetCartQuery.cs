@@ -10,7 +10,7 @@ namespace CleanArchitecture.Application.Carts.Queries.GetCart
 {
     #region Request
     [Authorize(Policy = Permissions.Cart.Read)]
-    [Cache(CacheStore = CacheStore.All, SlidingExpirationMinutes = "1", /*AbsoluteExpirationMinutes = "60", LimitSize = "10",*/ ToInvalidate = false, KeyPrefix = nameof(CacheKeysPrefixes.Cart))]
+    [Cache(CacheStore = CacheStore.All, SlidingExpirationMinutes = "1", /*AbsoluteExpirationMinutes = "60", LimitSize = "10",*/ KeyPrefix = nameof(CacheKeysPrefixes.Cart))]
     public record GetCartQuery(Guid Id) : BaseQuery<CartDto>, ICacheable
     {
         public string CahcheKeyIdentifire => $"{Id}";
@@ -36,12 +36,12 @@ namespace CleanArchitecture.Application.Carts.Queries.GetCart
 
         #region Handel
 
-        public async override Task<Response<CartDto>> HandleRequest(GetCartQuery request, CancellationToken cancellationToken)
+        public async override Task<IResult<CartDto>> HandleRequest(GetCartQuery request, CancellationToken cancellationToken)
         {
             var cart = await CartService.GetUserCartAsync(Guid.Parse(request.UserId!), cancellationToken);
             var result = Mapper.Map<CartDto>(cart);
 
-            return result != null ? Response.Success(result, 1) : Response.Failure<CartDto>(CartsErrors.CartEmptyError);
+            return result != null ? Result.Success(result, 1) : Result.Failure<CartDto>(CartsErrors.CartEmptyError);
         }
         #endregion
     }

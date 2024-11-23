@@ -1,5 +1,6 @@
 ﻿using Common.DependencyInjection.Exceptions;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Common.DependencyInjection.Extensions
 {
@@ -236,5 +237,7 @@ namespace Common.DependencyInjection.Extensions
 
         public static IEnumerable<T> GetInstances<T>(this IServiceProvider serviceProvider) => (IEnumerable<T>)serviceProvider.GetServices(typeof(T)) ?? throw new UnregisteredServiceException(nameof(T));
         public static T GetInstance<T>(this IServiceProvider serviceProvider) => (T?)serviceProvider.GetService(typeof(T)) ?? throw new UnregisteredServiceException(nameof(T));
+        public static Assembly GetAssembly(this AppDomain appDomain, string assemblyName) => Array.Find(appDomain.GetAssemblies(), a => a.FullName != null && a.FullName.Contains(assemblyName))
+                                        ?? throw new NotFoundAssmblyException(assemblyName);
     }
 }

@@ -4,13 +4,14 @@ using CleanArchitecture.Application.Common.Extensions;
 using CleanArchitecture.Application.Common.Messaging;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
 using System.Reflection;
 
 
 namespace CleanArchitecture.Application.Common.Behaviours;
 
 public class CachingBehaviour<TRequest, TResponse> : IRequestResponsePipeline<TRequest, TResponse>
-        where TRequest : ICacheable
+        where TRequest : IAppRequest<TResponse>, ICacheable
 
 {
     #region Dependency
@@ -32,7 +33,7 @@ public class CachingBehaviour<TRequest, TResponse> : IRequestResponsePipeline<TR
     #endregion
 
     #region Handle
-    public async Task<Response<TResponse>> Handle(TRequest request,
+    public async Task<IResult<TResponse>> Handle(TRequest request,
                                                   MyRequestResponseHandlerDelegate<TResponse> next,
                                                   CancellationToken cancellationToken)
     {
@@ -47,29 +48,32 @@ public class CachingBehaviour<TRequest, TResponse> : IRequestResponsePipeline<TR
             return await next();
         }
 
-        var cacheKey = $"{cacheAttribute.KeyPrefix}:{request.GetType().Name}:{request.CahcheKeyIdentifire}";
+        return await GetOrCreateCache(request, next, cacheAttribute, cancellationToken);
+
+    }
+
+    private async Task<IResult<TResponse>> GetOrCreateCache(TRequest request,
+                                                             MyRequestResponseHandlerDelegate<TResponse> next,
+                                                             CacheAttribute cacheAttribute,
+                                                             CancellationToken cancellationToken)
+    {
+        var cacheKey = FormatCacheKey(cacheAttribute.KeyPrefix, request.GetType().Name, request.CahcheKeyIdentifire);
         var crossCacheEntryOption = cacheAttribute.ToCrossCacheEntryOptionsOrDefault(DefaultCrossCacheEntryOption);
-        Response<TResponse>? response;
+        IResult<TResponse>? response;
 
         try
         {
-            if (cacheAttribute.ToInvalidate)
+            async Task<Result<TResponse>> getResonse()
             {
-                response = await next();
-                await _crossCacheService.InvalidateCacheAsync($"{cacheAttribute.KeyPrefix}:",
-                                                              crossCacheEntryOption.CacheStore,
-                                                              cancellationToken);
-                _logger.LogInformation("{KeyPrefix} become invaild in cache. will remove with all related keys from cache.",
-                                       cacheAttribute.KeyPrefix);
+                var result = await next();
+                return (result as Result<TResponse>)!;
             }
-            else
-            {
-                response = await _crossCacheService.GetOrCreateCacheAsync(cacheKey,
-                                                                          () => next(),
-                                                                          crossCacheEntryOption,
-                                                                          crossCacheEntryOption.CacheStore,
-                                                                          cancellationToken);
-            }
+            response = await _crossCacheService.GetOrCreateCacheAsync(cacheKey,
+                                                                      getResonse,
+                                                                      crossCacheEntryOption,
+                                                                      crossCacheEntryOption.CacheStore,
+                                                                      result => result.IsSuccess && result.Error == null,
+                                                                      cancellationToken);
             _logger.LogInformation("Cach Behaviour Ended");
 
             return response;
@@ -79,9 +83,13 @@ public class CachingBehaviour<TRequest, TResponse> : IRequestResponsePipeline<TR
             _logger.LogInformation(ex, "The caching operation failed, there are exception occurred with {Message}",
                                    ex.Message);
             _logger.LogInformation("Caching Behaviour Ended");
-
-            return await next();
         }
+
+        return await next();
     }
+
+    private static string FormatCacheKey(string keyPrefix,
+                                      string requestName,
+                                      string cahcheKeyIdentifire) => $"{keyPrefix}:{requestName}:{cahcheKeyIdentifire}";
     #endregion
 }

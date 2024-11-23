@@ -407,7 +407,8 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
         /// </summary>
         /// <param name="expression"></param>
         /// <returns></returns>
-        public virtual async Task<bool> AnyAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default)
+        public virtual async Task<bool> AnyAsync(Expression<Func<T, bool>> expression,
+                                                 CancellationToken cancellationToken = default)
         {
             return await EntityQuery.AnyAsync(expression, cancellationToken);
         }
@@ -451,7 +452,9 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
         /// <param name="count"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
-        public virtual async Task<List<TResult>> TopAsync<TResult>(int count, Expression<Func<T, TResult>> selector, CancellationToken cancellationToken = default)
+        public virtual async Task<List<TResult>> TopAsync<TResult>(int count,
+                                                                   Expression<Func<T, TResult>> selector,
+                                                                   CancellationToken cancellationToken = default)
         {
             return await EntityQuery.Select(selector).Take(count).ToListAsync(cancellationToken);
         }
@@ -584,7 +587,8 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
         /// <typeparam name="TResult"></typeparam>
         /// <param name="selector"></param>
         /// <returns></returns>
-        public virtual async Task<List<TResult>> ToListAsync<TResult>(Expression<Func<T, TResult>> selector, CancellationToken cancellationToken = default)
+        public virtual async Task<List<TResult>> ToListAsync<TResult>(Expression<Func<T, TResult>> selector,
+                                                                      CancellationToken cancellationToken = default)
         {
             return await EntityQuery.Select(selector).ToListAsync(cancellationToken);
         }

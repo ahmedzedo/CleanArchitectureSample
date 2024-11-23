@@ -37,16 +37,16 @@ namespace CleanArchitecture.Application.Products.Queries.GetPagedProducts
         #endregion
 
         #region Handel
-        public override async Task<Response<IReadOnlyCollection<GetPagedProductDto>>> HandleRequest(GetPagedProductsQuery request,
+        public override async Task<IResult<IReadOnlyCollection<GetPagedProductDto>>> HandleRequest(GetPagedProductsQuery request,
                                                                                   CancellationToken cancellationToken)
         {
             if (request is null)
             {
-                return Response.Failure<IReadOnlyCollection<GetPagedProductDto>>(Error.NullArgument);
+                return Result.Failure<IReadOnlyCollection<GetPagedProductDto>>(Error.NullArgument);
             }
             (IReadOnlyCollection<GetPagedProductDto> Items, int totalCount) = await GetPagedProductsWithFilter(request);
 
-            return Response.Success(Items, totalCount);
+            return Result.Success(Items, totalCount);
         }
 
         private async Task<(IReadOnlyCollection<GetPagedProductDto> Items, int totalCount)> GetPagedProductsWithFilter(GetPagedProductsQuery request)

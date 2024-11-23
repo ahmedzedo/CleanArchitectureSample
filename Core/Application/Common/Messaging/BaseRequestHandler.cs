@@ -46,8 +46,8 @@ namespace CleanArchitecture.Application.Common.Messaging
     #endregion
 
     #region Class AppRequestHandler
-    public abstract class AppRequestHandler<TRequest, TResponse> : BaseRequestHandler<TRequest, Response<TResponse>>
-           where TRequest : IBaseRequest<Response<TResponse>>
+    public abstract class AppRequestHandler<TRequest, TResponse> : BaseRequestHandler<TRequest, IResult<TResponse>>
+           where TRequest : IBaseRequest<IResult<TResponse>>
     {
         #region Dependencies
         protected IApplicationDbContext DbContext { get; }
@@ -63,18 +63,18 @@ namespace CleanArchitecture.Application.Common.Messaging
         #endregion
 
         #region Handel
-        public override async Task<Response<TResponse>> Handle(TRequest request, CancellationToken cancellationToken)
+        public override async Task<IResult<TResponse>> Handle(TRequest request, CancellationToken cancellationToken)
         {
             SetUserInfo(request);
             return await GetResponse(request, cancellationToken);
         }
-        public override abstract Task<Response<TResponse>> HandleRequest(TRequest request, CancellationToken cancellationToken);
+        public override abstract Task<IResult<TResponse>> HandleRequest(TRequest request, CancellationToken cancellationToken);
 
         #endregion
 
         #region Helper Methods
 
-        private async Task<Response<TResponse>> GetResponse(TRequest request, CancellationToken cancellationToken)
+        private async Task<IResult<TResponse>> GetResponse(TRequest request, CancellationToken cancellationToken)
         {
             await ExecutePreProcessorBehaviours(request, cancellationToken);
 
@@ -98,15 +98,15 @@ namespace CleanArchitecture.Application.Common.Messaging
             }
         }
 
-        private async Task<Response<TResponse>> ExcuteRequestPiplineBehaviours(TRequest request,
+        private async Task<IResult<TResponse>> ExcuteRequestPiplineBehaviours(TRequest request,
                                                                                 CancellationToken cancellationToken)
         {
-            Response<TResponse> response;
+            IResult<TResponse> response;
             var requestPipelines = ServiceProvider.GetInstances<IRequestResponsePipeline<TRequest, TResponse>>();
 
             if (requestPipelines.Any())
             {
-                Task<Response<TResponse>> Handler() => HandleRequest(request, cancellationToken);
+                Task<IResult<TResponse>> Handler() => HandleRequest(request, cancellationToken);
                 response = await requestPipelines
                         .Reverse()
                         .Aggregate((MyRequestResponseHandlerDelegate<TResponse>)Handler, (next, pipeline) => () => pipeline.Handle(request, next, cancellationToken))();

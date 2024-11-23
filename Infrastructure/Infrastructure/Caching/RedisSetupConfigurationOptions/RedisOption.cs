@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using StackExchange.Redis;
 
 namespace CleanArchitecture.Infrastructure.Caching.RedisSetupConfigurationOptions;
 
@@ -11,6 +12,15 @@ public class RedisOptions
     public int Port { get; init; }
     public string? Password { get; init; }
     public bool Ssl { get; init; }
+
+    public static explicit operator ConfigurationOptions(RedisOptions options) => new()
+    {
+        EndPoints = { { options.Host ?? throw new InvalidOperationException("Redis Host can't be null"), options.Port } },
+        User = options.User,
+        Password = options.Password,
+        Ssl = options.Ssl
+    };
+
 }
 #endregion
 

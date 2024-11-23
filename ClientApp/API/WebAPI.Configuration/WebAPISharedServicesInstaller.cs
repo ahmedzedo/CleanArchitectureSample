@@ -14,17 +14,13 @@ namespace CleanArchitecture.WebAPI.Configuration
     {
         public void Install(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddValidatorsFromAssembly(GetAssembly(nameof(Application)));
-            services.AddAutoMapper(GetAssembly(nameof(Application)));
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(GetAssembly(nameof(Application))));
-            services.RegisterAllChildsDynamic(ServiceLifetime.Transient, nameof(Application), nameof(Persistence.EF), typeof(IEntitySet<>));
+            services.AddValidatorsFromAssembly(AppDomain.CurrentDomain.GetAssembly(nameof(Application)));
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssembly(nameof(Application)));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssembly(nameof(Application))));           
             services.RegisterAllForBaseDynamic(ServiceLifetime.Transient, nameof(Application), typeof(IRequestResponsePipeline<,>));
             services.RegisterAllForBaseDynamic(ServiceLifetime.Transient, nameof(Application), typeof(IRequestPreProcessor<>));
             services.RegisterAllForBaseDynamic(ServiceLifetime.Transient, nameof(Application), typeof(IRequestPostProcessor<>));
             services.RegisterAllChildsDynamic(ServiceLifetime.Scoped, nameof(Application), typeof(IService));
-
-            static Assembly GetAssembly(string assemblyName) => Array.Find(AppDomain.CurrentDomain.GetAssemblies(), a => a.FullName != null && a.FullName.Contains(assemblyName))
-                                            ?? throw new NotFoundAssmblyException(assemblyName);
         }
     }
 }

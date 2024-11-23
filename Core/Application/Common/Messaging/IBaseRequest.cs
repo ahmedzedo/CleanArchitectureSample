@@ -18,13 +18,25 @@ namespace CleanArchitecture.Application.Common.Messaging
         public string RequestName => GetType().Name;
         public RequestType RequestType { get; protected init; }
     }
-
-    public interface IBaseCommand
+    public interface IAppRequest<TResponse> : IBaseRequest<IResult<TResponse>>
     {
     }
-
-    public interface IBaseQuery
+    public interface IBaseCommand<TResponse> : IAppRequest<TResponse>
     {
+    }
+    public interface IBaseQuery<TResponse> : IAppRequest<TResponse>
+    {
+    }
+    public interface IPagedListQuery<TResponse> : IAppRequest<TResponse>
+    {
+        public int PageIndex { get; set; }
 
+        public int PageSize { get; set; }
+
+        public int PagePerPages { get; set; }
+
+        public string? OrderByPropertyName { get; set; }
+
+        public string? SortDirection { get; set; }
     }
 }

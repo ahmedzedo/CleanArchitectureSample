@@ -11,8 +11,7 @@ namespace CleanArchitecture.Application.Categories.Queries.GetAllCategories
     #region Request
 
     [Authorize(Policy = Permissions.Product.ReadCategories)]
-    [Cache(CacheStore = CacheStore.All, SlidingExpirationMinutes = "1", /*AbsoluteExpirationMinutes = "60", LimitSize = "10",*/ ToInvalidate = false, KeyPrefix = nameof(CacheKeysPrefixes.Category))]
-
+    [Cache(CacheStore = CacheStore.All, SlidingExpirationMinutes = "1", /*AbsoluteExpirationMinutes = "60", LimitSize = "10",*/  KeyPrefix = nameof(CacheKeysPrefixes.Category))]
     public record GetAllCategoriesQuery : BaseQuery<IReadOnlyCollection<Category>>, ICacheable
     {
 
@@ -31,16 +30,16 @@ namespace CleanArchitecture.Application.Categories.Queries.GetAllCategories
         #endregion
 
         #region Handel
-        public override async Task<Response<IReadOnlyCollection<Category>>> HandleRequest(GetAllCategoriesQuery request,
+        public override async Task<IResult<IReadOnlyCollection<Category>>> HandleRequest(GetAllCategoriesQuery request,
                                                                                   CancellationToken cancellationToken)
         {
             if (request is null)
             {
-                return Response.Failure<IReadOnlyCollection<Category>>(Error.NullArgument);
+                return Result.Failure<IReadOnlyCollection<Category>>(Error.NullArgument);
             }
             var Items = await DbContext.Categories.ToListAsync(cancellationToken);
 
-            return Response.Success<IReadOnlyCollection<Category>>(Items.AsReadOnly(), Items.Count);
+            return Result.Success<IReadOnlyCollection<Category>>(Items.AsReadOnly(), Items.Count);
         }
         #endregion
     }

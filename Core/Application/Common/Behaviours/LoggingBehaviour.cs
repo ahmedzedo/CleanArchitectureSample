@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace CleanArchitecture.Application.Common.Behaviours
 {
     public class LoggingBehaviour<TRequest, TResponse> : IRequestResponsePipeline<TRequest, TResponse>
-         where TRequest : IBaseRequest<Response<TResponse>>
+         where TRequest : IBaseRequest<Result<TResponse>>
     {
         #region Dependencies
         public ILogger<LoggingBehaviour<TRequest, TResponse>> Logger { get; }
@@ -20,7 +20,7 @@ namespace CleanArchitecture.Application.Common.Behaviours
 
         #region Process
 
-        public async Task<Response<TResponse>> Handle(TRequest request, MyRequestResponseHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+        public async Task<IResult<TResponse>> Handle(TRequest request, MyRequestResponseHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             Logger.LogInformation("CleanArchitecture Processing request  Request: {Name} {@RequestType} {@UserId} {@UserName} {@Request}",
                 request.RequestName, request.RequestType, request.UserId, request.UserName, request);

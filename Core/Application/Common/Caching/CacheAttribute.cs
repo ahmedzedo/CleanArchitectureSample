@@ -8,8 +8,6 @@ namespace CleanArchitecture.Application.Common.Caching
         #region Properties
         public required string KeyPrefix { get; set; }
 
-        public bool ToInvalidate { get; set; }
-
         public string? SlidingExpirationMinutes { get; set; }
 
         public string? AbsoluteExpirationMinutes { get; set; }

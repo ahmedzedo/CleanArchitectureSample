@@ -14,7 +14,7 @@ namespace CleanArchitecture.Domain.Test.Entities.Carts
         public void CreateCartItem_CartIsNull_ThrowArgumentNullException()
         {
             //Arrange
-            Cart? cart = null;
+            Cart? cart = null!;
             var productItem = new ProductItem("product Item One", 150, 50)
             {
                 Id = Guid.NewGuid()
@@ -31,7 +31,7 @@ namespace CleanArchitecture.Domain.Test.Entities.Carts
         {
             //Arrange
             Cart cart = new(Guid.NewGuid());
-            ProductItem? productItem = null;
+            ProductItem? productItem = null!;
 
             //Act
             Func<Cart, ProductItem, int, CartItem> createCartItem = (cart, productItem, count) => CartItem.CreateCartItem(cart, productItem, count);

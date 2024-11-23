@@ -12,8 +12,8 @@ namespace CleanArchitecture.Application.Carts.Commands.RemoveCartItem
 {
     #region Request
     [Authorize(Policy = Permissions.Cart.Delete)]
-    [Cache(KeyPrefix = nameof(CacheKeysPrefixes.Cart), CacheStore = CacheStore.All, ToInvalidate = true)]
-    public record RemoveCartItemCommand : BaseCommand<bool>
+    [InvalidCache(KeyPrefix = nameof(CacheKeysPrefixes.Cart), CacheStore = CacheStore.All)]
+    public record RemoveCartItemCommand : BaseCommand<bool>, ICacheInvalidator
     {
         public Guid CartItemId { get; init; }
         public Guid CartId { get; init; }
@@ -42,29 +42,29 @@ namespace CleanArchitecture.Application.Carts.Commands.RemoveCartItem
 
         #region Request Handle
 
-        public override async Task<Response<bool>> HandleRequest(RemoveCartItemCommand request, CancellationToken cancellationToken)
+        public override async Task<IResult<bool>> HandleRequest(RemoveCartItemCommand request, CancellationToken cancellationToken)
         {
             Cart? cart = await CartService.GetCartByIdIncludedItemById(request.CartId, request.CartItemId, cancellationToken);
 
             if (cart is null)
             {
-                return Response.Failure(CartsErrors.CartNotFoundError);
+                return Result.Failure(CartsErrors.CartNotFoundError);
             }
 
             if (cart.UserId != Guid.Parse(request.UserId!))
             {
-                return Response.Failure(SecurityAccessErrors.ForbiddenAccess);
+                return Result.Failure(SecurityAccessErrors.ForbiddenAccess);
             }
 
-            if (cart.CartItems.Count == 0 )
+            if (cart.CartItems.Count == 0)
             {
-                return Response.Failure(CartsErrors.CartEmptyError);
+                return Result.Failure(CartsErrors.CartEmptyError);
             }
 
             cart.RemoveCartItem(cart.CartItems.First());
             int affectedRows = await DbContext.SaveChangesAsync(cancellationToken);
 
-            return affectedRows > 0 ? Response.Success(affectedRows) : Response.Failure(Error.InternalServerError);
+            return affectedRows > 0 ? Result.Success(affectedRows) : Result.Failure(Error.InternalServerError);
         }
 
 

@@ -92,29 +92,32 @@ public class CrossCacheService : ICrossCacheService
                                                   Func<Task<T>> getResonse,
                                                   CrossCacheEntryOption crossCacheEntryOption,
                                                   CacheStore cacheStore,
+                                                  Predicate<T>? validateValue = default,
                                                   CancellationToken cancellationToken = default) where T : class, new()
     {
-        T? response = null;
-
         if (!DefaultCrossCacheEntryOption.IsEnabled)
         {
             return await getResonse() ?? new();
         }
 
-        response = await Semaphore.WaitThenReleaseAsync(async () =>
+        T? response = await Semaphore.WaitThenReleaseAsync(async () =>
         {
             response = await GetCacheAsync<T>(cacheKey,
                                               cacheStore,
                                               crossCacheEntryOption,
                                               cancellationToken);
-
+            
             if (response is null)
             {
                 _logger.LogInformation("Caching: {CacheKey} not found in cache. Fetching from database.", cacheKey);
                 response = await getResonse();
 
-                if (response != default)
+                if (response != null)
                 {
+                    if (validateValue != default && !validateValue(response))
+                    {
+                        return response;
+                    }
                     await SetCacheAsync(cacheKey,
                                         response,
                                         cacheStore,
@@ -135,12 +138,14 @@ public class CrossCacheService : ICrossCacheService
     }
     public async Task<T> GetOrCreateCacheAsync<T>(string cacheKey,
                                                   Func<Task<T>> getResonse,
+                                                  Predicate<T>? validateValue = default,
                                                   CancellationToken cancellationToken = default) where T : class, new()
     {
         return await GetOrCreateCacheAsync(cacheKey,
                                            getResonse,
                                            DefaultCrossCacheEntryOption,
                                            DefaultCrossCacheEntryOption.CacheStore,
+                                           validateValue,
                                            cancellationToken);
     }
     public async Task RemoveAsync(string key, CacheStore cacheStore, CancellationToken cancellationToken = default)

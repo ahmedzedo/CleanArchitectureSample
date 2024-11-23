@@ -1,7 +1,9 @@
-﻿using CleanArchitecture.Application.Carts.Commands.AddItemToCart;
+﻿using Azure;
+using CleanArchitecture.Application.Carts.Commands.AddItemToCart;
 using CleanArchitecture.Application.Carts.Commands.RemoveCartItem;
 using CleanArchitecture.Application.Carts.Commands.UpdateCartItem;
 using CleanArchitecture.Application.Carts.Queries.GetCart;
+using CleanArchitecture.Application.Common.Messaging;
 using CleanArchitecture.WebAPI.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

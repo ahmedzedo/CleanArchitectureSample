@@ -35,10 +35,10 @@ public class DistributedCacheService : IDistributedCacheService
 
     #region Constructor
     public DistributedCacheService(IOptions<RedisOptions> options,
-                                   IConnectionMultiplexer connection,
+                                   IRedisConnection redisConnection,
                                    ILogger<DistributedCacheService> logger)
     {
-        Connection = connection;
+        Connection = redisConnection.Connection;
         _logger = logger;
         _db = Connection.GetDatabase();
 
@@ -62,7 +62,7 @@ public class DistributedCacheService : IDistributedCacheService
         }
         T? value = JsonConvert.DeserializeObject<T>(cachedValue);
         _logger.LogInformation("Caching: Retrieved the cached value of key: {Key} from  Redis ", key);
-      
+
         return value;
     }
 

@@ -11,8 +11,8 @@ namespace CleanArchitecture.Application.Carts.Commands.AddItemToCart
 {
     #region Request
     [Authorize(Policy = Permissions.Cart.Add)]
-    [Cache(KeyPrefix = nameof(CacheKeysPrefixes.Cart), CacheStore = CacheStore.All, ToInvalidate = true)]
-    public record AddItemToCartCommand : BaseCommand<Guid>
+    [InvalidCache(KeyPrefix = nameof(CacheKeysPrefixes.Cart), CacheStore = CacheStore.All)]
+    public record AddItemToCartCommand : BaseCommand<Guid>, ICacheInvalidator
     {
         public Guid ProductItemId { get; init; }
         public Guid? CartId { get; init; }
@@ -40,7 +40,7 @@ namespace CleanArchitecture.Application.Carts.Commands.AddItemToCart
         #endregion
 
         #region Request Handle
-        public async override Task<Response<Guid>> HandleRequest(AddItemToCartCommand request, CancellationToken cancellationToken)
+        public async override Task<IResult<Guid>> HandleRequest(AddItemToCartCommand request, CancellationToken cancellationToken)
         {
             Guid userId = Guid.Parse(request.UserId!);
             Cart? cart = await CartService.GetUserCartAsync(userId, cancellationToken);
@@ -49,7 +49,7 @@ namespace CleanArchitecture.Application.Carts.Commands.AddItemToCart
             await CartService.AddOrUpdateCartItemAsync(cart, request.ProductItemId, request.Count, cancellationToken);
             int affectedRows = await DbContext.SaveChangesAsync(cancellationToken);
 
-            return affectedRows > 0 ? Response.Success(cart.Id, affectedRows) : Response.Failure<Guid>(Error.InternalServerError);
+            return affectedRows > 0 ? Result.Success(cart.Id, affectedRows) : Result.Failure<Guid>(Error.InternalServerError);
         }
 
         #endregion

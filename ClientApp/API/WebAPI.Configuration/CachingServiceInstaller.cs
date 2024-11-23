@@ -1,6 +1,7 @@
 ﻿using CleanArchitecture.Application.Common.Abstracts.Caching;
 using CleanArchitecture.Infrastructure.Caching;
 using CleanArchitecture.Infrastructure.Caching.RedisSetupConfigurationOptions;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,8 +13,16 @@ namespace CleanArchitecture.WebAPI.Configuration
     {
         public void Install(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexerFactory.GetConnection(configuration));
             services.ConfigureOptions<RedisOptionsSetup>();
+            services.AddStackExchangeRedisCache(option =>
+            {
+                RedisOptions redisOPtions = new();
+                RedisOptionsSetup optionSetup = new(configuration);
+                optionSetup.Configure(redisOPtions);
+                option.ConfigurationOptions = (ConfigurationOptions)redisOPtions;
+            });
+            services.AddSingleton<IRedisConnection, RedisConnection>();
+
             services.ConfigureOptions<RedisConfigurationOptionsSetup>();
             services.ConfigureOptions<CrossCacheEntryOptionSetup>();
 
@@ -22,5 +31,7 @@ namespace CleanArchitecture.WebAPI.Configuration
             services.AddSingleton<ICrossCacheService, CrossCacheService>();
             services.AddSingleton<IHostedService, InvalidationCacheChannelSubscriber>();
         }
+
+
     }
 }

@@ -5,21 +5,24 @@ using System.Text;
 
 namespace CleanArchitecture.Infrastructure.Caching;
 
-public static class ConnectionMultiplexerFactory
+public interface IRedisConnection
 {
-    private static Lazy<ConnectionMultiplexer>? lazyConnection;
+    IConnectionMultiplexer Connection { get; }
+}
+public sealed class RedisConnection : IRedisConnection, IDisposable
+{
+    private ConnectionMultiplexer? connection = null;
+    public IConnectionMultiplexer Connection => connection!;
 
-    public static ConnectionMultiplexer GetConnection(IConfiguration configuration)
+    public RedisConnection(IConfiguration configuration)
     {
-        lazyConnection ??= new Lazy<ConnectionMultiplexer>(() =>
-           {
-               return ConnectionMultiplexer.ConnectAsync(GetRedisConnectionString(configuration),
-                                                         option => option.AbortOnConnectFail = false).Result;
-           });
-
-        return lazyConnection.Value;
+        IntializeConnection(configuration);
     }
 
+    private void IntializeConnection(IConfiguration configuration)
+    {
+        connection = ConnectionMultiplexer.ConnectAsync(GetRedisConnectionString(configuration)).Result;
+    }
     private static string GetRedisConnectionString(IConfiguration configuration)
     {
         RedisOptions redisOptions = new();
@@ -36,5 +39,9 @@ public static class ConnectionMultiplexerFactory
         connectionStringBuilder.Append($",user={redisOptions.User},password={redisOptions.Password}");
 
         return connectionStringBuilder.ToString();
+    }
+    public void Dispose()
+    {
+        connection?.Dispose();
     }
 }

@@ -27,16 +27,16 @@ namespace CleanArchitecture.WebAPI.Common
 
         #region Method
         [NonAction]
-        public ObjectResult Result<T>(IResponse<T> response)
+        public ObjectResult Result<T>(IResult<T> response)
         {
             return response.IsSuccess
                 ? Ok(response)
                 : Problem(response);
         }
 
-        public ObjectResult Problem<T>(IResponse<T> response)
+        public ObjectResult Problem<T>(IResult<T> response)
         {
-            return new ObjectResult(new ExtendedProblemdetails()
+            var result = new ObjectResult(new ExtendedProblemdetails()
             {
                 Title = "An error Occured",
                 Status = response.StatusCode,
@@ -44,6 +44,8 @@ namespace CleanArchitecture.WebAPI.Common
                 Instance = $"{response.Source} Path:{HttpContext.Request.Path}/{HttpContext.Request.Method} Host:{HttpContext.Request.Host} Protocol:{HttpContext.Request.Protocol}",
                 SubErrors = response.Error?.SubErrors
             });
+
+            return result;
         }
         public class ExtendedProblemdetails : ProblemDetails
         {

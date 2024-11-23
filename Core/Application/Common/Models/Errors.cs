@@ -34,9 +34,9 @@ namespace CleanArchitecture.Application.Common.Models
             return MapExceptionToDictionary(exception.InnerException, subErrors);
         }
 
-        public static implicit operator Response<bool>(Error error)
+        public static implicit operator Result<bool>(Error error)
         {
-            return Response.Failure(error);
+            return Result.Failure(error);
         }
     }
 

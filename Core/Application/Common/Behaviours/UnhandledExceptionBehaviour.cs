@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace CleanArchitecture.Application.Common.Behaviours
 {
     public class UnhandledExceptionBehaviour<TRequest, TResponse> : IRequestResponsePipeline<TRequest, TResponse>
-          where TRequest : IBaseRequest<Response<TResponse>>
+          where TRequest : IBaseRequest<IResult<TResponse>>
     {
         #region Dependencies
         private readonly ILogger<UnhandledExceptionBehaviour<TRequest, TResponse>> _logger;
@@ -22,7 +22,7 @@ namespace CleanArchitecture.Application.Common.Behaviours
         #endregion
 
         #region Handel
-        public async Task<Response<TResponse>> Handle(TRequest request,
+        public async Task<IResult<TResponse>> Handle(TRequest request,
                                                        MyRequestResponseHandlerDelegate<TResponse> next,
                                                        CancellationToken cancellationToken)
         {
@@ -37,7 +37,7 @@ namespace CleanArchitecture.Application.Common.Behaviours
             {
                 _logger.LogError(ex, message: "CleanArchitecture Request: Unhandled Exception for Request {@Name} {@Request} {@Message}", requestName, request, ex.Message);
 
-                return Response.Failure<TResponse>(Error.ThrowException(ex));
+                return Result.Failure<TResponse>(Error.ThrowException(ex));
             }
         }
         #endregion

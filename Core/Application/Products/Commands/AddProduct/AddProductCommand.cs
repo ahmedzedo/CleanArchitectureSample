@@ -38,7 +38,7 @@ namespace CleanArchitecture.Application.Products.Commands.AddProduct
         #endregion
 
         #region Request Handle
-        public async override Task<Response<Guid>> HandleRequest(AddProductCommand request, CancellationToken cancellationToken)
+        public async override Task<IResult<Guid>> HandleRequest(AddProductCommand request, CancellationToken cancellationToken)
         {
             Product product = new(request.NameAr, request.NameEn, request.NameFr);
             List<Category> categories = await DbContext.Categories.AsTracking()
@@ -51,7 +51,7 @@ namespace CleanArchitecture.Application.Products.Commands.AddProduct
             await DbContext.Products.AddAsync(product, cancellationToken);
             int affectedRows = await DbContext.SaveChangesAsync(cancellationToken);
 
-            return affectedRows > 0 ? Response.Success(product.Id, affectedRows) : Response.Failure<Guid>(Error.InternalServerError);
+            return affectedRows > 0 ? Result.Success(product.Id, affectedRows) : Result.Failure<Guid>(Error.InternalServerError);
         }
 
 

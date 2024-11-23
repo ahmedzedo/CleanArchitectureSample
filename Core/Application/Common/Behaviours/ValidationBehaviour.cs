@@ -7,7 +7,7 @@ using FluentValidation.Results;
 namespace CleanArchitecture.Application.Common.Behaviours
 {
     public class ValidationBehaviour<TRequest, TResponse> : IRequestResponsePipeline<TRequest, TResponse>
-          where TRequest : IBaseRequest<Response<TResponse>>
+          where TRequest : IBaseRequest<IResult<TResponse>>
     {
         #region Dependencies
         private readonly IEnumerable<IValidator<TRequest>> _validators;
@@ -21,7 +21,7 @@ namespace CleanArchitecture.Application.Common.Behaviours
         #endregion
 
         #region Handle
-        public async Task<Response<TResponse>> Handle(TRequest request,
+        public async Task<IResult<TResponse>> Handle(TRequest request,
                                                          MyRequestResponseHandlerDelegate<TResponse> next,
                                                        CancellationToken cancellationToken)
         {
@@ -34,7 +34,7 @@ namespace CleanArchitecture.Application.Common.Behaviours
 
                 if (failures.Count != 0)
                 {
-                    return Response.Failure<TResponse>(ValidationErrors.FluentValidationErrors(failures.ToDictionary()),
+                    return Result.Failure<TResponse>(ValidationErrors.FluentValidationErrors(failures.ToDictionary()),
                                                        $"at {request.GetType().AssemblyQualifiedName}");
                 }
             }
