@@ -8,7 +8,7 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
     public class ProductSet : EntitySet<Product>, IProductSet
     {
         #region Constructor
-        public ProductSet(ApplicationDbContext dbContext) : base(dbContext)
+        public ProductSet(IDbContext dbContext) : base(dbContext)
         {
         }
         #endregion
@@ -20,6 +20,7 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
             //                             .Include(p => p.ProductItems)
             //                             .SelectMany(p => p.ProductItems)
             //                             .FirstOrDefaultAsync(pi => pi.Id == productItemId)
+
             return await Context.Set<ProductItem>().AsTracking().FirstOrDefaultAsync(pi => pi.Id == productItemId)
                           ?? throw new NotFoundException(nameof(productItemId), productItemId);
         }

@@ -12,7 +12,8 @@ using System.Reflection;
 
 namespace CleanArchitecture.Persistence.EF
 {
-    public sealed class ApplicationDbContext : IdentityUserContext<ApplicationUser>, IApplicationDbContext
+
+    public sealed class ApplicationDbContext : IdentityUserContext<ApplicationUser>, IApplicationDbContext, IDbContext
     {
         #region Properties
         private ICurrentUser CurrentUserService { get; }
@@ -29,6 +30,11 @@ namespace CleanArchitecture.Persistence.EF
             ServiceProvider = serviceProvider;
         }
         #endregion
+
+        DbSet<TEntity> IDbContext.Set<TEntity>()
+        {
+            return base.Set<TEntity>();
+        }
 
         #region Entities Sets 
 
@@ -48,7 +54,7 @@ namespace CleanArchitecture.Persistence.EF
         #endregion
 
         #region Save Changes
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             return await base.SaveChangesAsync(cancellationToken);
         }

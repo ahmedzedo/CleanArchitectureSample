@@ -17,10 +17,12 @@ namespace CleanArchitecture.WebAPI.Configuration
 
         public void Install(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<IApplicationDbContext, ApplicationDbContext>((sp, options) =>
+            services.AddDbContext<ApplicationDbContext>((sp, options) =>
                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName))
                .AddInterceptors(sp.GetServices<ISaveChangesInterceptor>()));
+            //services.AddScoped<IDbContext>(s => s.GetRequiredService<ApplicationDbContext>());
+            //services.AddScoped<IApplicationDbContext>(s => s.GetRequiredService<ApplicationDbContext>());
             services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
             services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
             services.RegisterAllChildsDynamic(ServiceLifetime.Transient, nameof(Application), nameof(Persistence.EF), typeof(IEntitySet<>));

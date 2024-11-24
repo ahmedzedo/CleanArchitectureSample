@@ -3,7 +3,7 @@ using CleanArchitecture.Domain.Products.Entites;
 
 namespace CleanArchitecture.Domain.Carts.Entities
 {
-    public class CartItem : AuditableEntity, IAggregateRoot
+    public class CartItem : AuditableEntity
     {
 
         #region Consructor

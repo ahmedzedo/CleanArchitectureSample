@@ -8,7 +8,7 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
     public class CartSet : EntitySet<Cart>, ICartSet
     {
         #region Constructor
-        public CartSet(ApplicationDbContext DbContext) : base(DbContext)
+        public CartSet(IDbContext DbContext) : base(DbContext)
         {
 
         }

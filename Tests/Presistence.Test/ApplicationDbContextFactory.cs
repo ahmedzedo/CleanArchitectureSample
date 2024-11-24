@@ -25,9 +25,11 @@ namespace Presistence.Test
             _useRealDatabase = _configuration.GetValue<bool>("UseRealDatabase");
             var services = new ServiceCollection();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssembly(nameof(Application))));
-            services.AddDbContext<IApplicationDbContext, ApplicationDbContext>((sp, options) =>
+            services.AddDbContext<ApplicationDbContext>((sp, options) =>
                CreateDbContext(options)
               .AddInterceptors(sp.GetServices<ISaveChangesInterceptor>()));
+            services.AddScoped<IApplicationDbContext>(s => s.GetRequiredService<ApplicationDbContext>());
+            services.AddScoped<IDbContext>(s => s.GetRequiredService<ApplicationDbContext>());
             services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
             services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
             services.RegisterAllChildsDynamic(ServiceLifetime.Transient, nameof(Application), nameof(CleanArchitecture.Persistence.EF), typeof(IEntitySet<>));

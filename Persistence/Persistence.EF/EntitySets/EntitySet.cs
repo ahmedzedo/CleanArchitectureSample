@@ -16,13 +16,13 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
         #region Properties
 
         protected internal DbSet<T> DbSet { get; set; }
-        protected internal ApplicationDbContext Context { get; set; }
+        protected internal IDbContext Context { get; private set; }
         protected internal IQueryable<T> EntityQuery { get; set; }
 
         #endregion
 
         #region Constructors
-        public EntitySet(ApplicationDbContext dbContext)
+        public EntitySet(IDbContext dbContext)
         {
             Context = dbContext;
             DbSet = Context.Set<T>();
@@ -178,7 +178,7 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
         /// </returns>
         public async Task<T?> GetByIdAsync(object id, CancellationToken cancellationToken = default)
         {
-            return await DbSet.FindAsync(id, cancellationToken);
+            return await DbSet.FindAsync([id], cancellationToken);
         }
 
         /// <summary>
