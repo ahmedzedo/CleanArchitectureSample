@@ -46,8 +46,8 @@ namespace CleanArchitecture.Application.Common.Messaging
     #endregion
 
     #region Class AppRequestHandler
-    public abstract class AppRequestHandler<TRequest, TResponse> : BaseRequestHandler<TRequest, IResult<TResponse>>
-           where TRequest : IBaseRequest<IResult<TResponse>>
+    public abstract class AppRequestHandler<TRequest, TResponse> : BaseRequestHandler<TRequest, IResult<TResponse>>, IAppRequestHandler<TRequest, TResponse>
+           where TRequest : IAppRequest<TResponse>
     {
         #region Dependencies
         protected IApplicationDbContext DbContext { get; }
@@ -137,8 +137,8 @@ namespace CleanArchitecture.Application.Common.Messaging
     #endregion
 
     #region Class BaseCommandHandler
-    public abstract class BaseCommandHandler<TRequest, TResponse> : AppRequestHandler<TRequest, TResponse>
-    where TRequest : BaseCommand<TResponse>
+    public abstract class BaseCommandHandler<TRequest, TResponse> : AppRequestHandler<TRequest, TResponse>, ICommandHandler<TRequest, TResponse>
+    where TRequest : IBaseCommand<TResponse>
     {
         protected BaseCommandHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext)
           : base(serviceProvider, dbContext)
@@ -150,8 +150,8 @@ namespace CleanArchitecture.Application.Common.Messaging
     #endregion
 
     #region Class BaseQueryHandler
-    public abstract class BaseQueryHandler<TRequest, TResponse> : AppRequestHandler<TRequest, TResponse>
-    where TRequest : BaseQuery<TResponse>
+    public abstract class BaseQueryHandler<TRequest, TResponse> : AppRequestHandler<TRequest, TResponse>, IQueryHandler<TRequest, TResponse>
+    where TRequest : IBaseQuery<TResponse>
     {
         protected BaseQueryHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext)
           : base(serviceProvider, dbContext)

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using System.Windows.Input;
 
 namespace CleanArchitecture.Application.Common.Messaging
 {
@@ -7,4 +8,16 @@ namespace CleanArchitecture.Application.Common.Messaging
     {
     }
 
+    public interface IAppRequestHandler<TRequest, TResponse> : IBaseRequestHandler<TRequest, IResult<TResponse>>
+        where TRequest : IAppRequest<TResponse>
+    {
+    }
+    public interface ICommandHandler<TRequest, TResponse> : IAppRequestHandler<TRequest, TResponse>
+       where TRequest : IBaseCommand<TResponse>
+    {
+    }
+    public interface IQueryHandler<TRequest, TResponse> : IAppRequestHandler<TRequest, TResponse>
+     where TRequest : IBaseQuery<TResponse>
+    {
+    }
 }
