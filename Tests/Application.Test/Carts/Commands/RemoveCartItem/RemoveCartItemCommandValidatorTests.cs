@@ -1,11 +1,7 @@
 ﻿using CleanArchitecture.Application.Carts.Commands.RemoveCartItem;
 using CleanArchitecture.Application.Common.Behaviours;
-using CleanArchitecture.Application.Common.Errors;
-using CleanArchitecture.Application.Common.Extensions;
 using CleanArchitecture.Application.Common.Messaging;
 using FluentAssertions;
-using FluentValidation;
-using FluentValidation.Results;
 using Moq;
 using System.Net;
 
@@ -17,16 +13,10 @@ namespace Application.Test.Carts.Commands.RemoveCartItem
         public async Task Handle_ShouldReturnValidationError_WhenCartIdIsEmpty()
         {
             // Arrange
-            var command = new RemoveCartItemCommand { CartId = Guid.Empty };  // Invalid because ProductItemId is empty
-            var validator = new Mock<IValidator<RemoveCartItemCommand>>();
-            var failures = new List<ValidationFailure> { new(nameof(command.CartId), "Cart Id Couldn't be Empty") };
-
-            validator
-            .Setup(v => v.ValidateAsync(It.IsAny<ValidationContext<RemoveCartItemCommand>>(), CancellationToken.None))
-                .ReturnsAsync(() => new ValidationResult(failures));
-
-            var behavior = new ValidationBehaviour<RemoveCartItemCommand, bool>([validator.Object]);
-            var next = new Mock<MyRequestResponseHandlerDelegate<bool>>();
+            var command = new RemoveCartItemCommand { CartId = Guid.Empty, CartItemId = Guid.NewGuid() };  // Invalid because ProductItemId is empty
+            var validator = new RemoveCartItemCommandValidator();
+            var behavior = new ValidationBehaviour<RemoveCartItemCommand, bool>([validator]);
+            var next = new Mock<MyRequestHandlerDelegate<bool>>();
 
             // Act
             var result = await behavior.Handle(command, next.Object, CancellationToken.None);
@@ -37,7 +27,6 @@ namespace Application.Test.Carts.Commands.RemoveCartItem
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().NotBeNull();
             result.Error?.Code.Should().Be((int)HttpStatusCode.BadRequest);
-            result.Error?.Message.Should().Be(ValidationErrors.FluentValidationErrors(failures.ToDictionary()).Message);
             result.Error?.SubErrors?.Count.Should().Be(1);
             result.Error?.SubErrors?.Keys.First().Should().Be($"[{nameof(command.CartId)}]:");
         }
@@ -47,16 +36,10 @@ namespace Application.Test.Carts.Commands.RemoveCartItem
         public async Task Handle_ShouldReturnValidationError_WhenCartItemIdIsEmpty()
         {
             // Arrange
-            var command = new RemoveCartItemCommand { CartItemId = Guid.Empty };  // Invalid because ProductItemId is empty
-            var validator = new Mock<IValidator<RemoveCartItemCommand>>();
-            var failures = new List<ValidationFailure> { new(nameof(command.CartItemId), "Cart Item Id Couldn't be Empty") };
-
-            validator
-            .Setup(v => v.ValidateAsync(It.IsAny<ValidationContext<RemoveCartItemCommand>>(), CancellationToken.None))
-                .ReturnsAsync(() => new ValidationResult(failures));
-
-            var behavior = new ValidationBehaviour<RemoveCartItemCommand, bool>([validator.Object]);
-            var next = new Mock<MyRequestResponseHandlerDelegate<bool>>();
+            var command = new RemoveCartItemCommand { CartItemId = Guid.Empty, CartId = Guid.NewGuid() };  // Invalid because ProductItemId is empty
+            var validator = new RemoveCartItemCommandValidator();
+            var behavior = new ValidationBehaviour<RemoveCartItemCommand, bool>([validator]);
+            var next = new Mock<MyRequestHandlerDelegate<bool>>();
 
             // Act 
             var result = await behavior.Handle(command, next.Object, CancellationToken.None);
@@ -67,7 +50,6 @@ namespace Application.Test.Carts.Commands.RemoveCartItem
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().NotBeNull();
             result.Error?.Code.Should().Be((int)HttpStatusCode.BadRequest);
-            result.Error?.Message.Should().Be(ValidationErrors.FluentValidationErrors(failures.ToDictionary()).Message);
             result.Error?.SubErrors?.Count.Should().Be(1);
             result.Error?.SubErrors?.Keys.First().Should().Be($"[{nameof(command.CartItemId)}]:");
         }

@@ -22,6 +22,16 @@
         }
         #endregion
 
+        public static List<T> ToList<T>(this IEnumerable<T> enumrable, Func<T, bool> filter)
+        {
+            if (filter != null)
+            {
+                enumrable = enumrable.Where(filter);
+            }
+
+            return enumrable.ToList();
+        }
+
     }
 
 }

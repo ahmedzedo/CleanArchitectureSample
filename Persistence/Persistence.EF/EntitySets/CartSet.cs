@@ -35,6 +35,15 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
                                    .ToListAsync(cancellationToken);
 
         }
+        public async Task<List<CartItem>> GetCartItemsOfProductItem(Guid productItemId,
+                                                                 CancellationToken cancellationToken = default)
+        {
+            return await Context.Set<CartItem>()
+                                .Where(ci => ci.ProductItem.Id == productItemId)
+                                .ToListAsync(cancellationToken: cancellationToken);
+
+
+        }
 
         public async Task<int> DeleteCartItemsAsync(List<CartItem> cartItems, CancellationToken cancellationToken = default)
         {

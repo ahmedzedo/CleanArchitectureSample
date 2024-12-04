@@ -8,7 +8,7 @@ using System.Reflection;
 namespace CleanArchitecture.Application.Common.Behaviours
 {
     public class AuthorizationBehaviour<TRequest, TResponse> : IRequestResponsePipeline<TRequest, TResponse>
-        where TRequest : IBaseRequest<IResult<TResponse>>
+        where TRequest : IAppRequest<TResponse>
     {
         #region Dependencies
         private IIdentityService IdentityService { get; }
@@ -22,7 +22,8 @@ namespace CleanArchitecture.Application.Common.Behaviours
         #endregion
 
         #region Handle
-        public async Task<IResult<TResponse>> Handle(TRequest request, MyRequestResponseHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+
+        public async Task<IResult<TResponse>> Handle(TRequest request, MyRequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             var authorizeAttributes = request.GetType().GetCustomAttributes<AuthorizeAttribute>();
 

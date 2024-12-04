@@ -15,7 +15,6 @@ namespace CleanArchitecture.Domain.Test.Entities.Products
             //Assert
             Assert.Throws<ArgumentException>(ctor);
         }
-
         [Fact]
         public void Constructor_nameEnIsEmpty_ThrowArgumentException()
         {
@@ -34,7 +33,6 @@ namespace CleanArchitecture.Domain.Test.Entities.Products
             //Assert
             Assert.Throws<ArgumentException>(ctor);
         }
-
         [Fact]
         public void Constructor_breifArIsEmpty_ThrowArgumentException()
         {

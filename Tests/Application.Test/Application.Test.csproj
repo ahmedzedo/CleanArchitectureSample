@@ -32,4 +32,8 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Carts\Commands\EventHandlerTest\" />
+  </ItemGroup>
+
 </Project>

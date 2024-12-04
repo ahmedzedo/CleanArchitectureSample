@@ -40,7 +40,9 @@ namespace CleanArchitecture.Application.Carts.Queries.GetCart
             var cart = await CartService.GetUserCartAsync(Guid.Parse(request.UserId!), cancellationToken);
             var result = Mapper.Map<CartDto>(cart);
 
-            return result != null ? Result.Success(result, 1) : Result.Failure<CartDto>(CartsErrors.CartEmptyError);
+            return result != null
+                ? Result.Success(result, 1)
+                : Result.Failure<CartDto>(CartsErrors.CartEmptyError);
         }
         #endregion
     }

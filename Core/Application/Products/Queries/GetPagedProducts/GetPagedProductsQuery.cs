@@ -46,7 +46,10 @@ namespace CleanArchitecture.Application.Products.Queries.GetPagedProducts
             }
             (IReadOnlyCollection<GetPagedProductDto> Items, int totalCount) = await GetPagedProductsWithFilter(request);
 
-            return Result.Success(Items, totalCount);
+
+            return Items != null
+               ? Result.Success(Items, totalCount)
+               : Result.Failure<IReadOnlyCollection<GetPagedProductDto>>(Error.InternalServerError);
         }
 
         private async Task<(IReadOnlyCollection<GetPagedProductDto> Items, int totalCount)> GetPagedProductsWithFilter(GetPagedProductsQuery request)

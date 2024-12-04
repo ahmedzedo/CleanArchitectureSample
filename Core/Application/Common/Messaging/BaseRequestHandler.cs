@@ -55,7 +55,8 @@ namespace CleanArchitecture.Application.Common.Messaging
         #endregion
 
         #region Constructor
-        protected AppRequestHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext)
+        protected AppRequestHandler(IServiceProvider serviceProvider,
+                                    IApplicationDbContext dbContext)
            : base(serviceProvider)
         {
             DbContext = dbContext;
@@ -66,6 +67,7 @@ namespace CleanArchitecture.Application.Common.Messaging
         public override async Task<IResult<TResponse>> Handle(TRequest request, CancellationToken cancellationToken)
         {
             SetUserInfo(request);
+
             return await GetResponse(request, cancellationToken);
         }
         public override abstract Task<IResult<TResponse>> HandleRequest(TRequest request, CancellationToken cancellationToken);
@@ -80,26 +82,24 @@ namespace CleanArchitecture.Application.Common.Messaging
 
             var response = await ExcuteRequestPiplineBehaviours(request, cancellationToken);
 
-            await ExecutePostProcessorBehaviours(request, cancellationToken);
+            await ExecutePostProcessorBehaviours(request, response, cancellationToken);
 
             return response;
         }
-
-        private async Task ExecutePostProcessorBehaviours(TRequest request, CancellationToken cancellationToken)
+        private async Task ExecutePreProcessorBehaviours(TRequest request, CancellationToken cancellationToken)
         {
-            var postProcessors = ServiceProvider.GetInstances<IRequestPostProcessor<TRequest>>();
+            var preProcessors = ServiceProvider.GetInstances<IRequestPreProcessor<TRequest>>();
 
-            if (postProcessors.Any())
+            if (preProcessors.Any())
             {
-                foreach (var postProcessor in postProcessors)
+                foreach (var preprocessor in preProcessors)
                 {
-                    await postProcessor.Handle(request, cancellationToken);
+                    await preprocessor.Process(request, cancellationToken);
                 }
             }
         }
 
-        private async Task<IResult<TResponse>> ExcuteRequestPiplineBehaviours(TRequest request,
-                                                                                CancellationToken cancellationToken)
+        private async Task<IResult<TResponse>> ExcuteRequestPiplineBehaviours(TRequest request, CancellationToken cancellationToken)
         {
             IResult<TResponse> response;
             var requestPipelines = ServiceProvider.GetInstances<IRequestResponsePipeline<TRequest, TResponse>>();
@@ -109,7 +109,7 @@ namespace CleanArchitecture.Application.Common.Messaging
                 Task<IResult<TResponse>> Handler() => HandleRequest(request, cancellationToken);
                 response = await requestPipelines
                         .Reverse()
-                        .Aggregate((MyRequestResponseHandlerDelegate<TResponse>)Handler, (next, pipeline) => () => pipeline.Handle(request, next, cancellationToken))();
+                        .Aggregate((MyRequestHandlerDelegate<TResponse>)Handler, (next, pipeline) => () => pipeline.Handle(request, next, cancellationToken))();
             }
             else
             {
@@ -119,20 +119,20 @@ namespace CleanArchitecture.Application.Common.Messaging
             return response;
         }
 
-        private async Task ExecutePreProcessorBehaviours(TRequest request, CancellationToken cancellationToken)
+        private async Task ExecutePostProcessorBehaviours(TRequest request, IResult<TResponse> result, CancellationToken cancellationToken)
         {
-            var preProcessors = ServiceProvider.GetInstances<IRequestPreProcessor<TRequest>>();
+            var postProcessors = ServiceProvider.GetInstances<IRequestPostProcessor<TRequest, TResponse>>();
 
-            if (preProcessors.Any())
+            if (postProcessors.Any())
             {
-                foreach (var preprocessor in preProcessors)
+                foreach (var postProcessor in postProcessors)
                 {
-                    await preprocessor.Handle(request, cancellationToken);
+                    await postProcessor.Process(request, result, cancellationToken);
                 }
             }
         }
-        #endregion
 
+        #endregion
     }
     #endregion
 

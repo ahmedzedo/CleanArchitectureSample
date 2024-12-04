@@ -37,9 +37,11 @@ namespace CleanArchitecture.Application.Categories.Queries.GetAllCategories
             {
                 return Result.Failure<IReadOnlyCollection<Category>>(Error.NullArgument);
             }
-            var Items = await DbContext.Categories.ToListAsync(cancellationToken);
+            IReadOnlyCollection<Category> Items = await DbContext.Categories.ToListAsync(cancellationToken);
 
-            return Result.Success<IReadOnlyCollection<Category>>(Items.AsReadOnly(), Items.Count);
+            return Items != null
+                ? Result.Success(Items, Items.Count)
+                : Result.Failure<IReadOnlyCollection<Category>>(Error.InternalServerError);
         }
         #endregion
     }

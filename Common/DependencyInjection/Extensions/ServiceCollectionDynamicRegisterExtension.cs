@@ -38,7 +38,7 @@ namespace Common.DependencyInjection.Extensions
 
                 if (classes != null && classes.Count != 0)
                 {
-                    services.RegisterTypes(serviceLifetime, interfaces, classes);
+                    services.RegisterTypesBasedOnDefaultNaming(serviceLifetime, interfaces, classes);
                 }
             }
 
@@ -63,12 +63,7 @@ namespace Common.DependencyInjection.Extensions
 
             if (interfaces != null)
             {
-                var classes = GetAssemblyTypeChilds(ImplementationamespaceName, DependecyType.Class, baseType);
-
-                if (classes != null && classes.Count != 0)
-                {
-                    services.RegisterTypes(serviceLifetime, interfaces, classes);
-                }
+                services = interfaces!.Aggregate(services, (serv, i) => RegisterAllForSingleBaseDynamic(serv, serviceLifetime, ImplementationamespaceName, i));
             }
 
             return services;
@@ -80,30 +75,26 @@ namespace Common.DependencyInjection.Extensions
         {
             return services.RegisterAllChildsDynamic(serviceLifetime, nameSpace, nameSpace, baseType);
         }
-        public static IServiceCollection RegisterAllForBaseDynamic(this IServiceCollection services,
-                                                                   ServiceLifetime serviceLifetime,
-                                                                   string abstractNamespaceName,
-                                                                   string ImplementationamespaceName,
-                                                                   Type baseType)
-        {
-            var interfaces = GetAssemblyTypeChilds(abstractNamespaceName, DependecyType.Interface, baseType);
 
-            if (interfaces != null)
+        public static IServiceCollection RegisterAllForSingleBaseDynamic(this IServiceCollection services,
+                                                                  ServiceLifetime serviceLifetime,
+                                                                  string ImplementationamespaceName,
+                                                                  Type baseType)
+        {
+            var classes = GetAssemblyTypeChilds(ImplementationamespaceName, DependecyType.Class, baseType);
+
+            if (classes != null && classes.Count != 0)
             {
-                services = interfaces!.Aggregate(services, (serv, i) => RegisterTypesCollection(serv, serviceLifetime, ImplementationamespaceName, i));
+                classes.ForEach(c => services.AddToServices(serviceLifetime, baseType, c));
             }
 
             return services;
         }
 
-        public static IServiceCollection RegisterAllForBaseDynamic(this IServiceCollection services,
-                                                                  ServiceLifetime serviceLifetime,
-                                                                  string nameSpace,
-                                                                  Type baseType)
-        {
-            return services.RegisterAllForBaseDynamic(serviceLifetime, nameSpace, nameSpace, baseType);
-        }
-
+        public static IEnumerable<T> GetInstances<T>(this IServiceProvider serviceProvider) => (IEnumerable<T>)serviceProvider.GetServices(typeof(T)) ?? throw new UnregisteredServiceException(nameof(T));
+        public static T GetInstance<T>(this IServiceProvider serviceProvider) => (T?)serviceProvider.GetService(typeof(T)) ?? throw new UnregisteredServiceException(nameof(T));
+        public static Assembly GetAssembly(this AppDomain appDomain, string assemblyName) => Array.Find(appDomain.GetAssemblies(), a => a.FullName != null && a.FullName.Contains(assemblyName))
+                                        ?? throw new NotFoundAssmblyException(assemblyName);
         #endregion
 
         #region Helper Methods
@@ -112,29 +103,21 @@ namespace Common.DependencyInjection.Extensions
                                                          string filterName,
                                                          FilterNameType filterNameType)
         {
-            return Array.Find(AppDomain.CurrentDomain.GetAssemblies(),
-                              a => a.FullName != null && a.FullName.Contains(namespaceName))?
-                        .GetTypes()?
-                        .AsEnumerable()
-                        .FilterByDependecyType(dependecyType)
-                        .FilterByName(filterName, filterNameType)
-                        .ToList();
+            return GetAssembly(AppDomain.CurrentDomain, namespaceName)?.GetTypes()?.AsEnumerable()
+                                                                       .FilterByDependecyType(dependecyType)
+                                                                       .FilterByName(filterName, filterNameType)
+                                                                       .ToList();
         }
         private static List<Type>? GetAssemblyTypeChilds(string namespaceName,
                                                          DependecyType dependecyType,
                                                          Type type)
         {
-            return Array.Find(AppDomain.CurrentDomain.GetAssemblies(),
-                              a => a.FullName != null && a.FullName.Contains(namespaceName))?
-                        .GetTypes()?
-                        .AsEnumerable()
-                        .FilterChildsByDependecyType(dependecyType, type)
-                        .ToList();
+            return GetAssembly(AppDomain.CurrentDomain, namespaceName)?.GetTypes()?.AsEnumerable()
+                                                                       .FilterChildsByDependecyType(dependecyType, type)
+                                                                       .ToList();
         }
 
-
-
-        private static IServiceCollection RegisterTypes(this IServiceCollection services,
+        private static IServiceCollection RegisterTypesBasedOnDefaultNaming(this IServiceCollection services,
                                                         ServiceLifetime serviceLifetime,
                                                         List<Type> interfaces,
                                                         List<Type> classes)
@@ -153,20 +136,6 @@ namespace Common.DependencyInjection.Extensions
             return services;
         }
 
-        private static IServiceCollection RegisterTypesCollection(this IServiceCollection services,
-                                                                 ServiceLifetime serviceLifetime,
-                                                                 string ImplementationamespaceName,
-                                                                 Type interfceType)
-        {
-            var classes = GetAssemblyTypeChilds(ImplementationamespaceName, DependecyType.Class, interfceType);
-
-            if (classes != null && classes.Count != 0)
-            {
-                classes.ForEach(c => services.AddToServices(serviceLifetime, interfceType, c));
-            }
-
-            return services;
-        }
         private static IServiceCollection AddToServices(this IServiceCollection services,
                                                         ServiceLifetime serviceLifetime,
                                                         Type interfaceType,
@@ -218,26 +187,23 @@ namespace Common.DependencyInjection.Extensions
 
         private static IEnumerable<Type> FilterChildsByDependecyType(this IEnumerable<Type> types,
                                                                      DependecyType dependecyType,
-                                                                     Type type)
+                                                                     Type baseType)
         {
-            var childs = types.Where(x => type.IsAssignableFrom(x)
-              || (x.BaseType != null && x.BaseType.IsGenericType && type.IsAssignableFrom(x.BaseType.GetGenericTypeDefinition()))
-              || Array.Exists(x.GetInterfaces(), z => z.IsGenericType && type.IsAssignableFrom(z.GetGenericTypeDefinition())))
-                                      .Select(x => x);
+            var childs = types.Where(t => baseType.IsAssignableFrom(t)
+                                       || Array.Exists(t.GetInterfaces(), i => i.IsGenericType && i.GetGenericTypeDefinition() == baseType));
 
 
             return dependecyType switch
             {
-                DependecyType.Interface => childs.Where(x => x.IsInterface).ToList(),
-                DependecyType.Class => childs.Where(x => x.IsClass && !x.IsAbstract).ToList(),
+                DependecyType.Interface => childs.Where(t => t.IsInterface && t != baseType).ToList(),
+                DependecyType.Class => childs.Where(t => t.IsClass && !t.IsAbstract).ToList(),
                 _ => childs
             };
+
         }
+
         #endregion
 
-        public static IEnumerable<T> GetInstances<T>(this IServiceProvider serviceProvider) => (IEnumerable<T>)serviceProvider.GetServices(typeof(T)) ?? throw new UnregisteredServiceException(nameof(T));
-        public static T GetInstance<T>(this IServiceProvider serviceProvider) => (T?)serviceProvider.GetService(typeof(T)) ?? throw new UnregisteredServiceException(nameof(T));
-        public static Assembly GetAssembly(this AppDomain appDomain, string assemblyName) => Array.Find(appDomain.GetAssemblies(), a => a.FullName != null && a.FullName.Contains(assemblyName))
-                                        ?? throw new NotFoundAssmblyException(assemblyName);
+
     }
 }

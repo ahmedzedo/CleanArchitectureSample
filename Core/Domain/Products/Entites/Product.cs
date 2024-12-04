@@ -1,11 +1,15 @@
 ﻿using CleanArchitecture.Domain.Common.Entities;
+using CleanArchitecture.Domain.Products.Events;
+using Common.Linq;
 
 namespace CleanArchitecture.Domain.Products.Entites
 {
     public class Product : AuditableEntity, IAggregateRoot
     {
         #region Constructor
-        public Product(string nameAr, string nameEn, string nameFr)
+        public Product(string nameAr,
+                       string nameEn,
+                       string nameFr)
         {
             NameEn = nameEn;
             NameAr = nameAr;
@@ -34,20 +38,10 @@ namespace CleanArchitecture.Domain.Products.Entites
 
         public void Update(string nameAr, string nameEn, string nameFr)
         {
-            if (string.IsNullOrEmpty(nameAr))
-            {
-                throw new ArgumentException($"'{nameof(nameAr)}' cannot be null or empty.", nameof(nameAr));
-            }
+            ArgumentException.ThrowIfNullOrEmpty(nameAr);
+            ArgumentException.ThrowIfNullOrEmpty(nameEn);
+            ArgumentException.ThrowIfNullOrEmpty(nameFr);
 
-            if (string.IsNullOrEmpty(nameEn))
-            {
-                throw new ArgumentException($"'{nameof(nameEn)}' cannot be null or empty.", nameof(nameEn));
-            }
-
-            if (string.IsNullOrEmpty(nameFr))
-            {
-                throw new ArgumentException($"'{nameof(nameFr)}' cannot be null or empty.", nameof(nameFr));
-            }
             NameEn = nameEn;
             NameAr = nameAr;
             NameFr = nameFr;
@@ -79,7 +73,7 @@ namespace CleanArchitecture.Domain.Products.Entites
         #endregion
 
         #region Manage Product Items List
-        public void AddProductItems(ProductItem productItem)
+        public void AddProductItem(ProductItem productItem)
         {
             productItems.Add(productItem);
         }
@@ -105,9 +99,22 @@ namespace CleanArchitecture.Domain.Products.Entites
 
             });
         }
+        public void RemoveProductItem(ProductItem productItem)
+        {
+            productItems.Remove(productItem);
+            AddDomainEvent(new ProductItemDeletedEvent(productItem));
+
+        }
         public void RemoveProductItems(List<ProductItem> productDetailsLst)
         {
+            var itemsToRemove = productItems.ToList(p => productDetailsLst.Contains(p));
             productItems.RemoveAll(p => productDetailsLst.Contains(p));
+
+            if (itemsToRemove.Count > 0)
+            {
+                AddDomainEvent(new ProductItemsDeletedEvent(itemsToRemove));
+            }
+
         }
         #endregion
 

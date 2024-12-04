@@ -11,7 +11,7 @@ using static Common.Linq.IQueryableExtension;
 
 namespace CleanArchitecture.Persistence.EF.EntitySets
 {
-    public class EntitySet<T> : IEntitySet<T> where T : Entity, IAggregateRoot
+    public abstract class EntitySet<T> : IEntitySet<T> where T : Entity, IAggregateRoot
     {
         #region Properties
 
@@ -22,7 +22,7 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
         #endregion
 
         #region Constructors
-        public EntitySet(IDbContext dbContext)
+        protected EntitySet(IDbContext dbContext)
         {
             Context = dbContext;
             DbSet = Context.Set<T>();

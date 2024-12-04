@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace CleanArchitecture.Application.Common.Behaviours
 {
     public class PerformanceBehaviour<TRequest, TResponse> : IRequestResponsePipeline<TRequest, TResponse>
-        where TRequest : IBaseRequest<IResult<TResponse>>
+        where TRequest : IAppRequest<TResponse>
     {
 
         #region Dependencies
@@ -23,7 +23,7 @@ namespace CleanArchitecture.Application.Common.Behaviours
 
         #region Handle
         public async Task<IResult<TResponse>> Handle(TRequest request,
-                                                 MyRequestResponseHandlerDelegate<TResponse> next,
+                                                 MyRequestHandlerDelegate<TResponse> next,
                                                  CancellationToken cancellationToken)
         {
             Timer.Start();

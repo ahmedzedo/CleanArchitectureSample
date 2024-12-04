@@ -33,7 +33,7 @@ public class CachingBehaviour<TRequest, TResponse> : IRequestResponsePipeline<TR
 
     #region Handle
     public async Task<IResult<TResponse>> Handle(TRequest request,
-                                                  MyRequestResponseHandlerDelegate<TResponse> next,
+                                                  MyRequestHandlerDelegate<TResponse> next,
                                                   CancellationToken cancellationToken)
     {
         _logger.LogInformation("Caching Behaviour started");
@@ -52,7 +52,7 @@ public class CachingBehaviour<TRequest, TResponse> : IRequestResponsePipeline<TR
     }
 
     private async Task<IResult<TResponse>> GetOrCreateCache(TRequest request,
-                                                             MyRequestResponseHandlerDelegate<TResponse> next,
+                                                             MyRequestHandlerDelegate<TResponse> next,
                                                              CacheAttribute cacheAttribute,
                                                              CancellationToken cancellationToken)
     {
@@ -90,5 +90,7 @@ public class CachingBehaviour<TRequest, TResponse> : IRequestResponsePipeline<TR
     private static string FormatCacheKey(string keyPrefix,
                                       string requestName,
                                       string cahcheKeyIdentifire) => $"{keyPrefix}:{requestName}:{cahcheKeyIdentifire}";
+
+
     #endregion
 }

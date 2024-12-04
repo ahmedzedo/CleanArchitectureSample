@@ -50,7 +50,9 @@ namespace CleanArchitecture.Application.Products.Commands.ChangeProductItemAmoun
             DbContext.Products.Update(product);
             int affectedRows = await DbContext.SaveChangesAsync(cancellationToken);
 
-            return affectedRows > 0 ? Result.Success(affectedRows) : Result.Failure(Error.InternalServerError);
+            return affectedRows > 0
+                ? Result.Success(affectedRows)
+                : Result.Failure(Error.InternalServerError);
 
         }
         #endregion

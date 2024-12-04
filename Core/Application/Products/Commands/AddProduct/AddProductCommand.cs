@@ -51,7 +51,9 @@ namespace CleanArchitecture.Application.Products.Commands.AddProduct
             await DbContext.Products.AddAsync(product, cancellationToken);
             int affectedRows = await DbContext.SaveChangesAsync(cancellationToken);
 
-            return affectedRows > 0 ? Result.Success(product.Id, affectedRows) : Result.Failure<Guid>(Error.InternalServerError);
+            return affectedRows > 0
+                ? Result.Success(product.Id, affectedRows)
+                : Result.Failure<Guid>(Error.InternalServerError);
         }
 
 

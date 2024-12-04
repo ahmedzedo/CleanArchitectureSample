@@ -49,7 +49,9 @@ namespace CleanArchitecture.Application.Carts.Commands.AddItemToCart
             await CartService.AddOrUpdateCartItemAsync(cart, request.ProductItemId, request.Count, cancellationToken);
             int affectedRows = await DbContext.SaveChangesAsync(cancellationToken);
 
-            return affectedRows > 0 ? Result.Success(cart.Id, affectedRows) : Result.Failure<Guid>(Error.InternalServerError);
+            return affectedRows > 0
+                ? Result.Success(cart.Id, affectedRows)
+                : Result.Failure<Guid>(Error.InternalServerError);
         }
 
         #endregion

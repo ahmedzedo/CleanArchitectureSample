@@ -64,7 +64,9 @@ namespace CleanArchitecture.Application.Carts.Commands.RemoveCartItem
             cart.RemoveCartItem(cart.CartItems.First());
             int affectedRows = await DbContext.SaveChangesAsync(cancellationToken);
 
-            return affectedRows > 0 ? Result.Success(affectedRows) : Result.Failure(Error.InternalServerError);
+            return affectedRows > 0
+                ? Result.Success(affectedRows)
+                : Result.Failure(Error.InternalServerError);
         }
 
 

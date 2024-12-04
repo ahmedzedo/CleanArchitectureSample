@@ -7,7 +7,7 @@ namespace CleanArchitecture.Application.Carts.Commands.UpdateCartItem
 
         public UpdateCartItemCommandValidator()
         {
-            RuleFor(i => i.Id)
+            RuleFor(i => i.CartItemId)
                 .NotEmpty();
             RuleFor(i => i.Count)
                 .NotEmpty()

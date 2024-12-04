@@ -148,7 +148,7 @@ namespace CleanArchitecture.Persistence.EF
                     {
                         var rand = new Random();
                         var productItem = new ProductItem(description: $"Product Item {j}", price: j * rand.Next(1, 10), amount: j * rand.Next(1, 10));
-                        product.AddProductItems(productItem);
+                        product.AddProductItem(productItem);
                     }
                     product.AddCategory(categories);
                     products.Add(product);

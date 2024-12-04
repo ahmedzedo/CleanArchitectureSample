@@ -8,8 +8,12 @@ namespace CleanArchitecture.Application.Carts.IEntitySets
     {
         ICartSet IncludeItemDetails();
 
-        Task<List<Cart>> GetCartsContainsProductItem(ProductItem productItem, CancellationToken cancellationToken = default);
+        Task<List<Cart>> GetCartsContainsProductItem(ProductItem productItem,
+                                                     CancellationToken cancellationToken = default);
+        Task<List<CartItem>> GetCartItemsOfProductItem(Guid productItemId,
+                                                       CancellationToken cancellationToken = default);
 
-        Task<int> DeleteCartItemsAsync(List<CartItem> cartItems, CancellationToken cancellationToken = default);
+        Task<int> DeleteCartItemsAsync(List<CartItem> cartItems,
+                                       CancellationToken cancellationToken = default);
     }
 }

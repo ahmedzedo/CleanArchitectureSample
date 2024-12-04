@@ -4,6 +4,7 @@ using CleanArchitecture.Application.Carts.Services;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Carts.Entities;
+using Common.Reflection;
 using FluentAssertions;
 using Moq;
 using System.Reflection;
@@ -42,9 +43,7 @@ namespace Application.Test.Carts.Commands.AddItemToCart
             var cartId = Guid.NewGuid();
             var cart = new Cart(Guid.NewGuid());
 
-            var idField = typeof(Cart).GetField("<Id>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
-            idField?.SetValue(cart, cartId);
-
+            cart.SetPropertyValue("Id", cartId, BindingFlags.Instance | BindingFlags.NonPublic);
 
             _cartServiceMock.Setup(service => service.GetUserCartAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
                             .ReturnsAsync(cart);
@@ -62,6 +61,8 @@ namespace Application.Test.Carts.Commands.AddItemToCart
             result.IsSuccess.Should().BeTrue();
             result.Data.Should().Be(cartId);
         }
+
+
 
         [Fact]
         public async Task HandleRequest_ShouldCreateNewCart_WhenCartDoesNotExist()

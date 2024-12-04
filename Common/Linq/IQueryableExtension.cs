@@ -100,5 +100,15 @@ namespace Common.Linq
             }
             return source;
         }
+
+        public static List<T> ToList<T>(this IQueryable<T> query, Expression<Func<T, bool>> filter)
+        {
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            return query.ToList();
+        }
     }
 }

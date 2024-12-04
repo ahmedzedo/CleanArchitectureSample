@@ -37,12 +37,14 @@ namespace CleanArchitecture.Domain.Products.Entites
 
         public void ChangePrice(decimal newPrice)
         {
-            if (newPrice > 0)
+            if (newPrice < 0)
             {
-                Price = newPrice;
-                AddDomainEvent(new ProductPriceChangedEvent(this));
+                throw new ArgumentException($"'{nameof(Price)}' cannot be less than zero.", nameof(newPrice));
             }
+            Price = newPrice;
+            AddDomainEvent(new ProductItemPriceChangedEvent(this));
         }
+
         public void Update(ProductItem productItem)
         {
             Description = productItem.Description;

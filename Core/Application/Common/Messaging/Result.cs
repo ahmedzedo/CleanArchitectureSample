@@ -45,6 +45,52 @@ namespace CleanArchitecture.Application.Common.Messaging
             return new Result<bool>(true, affectedRows, 200, "OK", true, default, default);
         }
 
+        #region Eval
+
+        /// <summary>
+        /// get result base on condition result 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="condition"></param>
+        /// <param name="successValue">data will retrived in Success</param>
+        /// <param name="count">count of result</param>
+        /// <param name="error"> error</param>
+        /// <returns>success result with success value when condition is true or faliure result with Error when condition is false</returns>
+        public static IResult<T> Eval<T>(Func<bool> condition, T successValue, int count, Error error)
+        {
+            return condition()
+                ? Success(successValue, count)
+                : Failure<T>(error);
+        }
+
+        /// <summary>
+        /// get result based on condition result 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="condition"></param>
+        /// <param name="successValue">data will retrived in Success</param>
+        /// <param name="count">count of result</param>
+        /// <returns>success result with success value when condition is true or faliure result with internal server Error when condition is false</returns>
+        public static IResult<T> Eval<T>(Func<bool> condition, T successValue, int count)
+        {
+            return condition()
+                ? Success(successValue, count)
+                : Failure<T>(Error.InternalServerError);
+        }
+
+        /// <summary>
+        /// get result based on condition result 
+        /// </summary>
+        /// <param name="condition"></param>
+        /// <param name="count">count of result</param>
+        /// <returns>success result with success value when condition is true or faliure result with internal server Error when condition is false</returns>
+        public static IResult<bool> Eval(int affectedCount)
+        {
+            return affectedCount > 0
+                ? Success(affectedCount)
+                : Failure(Error.InternalServerError);
+        }
+        #endregion
 
         #endregion
 

@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using System.Windows.Input;
 
 namespace CleanArchitecture.Application.Common.Messaging
 {

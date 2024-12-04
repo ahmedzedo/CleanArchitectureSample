@@ -14,9 +14,9 @@ namespace CleanArchitecture.WebAPI.Configuration
             services.AddValidatorsFromAssembly(AppDomain.CurrentDomain.GetAssembly(nameof(Application)));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssembly(nameof(Application)));
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssembly(nameof(Application))));
-            services.RegisterAllForBaseDynamic(ServiceLifetime.Transient, nameof(Application), typeof(IRequestResponsePipeline<,>));
-            services.RegisterAllForBaseDynamic(ServiceLifetime.Transient, nameof(Application), typeof(IRequestPreProcessor<>));
-            services.RegisterAllForBaseDynamic(ServiceLifetime.Transient, nameof(Application), typeof(IRequestPostProcessor<>));
+            services.RegisterAllForSingleBaseDynamic(ServiceLifetime.Transient, nameof(Application), typeof(IRequestResponsePipeline<,>));
+            services.RegisterAllForSingleBaseDynamic(ServiceLifetime.Transient, nameof(Application), typeof(IRequestPreProcessor<>));
+            services.RegisterAllForSingleBaseDynamic(ServiceLifetime.Transient, nameof(Application), typeof(IRequestPostProcessor<,>));
             services.RegisterAllChildsDynamic(ServiceLifetime.Scoped, nameof(Application), typeof(IService));
         }
     }

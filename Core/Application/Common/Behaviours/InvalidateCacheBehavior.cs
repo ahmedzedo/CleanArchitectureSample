@@ -7,7 +7,7 @@ using System.Reflection;
 namespace CleanArchitecture.Application.Common.Behaviours
 {
     public class InvalidateCacheBehavior<TRequest, TResponse> : IRequestResponsePipeline<TRequest, TResponse>
-        where TRequest : ICacheInvalidator
+        where TRequest : IAppRequest<TResponse>, ICacheInvalidator
     {
         #region Dependency
         private readonly ICrossCacheService _crossCacheService;
@@ -29,7 +29,7 @@ namespace CleanArchitecture.Application.Common.Behaviours
 
         #region Handle
         public async Task<IResult<TResponse>> Handle(TRequest request,
-                                                      MyRequestResponseHandlerDelegate<TResponse> next,
+                                                      MyRequestHandlerDelegate<TResponse> next,
                                                       CancellationToken cancellationToken)
         {
             _logger.LogInformation("Invalidate Caching Behaviour started");

@@ -74,6 +74,22 @@ namespace CleanArchitecture.Application.Carts.Services
                                         .FirstOrDefaultAsync(c => c.Id == cartId,
                                                              cancellationToken);
         }
+
+        public async Task<Cart?> GetCartByCartItemIdAsync(Guid cartItemId, CancellationToken cancellationToken)
+        {
+            return await DbContext.Carts.Include(c => c.CartItems.Where(ci => ci.Id == cartItemId))
+                                                        .FirstOrDefaultAsync(c => c.CartItems.Any(ci => ci.Id == cartItemId), cancellationToken);
+        }
+
+        public async Task<List<CartItem>> GetCartItemsOfProductItem(Guid productItemId, CancellationToken cancellationToken = default)
+        {
+            return await DbContext.Carts.GetCartItemsOfProductItem(productItemId, cancellationToken);
+        }
+
+        public async Task DeleteCartItems(List<CartItem> cartItems, CancellationToken cancellationToken = default)
+        {
+            await DbContext.Carts.DeleteCartItemsAsync(cartItems, cancellationToken);
+        }
         #endregion
     }
 }

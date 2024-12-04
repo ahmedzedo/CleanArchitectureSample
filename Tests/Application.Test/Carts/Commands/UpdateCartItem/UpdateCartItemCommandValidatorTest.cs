@@ -1,45 +1,22 @@
-﻿using CleanArchitecture.Application.Carts.Commands.AddItemToCart;
+﻿using CleanArchitecture.Application.Carts.Commands.UpdateCartItem;
 using CleanArchitecture.Application.Common.Behaviours;
 using CleanArchitecture.Application.Common.Messaging;
 using FluentAssertions;
 using Moq;
 using System.Net;
 
-namespace Application.Test.Carts.Commands.AddItemToCart
+namespace Application.Test.Carts.Commands.UpdateCartItem
 {
-    public class AddItemToCartCommandValidatorTests
+    public class UpdateCartItemCommandValidatorTest
     {
         [Fact]
-        public async Task Handle_ShouldReturnValidationError_WhenProductItemIsEmpty()
+        public async Task Handle_ShouldReturnValidationError_WhenCartItemIdIsEmpty()
         {
             // Arrange
-            var command = new AddItemToCartCommand { ProductItemId = Guid.Empty, Count = 10 };  // Invalid because ProductItemId is empty
-            var validator = new AddItemToCartCommandValidator();
-            var behavior = new ValidationBehaviour<AddItemToCartCommand, Guid>([validator]);
-            var next = new Mock<MyRequestHandlerDelegate<Guid>>();
-
-            // Act
-            var result = await behavior.Handle(command, next.Object, CancellationToken.None);
-
-            // Assert
-            // Ensure 'next' was never called since validation failed
-            next.Verify(n => n(), Times.Never);
-            result.IsSuccess.Should().BeFalse();
-            result.Error.Should().NotBeNull();
-            result.Error?.Code.Should().Be((int)HttpStatusCode.BadRequest);
-            result.Error?.SubErrors?.Count.Should().Be(1);
-            result.Error?.SubErrors?.Keys.First().Should().Be($"[{nameof(command.ProductItemId)}]:");
-        }
-
-
-        [Fact]
-        public async Task Handle_ShouldReturnValidationError_WhenCountIsLessThanOrEqualZero()
-        {
-            // Arrange
-            var command = new AddItemToCartCommand { ProductItemId = Guid.NewGuid(), Count = -4 };  // Invalid because ProductItemId is empty
-            var validator = new AddItemToCartCommandValidator();
-            var behavior = new ValidationBehaviour<AddItemToCartCommand, Guid>(new[] { validator });
-            var next = new Mock<MyRequestHandlerDelegate<Guid>>();
+            var command = new UpdateCartItemCommand { CartId = Guid.NewGuid(), CartItemId = Guid.Empty, Count = 10 };  // Invalid because ProductItemId is empty
+            var validator = new UpdateCartItemCommandValidator();
+            var behavior = new ValidationBehaviour<UpdateCartItemCommand, bool>([validator]);
+            var next = new Mock<MyRequestHandlerDelegate<bool>>();
 
             // Act 
             var result = await behavior.Handle(command, next.Object, CancellationToken.None);
@@ -50,11 +27,30 @@ namespace Application.Test.Carts.Commands.AddItemToCart
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().NotBeNull();
             result.Error?.Code.Should().Be((int)HttpStatusCode.BadRequest);
-            result.Error?.Message.Should().Be("Validation Error");
+            result.Error?.SubErrors?.Count.Should().Be(1);
+            result.Error?.SubErrors?.Keys.First().Should().Be($"[{nameof(command.CartItemId)}]:");
+        }
+
+        [Fact]
+        public async Task Handle_ShouldReturnValidationError_WhenCountLessThanOrEqualZero()
+        {
+            // Arrange
+            var command = new UpdateCartItemCommand { CartId = Guid.NewGuid(), CartItemId = Guid.NewGuid(), Count = 0 };  // Invalid because ProductItemId is empty
+            var validator = new UpdateCartItemCommandValidator();
+            var behavior = new ValidationBehaviour<UpdateCartItemCommand, bool>([validator]);
+            var next = new Mock<MyRequestHandlerDelegate<bool>>();
+
+            // Act 
+            var result = await behavior.Handle(command, next.Object, CancellationToken.None);
+
+            // Assert
+            // Ensure 'next' was never called since validation failed
+            next.Verify(n => n(), Times.Never);
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().NotBeNull();
+            result.Error?.Code.Should().Be((int)HttpStatusCode.BadRequest);
             result.Error?.SubErrors?.Count.Should().Be(1);
             result.Error?.SubErrors?.Keys.First().Should().Be($"[{nameof(command.Count)}]:");
         }
     }
-
 }
-

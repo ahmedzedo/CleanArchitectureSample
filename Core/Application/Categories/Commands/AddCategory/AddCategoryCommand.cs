@@ -57,7 +57,9 @@ namespace CleanArchitecture.Application.Categories.Commands.AddCategory
             await DbContext.Categories.AddAsync(category, cancellationToken);
             int affectedRows = await DbContext.SaveChangesAsync(cancellationToken);
 
-            return affectedRows > 0 ? Result.Success(category.Id, affectedRows) : Result.Failure<Guid>(Error.InternalServerError);
+            return affectedRows > 0
+                ? Result.Success(category.Id, affectedRows)
+                : Result.Failure<Guid>(Error.InternalServerError);
         }
         #endregion
     }

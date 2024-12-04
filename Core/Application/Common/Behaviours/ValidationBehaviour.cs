@@ -6,7 +6,7 @@ using FluentValidation;
 namespace CleanArchitecture.Application.Common.Behaviours
 {
     public class ValidationBehaviour<TRequest, TResponse> : IRequestResponsePipeline<TRequest, TResponse>
-          where TRequest : IBaseRequest<IResult<TResponse>>
+          where TRequest : IAppRequest<TResponse>
     {
         #region Dependencies
         private readonly IEnumerable<IValidator<TRequest>> _validators;
@@ -21,8 +21,8 @@ namespace CleanArchitecture.Application.Common.Behaviours
 
         #region Handle
         public async Task<IResult<TResponse>> Handle(TRequest request,
-                                                         MyRequestResponseHandlerDelegate<TResponse> next,
-                                                       CancellationToken cancellationToken)
+                                                     MyRequestHandlerDelegate<TResponse> next,
+                                                     CancellationToken cancellationToken)
         {
             if (_validators.Any())
             {

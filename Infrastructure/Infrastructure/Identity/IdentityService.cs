@@ -62,7 +62,7 @@ namespace CleanArchitecture.Infrastructure.Identity
 
             return user?.Id;
         }
-        public async Task<(Result<bool> Result, string UserId)> CreateUserAsync(UserDto userDto, string password)
+        public async Task<(IResult<bool> Result, string UserId)> CreateUserAsync(UserDto userDto, string password)
         {
             var user = new ApplicationUser
             {
@@ -78,7 +78,7 @@ namespace CleanArchitecture.Infrastructure.Identity
 
             return (result.ToApplicationResult(), user.Id);
         }
-        public async Task<(Result<bool> Result, string UserId)> CreateUserAsync(string userName, string email, string password)
+        public async Task<(IResult<bool> Result, string UserId)> CreateUserAsync(string userName, string email, string password)
         {
             var user = new ApplicationUser
             {
@@ -153,23 +153,31 @@ namespace CleanArchitecture.Infrastructure.Identity
             return result.Succeeded;
 
         }
-        public async Task<Result<bool>> DeleteUserAsync(string userId)
+        public async Task<IResult<bool>> DeleteUserAsync(string userId)
         {
             var user = await _userManager.Users.SingleOrDefaultAsync(u => u.Id == userId);
 
             return user != null ? await DeleteUserAsync(user) : Result.Success(true);
         }
-        public async Task<Result<bool>> DeleteUserAsync(ApplicationUser user)
+        public async Task<IResult<bool>> DeleteUserAsync(ApplicationUser user)
         {
             var result = await _userManager.DeleteAsync(user);
 
             return result.ToApplicationResult();
         }
-        public async Task<Result<TokenResponse>> GetTokenAsync(string userName)
+        public async Task<IResult<TokenResponse>> GetTokenAsync(string userName)
         {
             var appUser = await _userManager.FindByNameAsync(userName);
 
-            return appUser is null ? Result.Failure<TokenResponse>(SecurityAccessErrors.NotAuthenticatedUser) : Result.Success(await _jwtProvider.GenerateAsync(appUser));
+            if (appUser is null)
+            {
+                return Result.Failure<TokenResponse>(SecurityAccessErrors.NotAuthenticatedUser);
+            }
+            var token = await _jwtProvider.GenerateAsync(appUser);
+
+            return token is not null
+                ? Result.Success(token)
+                : Result.Failure<TokenResponse>(SecurityAccessErrors.NotAuthenticatedUser);
         }
         public async Task<bool> CheckPasswordAsync(string userName, string password)
         {
