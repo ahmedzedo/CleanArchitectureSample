@@ -33,8 +33,8 @@ public class CachingBehaviour<TRequest, TResponse> : IRequestResponsePipeline<TR
 
     #region Handle
     public async Task<IResult<TResponse>> Handle(TRequest request,
-                                                  MyRequestHandlerDelegate<TResponse> next,
-                                                  CancellationToken cancellationToken)
+                                                 MyRequestHandlerDelegate<TResponse> next,
+                                                 CancellationToken cancellationToken)
     {
         _logger.LogInformation("Caching Behaviour started");
         var cacheAttribute = request.GetType().GetCustomAttribute<CacheAttribute>();
@@ -67,12 +67,12 @@ public class CachingBehaviour<TRequest, TResponse> : IRequestResponsePipeline<TR
                 var result = await next();
                 return (result as Result<TResponse>)!;
             }
-            response = await _crossCacheService.GetOrCreateCacheAsync(cacheKey,
-                                                                      getResonse,
-                                                                      crossCacheEntryOption,
-                                                                      crossCacheEntryOption.CacheStore,
-                                                                      result => result.IsSuccess && result.Error == null,
-                                                                      cancellationToken);
+            response = await _crossCacheService.GetOrCreateAsync(cacheKey,
+                                                                 getResonse,
+                                                                 crossCacheEntryOption,
+                                                                 crossCacheEntryOption.CacheStore,
+                                                                 result => result.IsSuccess && result.Error == null,
+                                                                 cancellationToken);
             _logger.LogInformation("Cach Behaviour Ended");
 
             return response;

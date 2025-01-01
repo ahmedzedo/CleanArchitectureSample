@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using CleanArchitecture.Application.Categories.Services;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
+using CleanArchitecture.Application.Common.Caching;
 using CleanArchitecture.Application.Common.Messaging;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Common.Security;
@@ -10,7 +12,8 @@ namespace CleanArchitecture.Application.Categories.Commands.AddCategory
 {
     #region Request
     [Authorize(Policy = Permissions.Product.AddCategory)]
-    public record AddCategoryCommand : BaseCommand<Guid>
+    [InvalidCache(KeyPrefix = nameof(CacheKeysPrefixes.Category), CacheStore = CacheStore.All)]
+    public record AddCategoryCommand : BaseCommand<Guid>, ICacheInvalidator
     {
         public required string NameAr { get; init; }
         public required string NameEn { get; init; }
@@ -37,15 +40,16 @@ namespace CleanArchitecture.Application.Categories.Commands.AddCategory
     public class AddCategoryCommandHandler : BaseCommandHandler<AddCategoryCommand, Guid>
     {
         #region Dependencies 
-
+        private ICategoryService CategoryService { get; }
         #endregion
 
         #region Constructor
         public AddCategoryCommandHandler(IServiceProvider serviceProvider,
-                                         IApplicationDbContext dbContext)
+                                         IApplicationDbContext dbContext,
+                                         ICategoryService categoryService)
             : base(serviceProvider, dbContext)
         {
-
+            CategoryService = categoryService;
         }
 
         #endregion
@@ -53,8 +57,8 @@ namespace CleanArchitecture.Application.Categories.Commands.AddCategory
         #region Handel Request
         public async override Task<IResult<Guid>> HandleRequest(AddCategoryCommand request, CancellationToken cancellationToken)
         {
-            Category category = Mapper.Map<Category>(request);
-            await DbContext.Categories.AddAsync(category, cancellationToken);
+            var category = Mapper.Map<Category>(request);
+            await CategoryService.AddCategory(category, cancellationToken);
             int affectedRows = await DbContext.SaveChangesAsync(cancellationToken);
 
             return affectedRows > 0

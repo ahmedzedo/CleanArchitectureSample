@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20240818140240_Init_DB.cs" />
+    <Compile Remove="Migrations\20240818140240_Init_DB.Designer.cs" />
+    <Compile Remove="Migrations\20241228193659_AddSoftDeleteForProductTable.cs" />
+    <Compile Remove="Migrations\20241228193659_AddSoftDeleteForProductTable.Designer.cs" />
     <Compile Remove="Repository.cs" />
     <Compile Remove="UnitOfWork.cs" />
   </ItemGroup>
@@ -32,10 +36,6 @@
     <ProjectReference Include="..\..\Common\Common.csproj" />
     <ProjectReference Include="..\..\Core\Application\Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

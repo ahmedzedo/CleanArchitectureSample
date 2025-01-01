@@ -50,16 +50,10 @@ namespace CleanArchitecture.Persistence.EF
         public async Task SeedAsync()
         {
             IdentityRole administratorRole = await AddDefaultRoles();
-
             await AddDefaultUser(administratorRole);
-
             await AddAdminRolePermissiom(administratorRole);
-
-
             await AddDefaultCategories();
             await AddDefaultProducts();
-
-
         }
 
         private async Task AddAdminRolePermissiom(IdentityRole administratorRole)
@@ -137,7 +131,7 @@ namespace CleanArchitecture.Persistence.EF
         {
             if (!await DbContext.Products.AnyAsync())
             {
-                var categories = await DbContext.Categories.TopAsync(3);
+                var categories = await DbContext.Categories.AsTracking().TopAsync(3);
                 var products = new List<Product>();
 
                 for (int i = 1; i < 6; i++)

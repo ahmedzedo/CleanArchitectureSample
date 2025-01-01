@@ -26,7 +26,7 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
         {
             Context = dbContext;
             DbSet = Context.Set<T>();
-            EntityQuery = DbSet;
+            EntityQuery = DbSet.AsNoTracking();
         }
         #endregion
 
@@ -695,7 +695,19 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
             return (results, totalCount);
         }
 
+        public virtual IEntitySet<T> AsSingleQuery()
+        {
+            EntityQuery = EntityQuery.AsSingleQuery();
+            
+            return this;
+        }
 
+        public virtual IEntitySet<T> AsSplitQuery()
+        {
+            EntityQuery = EntityQuery.AsSplitQuery();
+
+            return this;
+        }
         #endregion
     }
 }

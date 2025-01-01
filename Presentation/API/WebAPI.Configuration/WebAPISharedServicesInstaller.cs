@@ -17,7 +17,7 @@ namespace CleanArchitecture.WebAPI.Configuration
             services.RegisterAllForSingleBaseDynamic(ServiceLifetime.Transient, nameof(Application), typeof(IRequestResponsePipeline<,>));
             services.RegisterAllForSingleBaseDynamic(ServiceLifetime.Transient, nameof(Application), typeof(IRequestPreProcessor<>));
             services.RegisterAllForSingleBaseDynamic(ServiceLifetime.Transient, nameof(Application), typeof(IRequestPostProcessor<,>));
-            services.RegisterAllChildsDynamic(ServiceLifetime.Scoped, nameof(Application), typeof(IService));
+            services.RegisterAllChildsDynamic(ServiceLifetime.Scoped, nameof(Application), typeof(IBaseService));
         }
     }
 }

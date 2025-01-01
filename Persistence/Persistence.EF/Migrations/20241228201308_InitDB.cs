@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace CleanArchitecture.Persistence.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class Init_DB : Migration
+    public partial class InitDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -60,6 +61,8 @@ namespace CleanArchitecture.Persistence.EF.Migrations
                     NameAr = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     NameEn = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     NameFr = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOnUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastUpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -112,12 +115,13 @@ namespace CleanArchitecture.Persistence.EF.Migrations
                     ThirdName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FamilyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Otpactivate = table.Column<bool>(type: "bit", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Gender = table.Column<bool>(type: "bit", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastUpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastUpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOnUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -184,6 +188,8 @@ namespace CleanArchitecture.Persistence.EF.Migrations
                     Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Amount = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOnUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastUpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),

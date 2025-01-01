@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Application.Common.Abstracts.Persistence;
+﻿using CleanArchitecture.Application.Categories.Services;
+using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Common.Caching;
 using CleanArchitecture.Application.Common.Messaging;
 using CleanArchitecture.Application.Common.Models;
@@ -21,11 +22,16 @@ namespace CleanArchitecture.Application.Categories.Queries.GetAllCategories
     #region Request Handler
     public class GetAllCategoriesQueryHandler : BaseQueryHandler<GetAllCategoriesQuery, IReadOnlyCollection<Category>>
     {
+        #region Dependencies
+        public ICategoryService CategoryService { get; }
+        #endregion
         #region Constructor
-        public GetAllCategoriesQueryHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext)
+        public GetAllCategoriesQueryHandler(IServiceProvider serviceProvider,
+                                            IApplicationDbContext dbContext,
+                                            ICategoryService categoryService)
            : base(serviceProvider, dbContext)
         {
-
+            CategoryService = categoryService;
         }
         #endregion
 
@@ -37,7 +43,7 @@ namespace CleanArchitecture.Application.Categories.Queries.GetAllCategories
             {
                 return Result.Failure<IReadOnlyCollection<Category>>(Error.NullArgument);
             }
-            IReadOnlyCollection<Category> Items = await DbContext.Categories.ToListAsync(cancellationToken);
+            var Items = await CategoryService.GetAllCategories(cancellationToken);
 
             return Items != null
                 ? Result.Success(Items, Items.Count)

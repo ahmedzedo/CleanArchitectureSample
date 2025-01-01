@@ -43,10 +43,7 @@ namespace CleanArchitecture.Application.Carts.Commands.AddItemToCart
         public async override Task<IResult<Guid>> HandleRequest(AddItemToCartCommand request, CancellationToken cancellationToken)
         {
             Guid userId = Guid.Parse(request.UserId!);
-            Cart? cart = await CartService.GetUserCartAsync(userId, cancellationToken);
-
-            cart ??= await CartService.AddUserCartAsync(userId);
-            await CartService.AddOrUpdateCartItemAsync(cart, request.ProductItemId, request.Count, cancellationToken);
+            var cart = await CartService.AddOrUpdateUserCartAsync(userId, request.ProductItemId, request.Count, cancellationToken);
             int affectedRows = await DbContext.SaveChangesAsync(cancellationToken);
 
             return affectedRows > 0

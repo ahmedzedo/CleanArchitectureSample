@@ -8,8 +8,12 @@
       "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
       "serviceActions": {
         "webapi": "StartDebugging",
+        "webapi2": "StartDebugging",
         "CleanArchitecture.cache": "StartWithoutDebugging",
         "CleanArchitecture.database": "StartWithoutDebugging"
+      },
+      "environmentVariables": {
+        "DOTNET_USE_POLLING_FILE_WATCHER": "1"
       }
     }
   }

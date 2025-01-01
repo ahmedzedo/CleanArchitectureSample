@@ -21,8 +21,15 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
             //                             .SelectMany(p => p.ProductItems)
             //                             .FirstOrDefaultAsync(pi => pi.Id == productItemId)
 
-            return await Context.Set<ProductItem>().AsTracking().FirstOrDefaultAsync(pi => pi.Id == productItemId)
+            return await Context.Set<ProductItem>()
+                                .AsTracking()
+                                .FirstOrDefaultAsync(pi => pi.Id == productItemId)
                           ?? throw new NotFoundException(nameof(productItemId), productItemId);
+        }
+
+        public async Task<List<Product>> GetAllProducts()
+        {
+            return await DbSet.IgnoreQueryFilters().ToListAsync();
         }
         #endregion
     }

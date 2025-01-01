@@ -3,7 +3,7 @@ using CleanArchitecture.Domain.Products.Events;
 
 namespace CleanArchitecture.Domain.Products.Entites
 {
-    public class ProductItem : AuditableEntity
+    public class ProductItem : AuditableEntity, ISoftDeletable
     {
         #region Constructor
         public ProductItem(string? description, decimal price, int amount)
@@ -26,6 +26,8 @@ namespace CleanArchitecture.Domain.Products.Entites
         public decimal Price { get; private set; }
         public int Amount { get; private set; }
         public virtual Product? Product { get; private set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedOnUtc { get; set; }
         #endregion
 
         #region Methods

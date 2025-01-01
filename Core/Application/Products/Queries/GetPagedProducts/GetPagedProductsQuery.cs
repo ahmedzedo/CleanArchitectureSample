@@ -2,6 +2,7 @@
 using CleanArchitecture.Application.Common.Messaging;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Common.Security;
+using CleanArchitecture.Application.Products.Services;
 using CleanArchitecture.Domain.Constants;
 using Common.Linq.Model;
 using Microsoft.EntityFrameworkCore;
@@ -26,13 +27,15 @@ namespace CleanArchitecture.Application.Products.Queries.GetPagedProducts
     {
         #region Dependencies
 
+        private IProductService ProductService { get; }
+
         #endregion
 
         #region Constructor
-        public GetPagedProductsQueryHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext)
+        public GetPagedProductsQueryHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext, IProductService productService)
            : base(serviceProvider, dbContext)
         {
-
+            ProductService = productService;
         }
         #endregion
 
@@ -44,32 +47,20 @@ namespace CleanArchitecture.Application.Products.Queries.GetPagedProducts
             {
                 return Result.Failure<IReadOnlyCollection<GetPagedProductDto>>(Error.NullArgument);
             }
-            (IReadOnlyCollection<GetPagedProductDto> Items, int totalCount) = await GetPagedProductsWithFilter(request);
-
+            (IReadOnlyCollection<GetPagedProductDto> Items, int totalCount) = await ProductService.GetPagedProductsWithFilter(request);
 
             return Items != null
                ? Result.Success(Items, totalCount)
                : Result.Failure<IReadOnlyCollection<GetPagedProductDto>>(Error.InternalServerError);
+
+            #region Alt Result
+            //return Result.SuccessIf(() => Items != null,
+            //                  Items,
+            //                  totalCount); 
+            #endregion
         }
 
-        private async Task<(IReadOnlyCollection<GetPagedProductDto> Items, int totalCount)> GetPagedProductsWithFilter(GetPagedProductsQuery request)
-        {
-            return await DbContext.Products
-                   .Include(p => p.Include(s => s.ProductItems)
-                                  .Include(p => p.Categories))
-                   .WhereIf(!string.IsNullOrEmpty(request.Name), p => p.NameAr.Contains(request.Name!)
-                                                                   || p.NameEn.Contains(request.Name!)
-                                                                   || p.NameFr.Contains(request.Name!))
-                   .WhereIf(!string.IsNullOrEmpty(request.Description), p => p.ProductItems
-                                                                              .Any(pd => pd.Description!.Contains(request.Description!)))
-                   .WhereIf(request.CategoriesIds != null && request.CategoriesIds.Count != 0, p => p.Categories.Select(r => r.Id)
-                                                                                                .Any(r => request.CategoriesIds!.Contains(r)))
-                   // .WhereIf(request.Price != default && request.Price > 0, p => p.ProductDetails.Any(pd => pd.Price == request.Price))
 
-                   //.DynamicOrderBy(request.OrderByPropertyName ?? "CreatedOn", request.SortDirection!.ToLower() == "asc" ? SortDirection.Ascending : SortDirection.Descending)
-                   .DynamicOrderBy(request.OrderProperties)
-                   .ToPagedListAsync<GetPagedProductDto>(request.PageIndex, request.PageSize, p => p);
-        }
         #endregion
     }
     #endregion

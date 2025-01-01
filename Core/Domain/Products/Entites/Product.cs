@@ -4,7 +4,7 @@ using Common.Linq;
 
 namespace CleanArchitecture.Domain.Products.Entites
 {
-    public class Product : AuditableEntity, IAggregateRoot
+    public class Product : AuditableEntity, IAggregateRoot, ISoftDeletable
     {
         #region Constructor
         public Product(string nameAr,
@@ -31,6 +31,10 @@ namespace CleanArchitecture.Domain.Products.Entites
 
         private readonly List<ProductItem> productItems;
         public IReadOnlyCollection<ProductItem> ProductItems => productItems.AsReadOnly();
+
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedOnUtc { get; set; }
+
 
         #endregion
 

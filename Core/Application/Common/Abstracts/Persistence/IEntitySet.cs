@@ -428,6 +428,18 @@ namespace CleanArchitecture.Application.Common.Abstracts.Persistence
         /// <param name="selector"></param>
         /// <returns></returns>
         Task<(List<TResult> Items, int totalCount)> ToPagedListAsync<TResult>(int pageIndex, int pageSize, Expression<Func<T, TResult>> selector, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// AsSingleQuery
+        /// </summary>
+        /// <returns></returns>
+        IEntitySet<T> AsSingleQuery();
+        /// <summary>
+        /// AsSplitQuery
+        /// </summary>
+        /// <returns></returns>
+        IEntitySet<T> AsSplitQuery();
+       
         #endregion
     }
 }

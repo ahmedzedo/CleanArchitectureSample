@@ -40,10 +40,14 @@ namespace CleanArchitecture.Persistence.EF.Interceptors
         {
             if (context == null) return;
 
-            context.ChangeTracker.Entries<AuditableEntity>()
-                              .Where(e => e.State is EntityState.Added or EntityState.Modified || e.HasChangedOwnedEntities())
-                              .ToList()
-                              .ForEach(entry => UpdateEntityShadowProperties(entry));
+            IEnumerable<EntityEntry<AuditableEntity>> entries = context.ChangeTracker.Entries<AuditableEntity>()
+                                                                                     .Where(e => e.State is EntityState.Added or EntityState.Modified
+                                                                                                 || e.HasChangedOwnedEntities());
+
+            foreach (var entry in entries)
+            {
+                UpdateEntityShadowProperties(entry);
+            }
         }
 
         private void UpdateEntityShadowProperties(EntityEntry<AuditableEntity> entry)

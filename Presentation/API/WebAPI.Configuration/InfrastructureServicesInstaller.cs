@@ -19,12 +19,13 @@ namespace CleanArchitecture.WebAPI.Configuration
         {
             services.AddDbContext<ApplicationDbContext>((sp, options) =>
                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                                    b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName))
+                                    b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName).EnableRetryOnFailure())
                .AddInterceptors(sp.GetServices<ISaveChangesInterceptor>()));
             services.AddScoped<IDbContext>(s => s.GetRequiredService<ApplicationDbContext>());
             services.AddScoped<IApplicationDbContext>(s => s.GetRequiredService<ApplicationDbContext>());
             services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
             services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
+            services.AddScoped<ISaveChangesInterceptor, SoftDeleteInterceptor>();
             services.RegisterAllChildsDynamic(ServiceLifetime.Transient, nameof(Application), nameof(Persistence.EF), typeof(IEntitySet<>));
             services.AddScoped<ApplicationDbContextInitializer>();
         }

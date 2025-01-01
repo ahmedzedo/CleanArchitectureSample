@@ -50,6 +50,7 @@ namespace CleanArchitecture.Application.Carts.Queries.GetCart
         public string ProductNameAr { get; init; } = string.Empty;
         public string ProductNameEn { get; init; } = string.Empty;
         public string ProductNameFr { get; init; } = string.Empty;
+        public string ProductItemDescription { get; set; } = string.Empty;
         public IReadOnlyCollection<CategoryDto> Categories { get; init; } = [];
 
         public decimal Price { get; init; }
@@ -68,6 +69,7 @@ namespace CleanArchitecture.Application.Carts.Queries.GetCart
                 ProductNameAr = cartItem.ProductItem?.Product?.NameAr ?? string.Empty,
                 ProductNameEn = cartItem.ProductItem?.Product?.NameEn ?? string.Empty,
                 ProductNameFr = cartItem.ProductItem?.Product?.NameFr ?? string.Empty,
+                ProductItemDescription = cartItem.ProductItem?.Description ?? string.Empty,
                 Categories = cartItem.ProductItem?.Product?.Categories?.Select(x => (CategoryDto)x).ToList() ?? []
             };
         }

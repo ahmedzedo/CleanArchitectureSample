@@ -15,5 +15,14 @@ namespace CleanArchitecture.Application.Carts.IEntitySets
 
         Task<int> DeleteCartItemsAsync(List<CartItem> cartItems,
                                        CancellationToken cancellationToken = default);
+        Task<Cart?> GetTrackedUserCart(Guid userId, CancellationToken cancellationToken = default);
+
+        Task<Cart?> GetUserCartAsync(Guid userId,
+                                     CancellationToken cancellationToken = default);
+        Task<Cart?> GetCartWithItem(Guid cartId,
+                                    Guid? cartItemId = default,
+                                    CancellationToken cancellationToken = default);
+        Task<Cart?> GetCartByCartItemIdAsync(Guid cartItemId, CancellationToken cancellationToken);
     }
+
 }

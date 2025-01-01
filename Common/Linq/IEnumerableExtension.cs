@@ -2,10 +2,9 @@
 {
     public static class IEnumerableExtension
     {
-        public static IEnumerable<T> WhereIf<T>(
-            this IEnumerable<T> query,
-            bool IfCondition,
-           Func<T, bool> filter)
+        public static IEnumerable<T> WhereIf<T>(this IEnumerable<T> query,
+                                                bool IfCondition,
+                                                Func<T, bool> filter)
             where T : class
         {
             if (IfCondition && filter != null)

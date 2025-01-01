@@ -3,8 +3,12 @@ using CleanArchitecture.Domain.Carts.Entities;
 
 namespace CleanArchitecture.Application.Carts.Services
 {
-    public interface ICartService : IService
+    public interface ICartService : IBaseService
     {
+        Task<Cart> AddOrUpdateUserCartAsync(Guid userId,
+                                          Guid productItemId,
+                                          int count,
+                                          CancellationToken cancellationToken = default);
         Task<Cart> AddOrUpdateCartItemAsync(Cart cart,
                                             Guid productItemId,
                                             int count,

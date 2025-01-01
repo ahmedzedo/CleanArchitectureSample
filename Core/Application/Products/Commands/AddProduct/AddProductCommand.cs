@@ -1,7 +1,9 @@
-﻿using CleanArchitecture.Application.Common.Abstracts.Persistence;
+﻿using CleanArchitecture.Application.Categories.Services;
+using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Common.Messaging;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Common.Security;
+using CleanArchitecture.Application.Products.Services;
 using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Domain.Products.Entites;
 using CleanArchitecture.Domain.Products.Events;
@@ -26,29 +28,30 @@ namespace CleanArchitecture.Application.Products.Commands.AddProduct
     public class AddProductCommandHandler : BaseCommandHandler<AddProductCommand, Guid>
     {
         #region Dependencies
-
+        private ICategoryService CategoryService { get; }
+        private IProductService ProductService { get; }
         #endregion
 
         #region Constructor
-        public AddProductCommandHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext)
+        public AddProductCommandHandler(IServiceProvider serviceProvider,
+                                        IApplicationDbContext dbContext,
+                                        ICategoryService categoryService,
+                                        IProductService productService)
            : base(serviceProvider, dbContext)
         {
-
+            CategoryService = categoryService;
+            ProductService = productService;
         }
         #endregion
 
         #region Request Handle
         public async override Task<IResult<Guid>> HandleRequest(AddProductCommand request, CancellationToken cancellationToken)
         {
+            var categories = await CategoryService.GetCategoriesByIds(request.CategoriesIds, cancellationToken);
+            var productItems = request.ItemsList.Select(s => (ProductItem)s).ToList();
             Product product = new(request.NameAr, request.NameEn, request.NameFr);
-            List<Category> categories = await DbContext.Categories.AsTracking()
-                                                        .Where(r => request.CategoriesIds.Contains(r.Id))
-                                                        .ToListAsync(cancellationToken);
-            product.AddCategory(categories);
-            product.AddProductItems(request.ItemsList.Select(s => (ProductItem)s).ToList());
-            product.AddDomainEvent(new ProductCreatedEvent(product));
 
-            await DbContext.Products.AddAsync(product, cancellationToken);
+            await ProductService.AddProduct(product, categories, productItems, cancellationToken);
             int affectedRows = await DbContext.SaveChangesAsync(cancellationToken);
 
             return affectedRows > 0

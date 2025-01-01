@@ -88,7 +88,7 @@ public class CrossCacheService : ICrossCacheService
         }
     }
 
-    public async Task<T> GetOrCreateCacheAsync<T>(string cacheKey,
+    public async Task<T> GetOrCreateAsync<T>(string cacheKey,
                                                   Func<Task<T>> getResonse,
                                                   CrossCacheEntryOption crossCacheEntryOption,
                                                   CacheStore cacheStore,
@@ -136,12 +136,12 @@ public class CrossCacheService : ICrossCacheService
 
         return response;
     }
-    public async Task<T> GetOrCreateCacheAsync<T>(string cacheKey,
+    public async Task<T> GetOrCreateAsync<T>(string cacheKey,
                                                   Func<Task<T>> getResonse,
                                                   Predicate<T>? validateValue = default,
                                                   CancellationToken cancellationToken = default) where T : class, new()
     {
-        return await GetOrCreateCacheAsync(cacheKey,
+        return await GetOrCreateAsync(cacheKey,
                                            getResonse,
                                            DefaultCrossCacheEntryOption,
                                            DefaultCrossCacheEntryOption.CacheStore,
@@ -170,7 +170,7 @@ public class CrossCacheService : ICrossCacheService
         cancellationToken);
     }
 
-    public async Task<int> InvalidateCacheAsync(string keyPrefix,
+    public async Task<int> InvalidateAsync(string keyPrefix,
                                            CacheStore cacheStore,
                                            CancellationToken cancellationToken = default)
     {

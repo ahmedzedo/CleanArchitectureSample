@@ -6,12 +6,23 @@ services:
     container_name: CleanArchitecture.webapi
     build:
       context: .
-      dockerfile: ClientApp/API/WebAPI/Dockerfile
+      dockerfile: Presentation/API/WebAPI/Dockerfile
     ports:
-      - "8080:8080"
+      - "8082:8080"
       - "8081:8081"
     depends_on:
       - CleanArchitecture.database 
+  webapi2:
+    image: ${DOCKER_REGISTRY-}webapi
+    container_name: CleanArchitecture.webapi2
+    build:
+      context: .
+      dockerfile: Presentation/API/WebAPI/Dockerfile
+    ports:
+      - "8084:8080"
+      - "8083:8081"
+    depends_on:
+      - CleanArchitecture.database
   CleanArchitecture.database:
     image: mcr.microsoft.com/mssql/server:2022-latest
     volumes:

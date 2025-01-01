@@ -14,21 +14,21 @@ public interface ICrossCacheService
                           CrossCacheEntryOption? options = default,
                           CancellationToken cancellationToken = default) where T : class;
 
-    Task<T> GetOrCreateCacheAsync<T>(string cacheKey,
+    Task<T> GetOrCreateAsync<T>(string cacheKey,
                                       Func<Task<T>> getResonse,
                                       CrossCacheEntryOption crossCacheEntryOption,
                                       CacheStore cacheStore,
                                       Predicate<T>? validateValue = default,
                                       CancellationToken cancellationToken = default) where T : class, new();
 
-    Task<T> GetOrCreateCacheAsync<T>(string cacheKey,
+    Task<T> GetOrCreateAsync<T>(string cacheKey,
                                      Func<Task<T>> getResonse,
                                      Predicate<T>? validateValue = default,
                                      CancellationToken cancellationToken = default) where T : class, new();
 
     Task RemoveAsync(string key, CacheStore cacheStore, CancellationToken cancellationToken = default);
 
-    Task<int> InvalidateCacheAsync(string keyPrefix, CacheStore cacheStore, CancellationToken cancellationToken = default);
+    Task<int> InvalidateAsync(string keyPrefix, CacheStore cacheStore, CancellationToken cancellationToken = default);
 
     Task InvalidateLocalCacheBySubscibeInvalidateChannel();
 }

@@ -56,7 +56,7 @@ namespace CleanArchitecture.Application.Common.Messaging
         /// <param name="count">count of result</param>
         /// <param name="error"> error</param>
         /// <returns>success result with success value when condition is true or faliure result with Error when condition is false</returns>
-        public static IResult<T> Eval<T>(Func<bool> condition, T successValue, int count, Error error)
+        public static IResult<T> SuccessIf<T>(Func<bool> condition, T successValue, int count, Error error)
         {
             return condition()
                 ? Success(successValue, count)
@@ -71,7 +71,7 @@ namespace CleanArchitecture.Application.Common.Messaging
         /// <param name="successValue">data will retrived in Success</param>
         /// <param name="count">count of result</param>
         /// <returns>success result with success value when condition is true or faliure result with internal server Error when condition is false</returns>
-        public static IResult<T> Eval<T>(Func<bool> condition, T successValue, int count)
+        public static IResult<T> SuccessIf<T>(Func<bool> condition, T successValue, int count)
         {
             return condition()
                 ? Success(successValue, count)

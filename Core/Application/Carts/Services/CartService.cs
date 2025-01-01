@@ -2,6 +2,7 @@
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Domain.Carts.Entities;
 using CleanArchitecture.Domain.Products.Entites;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.Carts.Services
@@ -22,18 +23,22 @@ namespace CleanArchitecture.Application.Carts.Services
         #endregion
 
         #region Methods
+        public async Task<Cart> AddOrUpdateUserCartAsync(Guid userId,
+                                          Guid productItemId,
+                                          int count,
+                                          CancellationToken cancellationToken = default)
+        {
+            var cart = await DbContext.Carts.GetTrackedUserCart(userId, cancellationToken);
+
+            cart ??= await AddUserCartAsync(userId);
+            await AddOrUpdateCartItemAsync(cart, productItemId, count, cancellationToken);
+
+            return cart;
+        }
         public async Task<Cart?> GetUserCartAsync(Guid userId,
                                                   CancellationToken cancellationToken = default)
         {
-            return await DbContext.Carts//.IncludeItemDetails()
-                                            .Include(i => i.Include(c => c.CartItems)
-                                            .ThenInclude(ci => ci.ProductItem)
-                                            .ThenInclude(pi => pi.Product)
-                                            .ThenInclude(p => p != null ? p.Categories : null))
-            //.Include(c => c.CartItems.Where(ci => ci.Count > 30))
-            //.Include($"{nameof(CartItem)}s.{nameof(Product)}")
-                                            .OrderByDescending(c => c.CreatedOn)
-                                            .FirstOrDefaultAsync(c => c.UserId == userId, cancellationToken);
+            return await DbContext.Carts.GetUserCartAsync(userId, cancellationToken);
 
 
         }
@@ -67,21 +72,19 @@ namespace CleanArchitecture.Application.Carts.Services
         }
 
         public async Task<Cart?> GetCartByIdIncludedItemById(Guid cartId,
-                                                              Guid cartItemId,
-                                                              CancellationToken cancellationToken = default)
+                                                             Guid cartItemId,
+                                                             CancellationToken cancellationToken = default)
         {
-            return await DbContext.Carts.Include(c => c.CartItems.Where(ci => ci.Id == cartItemId))
-                                        .FirstOrDefaultAsync(c => c.Id == cartId,
-                                                             cancellationToken);
+            return await DbContext.Carts.GetCartWithItem(cartId, cartItemId, cancellationToken);
         }
 
         public async Task<Cart?> GetCartByCartItemIdAsync(Guid cartItemId, CancellationToken cancellationToken)
         {
-            return await DbContext.Carts.Include(c => c.CartItems.Where(ci => ci.Id == cartItemId))
-                                                        .FirstOrDefaultAsync(c => c.CartItems.Any(ci => ci.Id == cartItemId), cancellationToken);
+            return await DbContext.Carts.GetCartByCartItemIdAsync(cartItemId, cancellationToken);
         }
 
-        public async Task<List<CartItem>> GetCartItemsOfProductItem(Guid productItemId, CancellationToken cancellationToken = default)
+        public async Task<List<CartItem>> GetCartItemsOfProductItem(Guid productItemId,
+                                                                    CancellationToken cancellationToken = default)
         {
             return await DbContext.Carts.GetCartItemsOfProductItem(productItemId, cancellationToken);
         }

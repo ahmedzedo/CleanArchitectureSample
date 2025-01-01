@@ -10,8 +10,8 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["ClientApp/API/WebAPI/WebAPI.csproj", "ClientApp/API/WebAPI/"]
-COPY ["ClientApp/API/WebAPI.Configuration/WebAPI.Configuration.csproj", "ClientApp/API/WebAPI.Configuration/"]
+COPY ["Presentation/API/WebAPI/WebAPI.csproj", "Presentation/API/WebAPI/"]
+COPY ["Presentation/API/WebAPI.Configuration/WebAPI.Configuration.csproj", "Presentation/API/WebAPI.Configuration/"]
 COPY ["Common/Common.csproj", "Common/"]
 COPY ["Core/Application/Application.csproj", "Core/Application/"]
 COPY ["Core/Domain/Domain.csproj", "Core/Domain/"]
@@ -19,7 +19,7 @@ COPY ["Persistence/Persistence.EF/Persistence.EF.csproj", "Persistence/Persisten
 COPY ["Infrastructure/Infrastructure/Infrastructure.csproj", "Infrastructure/Infrastructure/"]
 RUN dotnet restore "./ClientApp/API/WebAPI/WebAPI.csproj"
 COPY . .
-WORKDIR "/src/ClientApp/API/WebAPI"
+WORKDIR "/src/Presentation/API/WebAPI"
 RUN dotnet build "./WebAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

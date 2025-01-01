@@ -38,12 +38,12 @@ namespace CleanArchitecture.Application.Common.Behaviours
             if (!DefaultCrossCacheEntryOption.IsEnabled || invalidCacheAttribute is null)
             {
                 _logger.LogInformation("Caching is disabled");
-                _logger.LogInformation("Invalidate Caching Behaviour Ended");
             }
             else
             {
                 await InvalidateCache(invalidCacheAttribute, cancellationToken);
             }
+            _logger.LogInformation("Invalidate Caching Behaviour Ended");
 
             return await next();
         }
@@ -52,9 +52,9 @@ namespace CleanArchitecture.Application.Common.Behaviours
         {
             try
             {
-                await _crossCacheService.InvalidateCacheAsync($"{invalidCacheAttribute!.KeyPrefix}:",
-                                                              invalidCacheAttribute.CacheStore,
-                                                              cancellationToken);
+                await _crossCacheService.InvalidateAsync($"{invalidCacheAttribute!.KeyPrefix}:",
+                                                         invalidCacheAttribute.CacheStore,
+                                                         cancellationToken);
                 _logger.LogInformation("{KeyPrefix} become invaild in cache. will remove with all related keys from cache.",
                                        invalidCacheAttribute.KeyPrefix);
                 _logger.LogInformation("Invalidate Cach Behaviour Ended");
