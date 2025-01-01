@@ -698,7 +698,7 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
         public virtual IEntitySet<T> AsSingleQuery()
         {
             EntityQuery = EntityQuery.AsSingleQuery();
-            
+
             return this;
         }
 

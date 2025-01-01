@@ -1,14 +1,6 @@
 ﻿using CleanArchitecture.Application.Common.Abstracts.Business;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Domain.Products.Entites;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Categories.Services
 {

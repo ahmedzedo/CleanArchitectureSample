@@ -2,8 +2,6 @@
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Domain.Carts.Entities;
 using CleanArchitecture.Domain.Products.Entites;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.Carts.Services
 {

@@ -4,8 +4,6 @@ using CleanArchitecture.Application.Carts.Services;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Carts.Entities;
-using Common.Reflection;
-using FluentAssertions;
 using Moq;
 using System.Reflection;
 namespace Application.Test.Carts.Commands.AddItemToCart
@@ -30,7 +28,7 @@ namespace Application.Test.Carts.Commands.AddItemToCart
             _handler = new AddItemToCartCommandHandler(_serviceProviderMock.Object, _DbContextMock.Object, _cartServiceMock.Object);
         }
 
-       // [Fact]
+        // [Fact]
         //public async Task HandleRequest_ShouldReturnSuccess_WhenCartExistsAndItemAdded()
         //{
         //    // Arrange
@@ -84,7 +82,7 @@ namespace Application.Test.Carts.Commands.AddItemToCart
             //_cartServiceMock.Setup(service => service.AddOrUpdateCartItemAsync(newCart, command.ProductItemId, command.Count, It.IsAny<CancellationToken>()));
             _cartServiceMock.Setup(service => service.AddOrUpdateUserCartAsync(Guid.Parse(command.UserId), command.ProductItemId, command.Count, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(newCart);
-                
+
             _DbContextMock.Setup(db => db.SaveChangesAsync(It.IsAny<CancellationToken>()))
                           .ReturnsAsync(1);
 

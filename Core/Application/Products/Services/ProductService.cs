@@ -3,13 +3,7 @@ using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Products.Queries.GetPagedProducts;
 using CleanArchitecture.Domain.Products.Entites;
 using CleanArchitecture.Domain.Products.Events;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Products.Services
 {
@@ -55,7 +49,7 @@ namespace CleanArchitecture.Application.Products.Services
             product.AddCategory(categories);
             product.AddProductItems(productItems);
             product.AddDomainEvent(new ProductCreatedEvent(product));
-            
+
             return await DbContext.Products.AddAsync(product, cancellationToken);
         }
         #endregion

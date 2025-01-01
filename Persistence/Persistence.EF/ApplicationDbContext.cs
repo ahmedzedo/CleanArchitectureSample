@@ -4,16 +4,13 @@ using CleanArchitecture.Application.Common.Abstracts.Account;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Products.IEntitySets;
 using CleanArchitecture.Domain.Common.Entities;
-using CleanArchitecture.Domain.Products.Entites;
 using CleanArchitecture.Infrastructure.Identity;
 using CleanArchitecture.Persistence.EF.Configurations;
 using Common.DependencyInjection.Extensions;
 using Common.ORM.EntityFramework;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Reflection;
-using System.Reflection.Emit;
 
 namespace CleanArchitecture.Persistence.EF
 {

@@ -439,7 +439,7 @@ namespace CleanArchitecture.Application.Common.Abstracts.Persistence
         /// </summary>
         /// <returns></returns>
         IEntitySet<T> AsSplitQuery();
-       
+
         #endregion
     }
 }

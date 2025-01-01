@@ -6,7 +6,6 @@ using CleanArchitecture.Application.Common.Security;
 using CleanArchitecture.Application.Products.Services;
 using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Domain.Products.Entites;
-using CleanArchitecture.Domain.Products.Events;
 
 namespace CleanArchitecture.Application.Products.Commands.AddProduct
 {

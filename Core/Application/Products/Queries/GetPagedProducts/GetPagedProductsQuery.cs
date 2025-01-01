@@ -5,7 +5,6 @@ using CleanArchitecture.Application.Common.Security;
 using CleanArchitecture.Application.Products.Services;
 using CleanArchitecture.Domain.Constants;
 using Common.Linq.Model;
-using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.Products.Queries.GetPagedProducts
 {

@@ -3,7 +3,6 @@ using CleanArchitecture.Domain.Carts.Entities;
 using CleanArchitecture.Domain.Products.Entites;
 using Common.Linq;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
 
 namespace CleanArchitecture.Persistence.EF.EntitySets
 {

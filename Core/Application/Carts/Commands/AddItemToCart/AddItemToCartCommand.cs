@@ -4,7 +4,6 @@ using CleanArchitecture.Application.Common.Caching;
 using CleanArchitecture.Application.Common.Messaging;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Common.Security;
-using CleanArchitecture.Domain.Carts.Entities;
 using CleanArchitecture.Domain.Constants;
 
 namespace CleanArchitecture.Application.Carts.Commands.AddItemToCart
