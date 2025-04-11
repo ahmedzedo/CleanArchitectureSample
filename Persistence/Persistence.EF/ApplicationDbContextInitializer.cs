@@ -54,6 +54,7 @@ namespace CleanArchitecture.Persistence.EF
             await AddAdminRolePermissiom(administratorRole);
             await AddDefaultCategories();
             await AddDefaultProducts();
+            await DbContext.SaveChangesAsync();
         }
 
         private async Task AddAdminRolePermissiom(IdentityRole administratorRole)
@@ -123,7 +124,6 @@ namespace CleanArchitecture.Persistence.EF
                 }
 
                 await DbContext.Categories.AddAsync(categories);
-                await DbContext.SaveChangesAsync();
             }
         }
 
@@ -148,7 +148,6 @@ namespace CleanArchitecture.Persistence.EF
                     products.Add(product);
                 }
                 await DbContext.Products.AddAsync(products);
-                await DbContext.SaveChangesAsync();
             }
         }
     }

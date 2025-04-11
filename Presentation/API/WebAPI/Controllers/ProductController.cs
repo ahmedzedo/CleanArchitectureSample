@@ -14,31 +14,33 @@ namespace CleanArchitecture.WebAPI.Controllers
     {
         #region Actions
 
+        [Authorize(Roles = Roles.Administrator)]
         [HttpPost("add-Product")]
         public async Task<IActionResult> AddProdcut([FromBody] AddProductCommand model)
         {
             return Result(await Mediator.Send(model));
         }
 
+        [Authorize(Roles = Roles.Administrator)]
         [HttpPost("update-Product")]
         public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductCommand model)
         {
             return Result(await Mediator.Send(model));
         }
-
+        [Authorize(Roles = Roles.Administrator)]
         [HttpPost("change-productItem-amount")]
         public async Task<IActionResult> ChangeProductItemAmount([FromBody] ChangeProductItemAmountCommand model)
         {
             return Result(await Mediator.Send(model));
         }
-
+        [Authorize(Roles = Roles.Administrator)]
         [HttpPost("Delete-Product")]
         public async Task<IActionResult> DeleteProduct([FromBody] DeleteProductCommand model)
         {
             return Result(await Mediator.Send(model));
         }
 
-        [Authorize(Roles = Roles.Administrator)]
+        [Authorize]
         [HttpPost("get-product-list")]
         public async Task<IActionResult> GetProductList([FromBody] GetPagedProductsQuery model)
         {

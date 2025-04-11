@@ -1,33 +1,19 @@
-version: '3.4'
-
 services:
   webapi:
     image: ${DOCKER_REGISTRY-}webapi
-    container_name: CleanArchitecture.webapi
     build:
       context: .
       dockerfile: Presentation/API/WebAPI/Dockerfile
     ports:
-      - "8082:8080"
+      - "8080:8080"
       - "8081:8081"
     depends_on:
-      - CleanArchitecture.database 
-  webapi2:
-    image: ${DOCKER_REGISTRY-}webapi
-    container_name: CleanArchitecture.webapi2
-    build:
-      context: .
-      dockerfile: Presentation/API/WebAPI/Dockerfile
-    ports:
-      - "8084:8080"
-      - "8083:8081"
-    depends_on:
-      - CleanArchitecture.database
-  CleanArchitecture.database:
+      - database 
+  database:
     image: mcr.microsoft.com/mssql/server:2022-latest
     volumes:
       - .\db:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA
-    container_name: CleanArchitecture.database
+    container_name: database
     environment:
       - "ACCEPT_EULA=Y"
       - "MSSQL_SA_PASSWORD=P@ssw0rd@123"
@@ -40,13 +26,12 @@ services:
         retries: 10
         start_period: 10s
         timeout: 3s 
-  CleanArchitecture.cache:
+  cache:
      image: redis:latest
-     container_name: CleanArchitecture.cache
+     container_name: cache
      restart: always
      ports:
        - 6379:6379
 
 
-        
-    
+

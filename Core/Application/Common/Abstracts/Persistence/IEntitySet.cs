@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace CleanArchitecture.Application.Common.Abstracts.Persistence
 {
-    public interface IEntitySet<T> where T : Entity, IAggregateRoot
+    public interface IEntitySet<T> where T : IEntity, IAggregateRoot
     {
         #region Write Methods 
         /// <summary>

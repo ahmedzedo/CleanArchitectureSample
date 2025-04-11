@@ -71,7 +71,7 @@ namespace Application.Test.Carts.Commands.AddItemToCart
             // Arrange
             var cartId = Guid.NewGuid();
             var command = new AddItemToCartCommand { UserId = Guid.NewGuid().ToString(), ProductItemId = Guid.NewGuid(), Count = 1 };
-            var newCart = new Cart(Guid.NewGuid());
+            var newCart = new Cart(Guid.NewGuid().ToString());
             var idField = typeof(Cart).GetField("<Id>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
             idField?.SetValue(newCart, cartId);
 
@@ -99,9 +99,9 @@ namespace Application.Test.Carts.Commands.AddItemToCart
         {
             // Arrange
             var command = new AddItemToCartCommand { UserId = Guid.NewGuid().ToString(), ProductItemId = Guid.NewGuid(), Count = 1 };
-            var cart = new Cart(Guid.NewGuid());
+            var cart = new Cart(Guid.NewGuid().ToString());
 
-            _cartServiceMock.Setup(service => service.GetUserCartAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+            _cartServiceMock.Setup(service => service.GetUserCartAsync(Guid.NewGuid(), It.IsAny<CancellationToken>()))
                             .ReturnsAsync(cart);
             _cartServiceMock.Setup(service => service.AddOrUpdateCartItemAsync(cart, command.ProductItemId, command.Count, It.IsAny<CancellationToken>()));
 

@@ -20,15 +20,16 @@ namespace CleanArchitecture.Application.Users.Commands.CreateUser
     {
 
         #region Dependencies
-        private IIdentityService IdentityService { get; }
-
+        public IUserService UserService { get; set; }
         #endregion
 
         #region Constructor
-        public CreateUserCommandHandler(IServiceProvider serviceProvider, IApplicationDbContext dbContext, IIdentityService identityService)
+        public CreateUserCommandHandler(IServiceProvider serviceProvider,
+                                        IApplicationDbContext dbContext,
+                                        IUserService userService)
            : base(serviceProvider, dbContext)
         {
-            IdentityService = identityService;
+            UserService = userService;
         }
         #endregion
 
@@ -45,7 +46,7 @@ namespace CleanArchitecture.Application.Users.Commands.CreateUser
                 ThirdName = request.ThirdName,
                 FamilyName = request.FamilyName
             };
-            (IResult<bool> result, string userId) = await IdentityService.CreateUserAsync(user, request.Password);
+            (IResult<bool> result, string userId) = await UserService.CreateUserAsync(user, request.Password);
 
             return result.IsSuccess && result.Error == null
                 ? Result.Success(Guid.Parse(userId), 1)

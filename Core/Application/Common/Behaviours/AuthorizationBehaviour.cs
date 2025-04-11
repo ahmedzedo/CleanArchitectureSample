@@ -11,13 +11,15 @@ namespace CleanArchitecture.Application.Common.Behaviours
         where TRequest : IAppRequest<TResponse>
     {
         #region Dependencies
-        private IIdentityService IdentityService { get; }
+        public IUserService UserService { get; set; }
+        public IRoleService RoleService { get; set; }
         #endregion
 
         #region Constructor
-        public AuthorizationBehaviour(IIdentityService identityService)
+        public AuthorizationBehaviour(IUserService userService, IRoleService roleService)
         {
-            IdentityService = identityService;
+            UserService = userService;
+            RoleService = roleService;
         }
         #endregion
 
@@ -30,7 +32,7 @@ namespace CleanArchitecture.Application.Common.Behaviours
             if (authorizeAttributes.Any())
             {
                 // Must be authenticated user
-                var user = await IdentityService.GetCurrentUserAsync();
+                var user = await UserService.GetCurrentUserAsync();
 
                 if (user is null)
                 {
@@ -48,7 +50,7 @@ namespace CleanArchitecture.Application.Common.Behaviours
                     {
                         foreach (var role in roles)
                         {
-                            var isInRole = await IdentityService.IsInRoleAsync(user.Id.ToString(), role.Trim());
+                            var isInRole = await RoleService.IsInRoleAsync(user.Id.ToString(), role.Trim());
 
                             if (isInRole)
                             {
@@ -76,7 +78,7 @@ namespace CleanArchitecture.Application.Common.Behaviours
 
                         if (IsPermission)
                         {
-                            var IsUserHasPermission = await IdentityService.HasUserPermissonAsync(user.Id.ToString(), policy);
+                            var IsUserHasPermission = await RoleService.HasUserPermissonAsync(user.Id.ToString(), policy);
 
                             if (!IsUserHasPermission)
                             {
@@ -85,7 +87,7 @@ namespace CleanArchitecture.Application.Common.Behaviours
                         }
                         else
                         {
-                            var authorized = await IdentityService.AuthorizeAsync(user.Id.ToString(), policy);
+                            var authorized = await RoleService.AuthorizeAsync(user.Id.ToString(), policy);
 
                             if (!authorized)
                             {

@@ -1,5 +1,7 @@
 ﻿using CleanArchitecture.Domain.Common.Entities;
 using CleanArchitecture.Domain.Common.Exceptions;
+using CleanArchitecture.Domain.Users;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CleanArchitecture.Domain.Carts.Entities
 {
@@ -14,11 +16,13 @@ namespace CleanArchitecture.Domain.Carts.Entities
         #endregion
 
         #region Properties
-        public virtual Guid Id { get; }
+        public virtual Guid Id { get; set; }
         public Guid UserId { get; private set; }
 
         private readonly List<CartItem> cartItems;
         public virtual IReadOnlyCollection<CartItem> CartItems => cartItems.AsReadOnly();
+
+        public User User { get; set; }
 
         #endregion
 

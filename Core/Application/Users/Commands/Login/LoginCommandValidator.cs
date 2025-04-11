@@ -5,17 +5,16 @@ namespace CleanArchitecture.Application.Users.Commands.Login
 {
     public class LoginCommandValidator : AbstractValidator<LoginCommand>
     {
-        private IIdentityService IdentityService { get; }
+        public IUserService UserService { get; set; }
 
-        public LoginCommandValidator(IIdentityService identityService)
+        public LoginCommandValidator(IUserService userService)
         {
-            IdentityService = identityService;
-
+            UserService = userService;
             RuleFor(c => c.UserName)
                 .NotEmpty()
                 .MustAsync(async (username, cancellation) =>
                 {
-                    return !string.IsNullOrEmpty(await IdentityService.GetUserAsync(username!));
+                    return !string.IsNullOrEmpty(await UserService.GetUserAsync(username!));
                 })
                 .WithMessage("invalid username or password");
 
@@ -25,13 +24,14 @@ namespace CleanArchitecture.Application.Users.Commands.Login
                 {
                     try
                     {
-                        return await IdentityService.CheckPasswordAsync(context.UserName!, password);
+                        return await UserService.CheckPasswordAsync(context.UserName!, password);
                     }
                     catch (Exception)
                     {
                         return false;
                     }
                 }).WithMessage(m => "invalid username or password");
+          
         }
     }
 }

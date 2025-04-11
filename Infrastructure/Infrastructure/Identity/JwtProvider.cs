@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.Application.Users.Commands.Dtos;
 using CleanArchitecture.Domain.Constants;
+using CleanArchitecture.Domain.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -29,7 +30,7 @@ namespace CleanArchitecture.Infrastructure.Identity
         #endregion
 
         #region Methods
-        public async Task<TokenResponse> GenerateAsync(ApplicationUser user)
+        public async Task<(string token, DateTime expiration)> GenerateAsync(ApplicationUser user)
         {
             var expiration = DateTime.UtcNow.AddMinutes(Options.ExpirationInMinutes);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -43,7 +44,7 @@ namespace CleanArchitecture.Infrastructure.Identity
             var handler = new JsonWebTokenHandler();
             var token = handler.CreateToken(tokenDescriptor);
 
-            return new TokenResponse(token, expiration);
+            return (token, expiration);
         }
 
         private SigningCredentials CreateSigningCredentials() => new(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Options.Key!)),

@@ -30,6 +30,8 @@ namespace CleanArchitecture.Persistence.EF.Configurations
             builder.Entity<IdentityUserRole<string>>().HasKey(p => new { p.UserId, p.RoleId });
             builder.Entity<IdentityUserRole<string>>().ToTable("UserRoles", "Identity");
             builder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims", "Identity");
+
+           
         }
     }
 }

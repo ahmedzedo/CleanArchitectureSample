@@ -326,7 +326,7 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
         /// <returns></returns>
         public virtual IEntitySet<T> DynamicOrderBy(List<DynamicOrderFields>? orderPropertyList)
         {
-            if (orderPropertyList is not null && orderPropertyList.Any())
+            if (orderPropertyList is not null && orderPropertyList.Count != 0)
             {
                 EntityQuery = EntityQuery.DynamicOrderBy(orderPropertyList);
             }

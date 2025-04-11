@@ -1,6 +1,8 @@
 ﻿using CleanArchitecture.Application.Common.Abstracts.Account;
+using CleanArchitecture.Domain.Users;
 using CleanArchitecture.Infrastructure.Identity;
 using CleanArchitecture.Infrastructure.Identity.JwtSetupOtions;
+using CleanArchitecture.Infrastructure.Identity.Services;
 using CleanArchitecture.Persistence.EF;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -32,7 +34,9 @@ namespace CleanArchitecture.WebAPI.Configuration
             services.ConfigureOptions<JwtOptionsSetup>();
             services.ConfigureOptions<JwtBearerOptionsSetup>();
             services.AddScoped<JwtProvider>();
-            services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<ITokenService, TokenService>();
             services.AddSingleton<IAuthorizationPolicyProvider, AuthorizationPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
         }

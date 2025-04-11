@@ -23,6 +23,7 @@ namespace CleanArchitecture.Application.Carts.IEntitySets
                                     Guid? cartItemId = default,
                                     CancellationToken cancellationToken = default);
         Task<Cart?> GetCartByCartItemIdAsync(Guid cartItemId, CancellationToken cancellationToken);
+        Task<Cart?> JoinUser();
     }
 
 }

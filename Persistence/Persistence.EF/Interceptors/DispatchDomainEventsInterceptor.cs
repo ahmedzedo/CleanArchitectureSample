@@ -41,7 +41,7 @@ namespace CleanArchitecture.Persistence.EF.Interceptors
 
             var entities = context.ChangeTracker
                 .Entries<Entity>()
-                .Where(e => e.Entity.DomainEvents.Any())
+                .Where(e => e.Entity.DomainEvents.Count != 0)
                 .Select(e => e.Entity);
 
             var domainEvents = entities

@@ -2,10 +2,10 @@
 
 namespace CleanArchitecture.Domain.Common.Entities
 {
-    public abstract class Entity
+    public abstract class Entity : IEntity
     {
         #region Domain Events
-        private readonly List<BaseDomainEvent> domainEvents = new();
+        private readonly List<BaseDomainEvent> domainEvents = [];
 
         [NotMapped]
         public IReadOnlyCollection<BaseDomainEvent> DomainEvents => domainEvents.AsReadOnly();

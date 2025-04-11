@@ -17,17 +17,17 @@ namespace CleanArchitecture.Application.Users.Commands.Login
     public class LoginCommandHandler : BaseCommandHandler<LoginCommand, TokenResponse>
     {
         #region Dependencies
-        private IIdentityService IdentityService { get; }
+        private ITokenService TokenService { get; }
 
         #endregion
 
         #region Constructor
         public LoginCommandHandler(IServiceProvider serviceProvider,
                                    IApplicationDbContext dbContext,
-                                   IIdentityService identityService)
+                                   ITokenService tokenService)
            : base(serviceProvider, dbContext)
         {
-            IdentityService = identityService;
+            TokenService = tokenService;
         }
         #endregion
 
@@ -35,7 +35,7 @@ namespace CleanArchitecture.Application.Users.Commands.Login
         public override async Task<IResult<TokenResponse>> HandleRequest(LoginCommand request,
                                                                            CancellationToken cancellationToken)
         {
-            return await IdentityService.GetTokenAsync(request.UserName!);
+            return await TokenService.GenerateTokenAsync(request.UserName!);
         }
 
 

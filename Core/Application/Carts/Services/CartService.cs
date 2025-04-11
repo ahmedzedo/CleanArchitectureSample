@@ -64,7 +64,7 @@ namespace CleanArchitecture.Application.Carts.Services
 
         public async Task<Cart> AddUserCartAsync(Guid userId)
         {
-            Cart cart = new(userId);
+            Cart cart = new(userId.ToString());
 
             return await DbContext.Carts.AddAsync(cart);
         }

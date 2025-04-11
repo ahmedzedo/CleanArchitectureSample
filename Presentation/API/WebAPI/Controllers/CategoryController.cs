@@ -10,13 +10,15 @@ namespace CleanArchitecture.WebAPI.Controllers
     public class CategoryController : BaseApiController
     {
         #region Actions
+       
+        [Authorize(Roles = Roles.Administrator)]
         [HttpPost("add-category")]
         public async Task<IActionResult> AddCategpry([FromBody] AddCategoryCommand model)
         {
             return Result(await Mediator.Send(model));
         }
 
-        [Authorize(Roles = Roles.Administrator)]
+        [Authorize]
         [HttpPost("get-Category-list")]
         public async Task<IActionResult> GetCategoryList([FromBody] GetAllCategoriesQuery model)
         {
