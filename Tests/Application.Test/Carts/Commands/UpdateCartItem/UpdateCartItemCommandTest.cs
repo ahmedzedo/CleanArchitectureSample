@@ -61,7 +61,7 @@ namespace Application.Test.Carts.Commands.UpdateCartItem
                 CartItemId = Guid.NewGuid(),
                 CartId = Guid.NewGuid()
             };
-            var cart = new Cart(Guid.NewGuid());
+            var cart = new Cart(Guid.NewGuid().ToString());
 
             List<CartItem> cartItems =
                 [CartItem.CreateCartItem(cart,new ProductItem("Prodcut Item 0 Description ", 150,258),20),
@@ -91,7 +91,7 @@ namespace Application.Test.Carts.Commands.UpdateCartItem
                 CartItemId = Guid.NewGuid(),
                 CartId = Guid.NewGuid()
             };
-            var cart = new Cart(Guid.NewGuid());
+            var cart = new Cart(Guid.NewGuid().ToString());
 
             cart.SetPropertyValue("Id", command.CartId, BindingFlags.Instance | BindingFlags.NonPublic);
 

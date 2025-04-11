@@ -5,6 +5,8 @@ using CleanArchitecture.Domain.Products.Entites;
 using CleanArchitecture.Infrastructure.Identity;
 using Common.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
+using System.Linq.Expressions;
 
 namespace CleanArchitecture.Persistence.EF.EntitySets
 {
@@ -37,22 +39,22 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
 
         public async Task<Cart?> JoinUser()
         {
-            return await EntityQuery.Join(Context.Set<ApplicationUser>(),
+            var lst = await EntityQuery.Join(Context.Set<ApplicationUser>(),
                  cart => cart.UserId,
-                 user => Guid.Parse(user.Id),
+                 user => user.Id,
                  (cart, user) => new
                  {
                      cart,
                      user
-                 }).Select(c => new Cart(c.user.Id)
-                 {
-                     Id = c.cart.Id,
-                     CreatedBy = c.cart.CreatedBy,
-                     CreatedOn = c.cart.CreatedOn,
-                     LastUpdatedBy = c.cart.LastUpdatedBy,
-                     LastUpdatedOn = c.cart.LastUpdatedOn,
-                     User = c.user
-                 }).FirstOrDefaultAsync();
+                 }).ToListAsync();
+
+            return lst.Select(c =>
+            {
+                c.cart.User = c.user;
+                return c.cart;
+            }).FirstOrDefault();
+
+
         }
 
         public async Task<Cart?> GetCartWithItem(Guid cartId,
@@ -86,8 +88,6 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
             return await Context.Set<CartItem>()
                                 .Where(ci => ci.ProductItem.Id == productItemId)
                                 .ToListAsync(cancellationToken: cancellationToken);
-
-
         }
         public async Task<int> DeleteCartItemsAsync(List<CartItem> cartItems, CancellationToken cancellationToken = default)
         {
@@ -96,11 +96,11 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
         }
         public async Task<Cart?> GetTrackedUserCart(Guid userId, CancellationToken cancellationToken = default)
         {
-            return await GetUserCartQuery(userId).AsTracking().FirstOrDefaultAsync();
+            return await GetUserCartQuery(userId).AsTracking().FirstOrDefaultAsync(cancellationToken: cancellationToken);
         }
-        private ICartSet GetUserCartQuery(Guid userId)
+        private CartSet GetUserCartQuery(Guid userId)
         {
-            EntityQuery = EntityQuery.Where(c => c.UserId == userId).Include(c => c.CartItems)
+            EntityQuery = EntityQuery.Where(c => c.UserId == userId.ToString()).Include(c => c.CartItems)
                                      .ThenInclude(ci => ci.ProductItem)
                                      .ThenInclude(pi => pi.Product)
                                      .ThenInclude(p => p != null ? p.Categories : null)
@@ -109,7 +109,7 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
             return this;
         }
 
-     
+
         #endregion
     }
 }

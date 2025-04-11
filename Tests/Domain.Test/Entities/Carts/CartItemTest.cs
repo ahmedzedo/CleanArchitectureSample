@@ -25,7 +25,7 @@ namespace CleanArchitecture.Domain.Test.Entities.Carts
         public void CreateCartItem_ProductItemIsNull_ThrowArgumentNullException()
         {
             //Arrange
-            Cart cart = new(Guid.NewGuid());
+            Cart cart = new(Guid.NewGuid().ToString());
             ProductItem? productItem = null!;
 
             //Act
@@ -37,7 +37,7 @@ namespace CleanArchitecture.Domain.Test.Entities.Carts
         public void CreateCartItem_ItemCountGreaterThanProductAmount_ThrowArgumentOutOfRangeException()
         {
             //Arrange
-            Cart cart = new(Guid.NewGuid());
+            Cart cart = new(Guid.NewGuid().ToString());
             var productItem = new ProductItem("product Item One", 150, 50)
             {
                 Id = Guid.NewGuid()
@@ -52,7 +52,7 @@ namespace CleanArchitecture.Domain.Test.Entities.Carts
         public void CreateCartItem_ItemCountIfLessThanOrEqualZero_ThrowArgumentOutOfRangeException()
         {
             //Arrange
-            Cart cart = new(Guid.NewGuid());
+            Cart cart = new(Guid.NewGuid().ToString());
             var productItem = new ProductItem("product Item One", 150, 50)
             {
                 Id = Guid.NewGuid()
@@ -68,7 +68,7 @@ namespace CleanArchitecture.Domain.Test.Entities.Carts
         public void ChangeCount_ItemCountIfLessThanOrEqualZero_ThrowArgumentOutOfRangeException()
         {
             //Arrange
-            Cart cart = new(Guid.NewGuid());
+            Cart cart = new(Guid.NewGuid().ToString());
             var productItem = new ProductItem("product Item One", 150, 50)
             {
                 Id = Guid.NewGuid()
@@ -86,7 +86,7 @@ namespace CleanArchitecture.Domain.Test.Entities.Carts
         public void ChangeCount_ItemCountGreaterThanProductAmount_ThrowArgumentOutOfRangeException()
         {
             //Arrange
-            Cart cart = new(Guid.NewGuid());
+            Cart cart = new(Guid.NewGuid().ToString());
             var productItem = new ProductItem("product Item One", 150, 50)
             {
                 Id = Guid.NewGuid()

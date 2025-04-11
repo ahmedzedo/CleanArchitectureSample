@@ -10,7 +10,7 @@ namespace CleanArchitecture.Domain.Test.Entities.Cartss
         public void AddCartItem_ItemExistsInCart_ThrowArgumentNullException()
         {
             //Arrange
-            Cart Cart = new(Guid.NewGuid());
+            Cart Cart = new(Guid.NewGuid().ToString());
             CartItem? cartItem = default;
 
             //Act
@@ -23,7 +23,7 @@ namespace CleanArchitecture.Domain.Test.Entities.Cartss
         public void AddCartItem_ItemExistsInCart_ThrowArgumentAlreadyExistException()
         {
             //Arrange
-            Cart Cart = new(Guid.NewGuid());
+            Cart Cart = new(Guid.NewGuid().ToString());
             var cartItem = CartItem.CreateCartItem(Cart, new ProductItem("product Item One", 150, 50)
             {
                 Id = Guid.NewGuid()
@@ -41,7 +41,7 @@ namespace CleanArchitecture.Domain.Test.Entities.Cartss
         public void AddCartItems_ItemsIsNull_ThrowNulltException()
         {
             //Arrange
-            Cart Cart = new(Guid.NewGuid());
+            Cart Cart = new(Guid.NewGuid().ToString());
             List<CartItem>? cartItems = null!;
 
             //Act
@@ -54,7 +54,7 @@ namespace CleanArchitecture.Domain.Test.Entities.Cartss
         public void AddCartItems_ItemsIsEmpty_ThrowArgumentEmptyListException()
         {
             //Arrange
-            Cart Cart = new(Guid.NewGuid());
+            Cart Cart = new(Guid.NewGuid().ToString());
             List<CartItem>? cartItems = [];
 
             //Act
@@ -68,7 +68,7 @@ namespace CleanArchitecture.Domain.Test.Entities.Cartss
         public void UpdateCartItem_ItemsIsEmpty_ThrowArgumentEmptyListException()
         {
             //Arrange
-            Cart Cart = new(Guid.NewGuid());
+            Cart Cart = new(Guid.NewGuid().ToString());
             List<CartItem>? cartItems = [];
 
             //Act
@@ -81,7 +81,7 @@ namespace CleanArchitecture.Domain.Test.Entities.Cartss
         public void RemoveCartItem_ItemsIsNotExist_ThrowArgumentNotExistException()
         {
             //Arrange
-            Cart Cart = new(Guid.NewGuid());
+            Cart Cart = new(Guid.NewGuid().ToString());
             var productItem = new ProductItem("product Item One", 150, 50);
             productItem.Id = Guid.NewGuid();
             var cartItem = CartItem.CreateCartItem(Cart, productItem, 10);
@@ -96,7 +96,7 @@ namespace CleanArchitecture.Domain.Test.Entities.Cartss
         public void RemoveCartItems_ItemsIsEmpty_ThrowArgumentEmptyListException()
         {
             //Arrange
-            Cart Cart = new(Guid.NewGuid());
+            Cart Cart = new(Guid.NewGuid().ToString());
             List<CartItem>? cartItems = [];
 
             //Act

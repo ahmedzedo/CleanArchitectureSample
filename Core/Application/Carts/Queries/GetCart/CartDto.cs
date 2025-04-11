@@ -38,7 +38,7 @@ namespace CleanArchitecture.Application.Carts.Queries.GetCart
             return new CartDto
             {
                 Id = cart.Id,
-                UserId = cart.UserId,
+                UserId = Guid.Parse(cart.UserId),
                 CartItems = cart.CartItems.Select(x => (CartItemDto)x).ToList()
             };
         }

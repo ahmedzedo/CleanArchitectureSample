@@ -5,30 +5,28 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CleanArchitecture.Domain.Carts.Entities
 {
-    public class Cart : AuditableEntity, IAggregateRoot
+    public class Cart(string userId) : AuditableEntity, IAggregateRoot
     {
+
         #region Constructor
-        public Cart(Guid userId)
-        {
-            cartItems = [];
-            UserId = userId;
-        }
         #endregion
 
         #region Properties
         public virtual Guid Id { get; set; }
-        public Guid UserId { get; private set; }
+        public string UserId { get; private set; } = userId;
 
-        private readonly List<CartItem> cartItems;
+        private readonly List<CartItem> cartItems = [];
         public virtual IReadOnlyCollection<CartItem> CartItems => cartItems.AsReadOnly();
 
-        public User User { get; set; }
+        public User? User { get; set; }
 
         #endregion
 
         #region Methods
 
         #region Manage CartItems List
+
+    
         public void AddCartItem(CartItem Item)
         {
             ArgumentNullException.ThrowIfNull(Item);

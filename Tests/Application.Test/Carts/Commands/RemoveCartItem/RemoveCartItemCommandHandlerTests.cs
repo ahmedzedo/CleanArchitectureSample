@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using CleanArchitecture.Application.Carts;
+using CleanArchitecture.Application.Carts.Commands.RemoveCartItem;
 using CleanArchitecture.Application.Carts.Services;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Common.Errors;
@@ -7,7 +9,7 @@ using FluentAssertions;
 using Moq;
 using System.Net;
 
-namespace CleanArchitecture.Application.Carts.Commands.RemoveCartItem.Tests
+namespace Application.Test.Carts.Commands.RemoveCartItem
 {
     public class RemoveCartItemCommandHandlerTests
     {
@@ -57,7 +59,7 @@ namespace CleanArchitecture.Application.Carts.Commands.RemoveCartItem.Tests
                 UserId = Guid.NewGuid().ToString()
             };
 
-            var cart = new Cart(Guid.NewGuid());
+            var cart = new Cart(Guid.NewGuid().ToString());
 
             _cartServiceMock.Setup(service => service.GetCartByIdIncludedItemById(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
                            .ReturnsAsync(cart);
@@ -83,7 +85,7 @@ namespace CleanArchitecture.Application.Carts.Commands.RemoveCartItem.Tests
                 UserId = userId.ToString()
             };
 
-            var cart = new Cart(userId);
+            var cart = new Cart(userId.ToString());
 
             _cartServiceMock.Setup(service => service.GetCartByIdIncludedItemById(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
                            .ReturnsAsync(cart);

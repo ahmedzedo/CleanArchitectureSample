@@ -73,21 +73,21 @@ namespace CleanArchitecture.Infrastructure.Identity.Services
 
         public async Task<IResult<TokenResponse>> RefreshAccessToken(string token, CancellationToken cancellationToken = default)
         {
-            var refreshToken = await _dbContext.RefreshTokens.FirstOrDefaultAsync(r => r.Token == token,
+            var refreshToken = await _dbContext.RefreshTokens.GetRefreshTokenWithUser(token,
                                                                                      cancellationToken);
             if (refreshToken == null || refreshToken.ExpiresOnUtc < DateTime.UtcNow || refreshToken.IsRevoked)
             {
                 return Result.Failure<TokenResponse>(SecurityAccessErrors.NotAuthenticatedUser);
             }
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == refreshToken.UserId.ToString(), cancellationToken: cancellationToken);
+            //var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == refreshToken.UserId.ToString(), cancellationToken: cancellationToken);
 
-            if (user == null)
+            if (refreshToken.User == null)
             {
                 return Result.Failure<TokenResponse>(SecurityAccessErrors.NotAuthenticatedUser);
             }
 
-            (token, var expireation) = await _jwtProvider.GenerateAsync(user);
-            var newRefreshToken = await GenerateRefreshToken(user.Id);
+            (token, var expireation) = await _jwtProvider.GenerateAsync(refreshToken.User);
+            var newRefreshToken = await GenerateRefreshToken(refreshToken.User.Id);
             await RevokeRefreshToken(refreshToken, cancellationToken);
 
             return Result.Success(new TokenResponse(token, newRefreshToken.Token, expireation));

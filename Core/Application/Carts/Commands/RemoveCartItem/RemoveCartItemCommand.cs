@@ -51,7 +51,7 @@ namespace CleanArchitecture.Application.Carts.Commands.RemoveCartItem
                 return Result.Failure(CartsErrors.CartNotFoundError);
             }
 
-            if (cart.UserId != Guid.Parse(request.UserId!))
+            if (cart.UserId != request.UserId!)
             {
                 return Result.Failure(SecurityAccessErrors.ForbiddenAccess);
             }

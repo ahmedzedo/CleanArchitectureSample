@@ -26,7 +26,7 @@ namespace Application.Test.Carts.Services
         public async Task AddOrUpdateCartItemAsync_IfCartItemIsNull_ShouldNewAddItemToCart()
         {
             // Arrang 
-            var cart = new Cart(Guid.NewGuid());
+            var cart = new Cart(Guid.NewGuid().ToString());
             var productItemId = Guid.NewGuid();
             var count = 10;
             var productItem = new ProductItem(It.IsAny<string>(), 150, 60)
@@ -53,7 +53,7 @@ namespace Application.Test.Carts.Services
             {
                 Id = productItemId
             };
-            var cart = new Cart(Guid.NewGuid());
+            var cart = new Cart(Guid.NewGuid().ToString());
             cart.AddCartItem(CartItem.CreateCartItem(cart, productItem, 10));
             var newCount = 15;
             applicationDbContextMock.Setup(d => d.Products.GetProductItemAsync(productItemId)).ReturnsAsync(productItem);
