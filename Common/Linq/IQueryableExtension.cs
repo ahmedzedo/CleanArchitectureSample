@@ -1,7 +1,7 @@
-﻿using Common.Linq.Model;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq.Expressions;
+using Common.Linq.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace Common.Linq
 {

@@ -2,7 +2,7 @@
 
 namespace CleanArchitecture.Application.Products.Queries.GetPagedProducts
 {
-    public class GetPagedProductDto
+    public record GetPagedProductDto
     {
         #region Properties
         public Guid Id { get; init; }
@@ -31,7 +31,7 @@ namespace CleanArchitecture.Application.Products.Queries.GetPagedProducts
 
         #endregion
 
-        public class CategoryDto
+        public record CategoryDto
         {
             public Guid Id { get; init; }
             public string? CategoryNameAr { get; init; }
@@ -51,7 +51,7 @@ namespace CleanArchitecture.Application.Products.Queries.GetPagedProducts
             }
         }
 
-        public class ProductItemDto
+        public record ProductItemDto
         {
             #region Properties
             public Guid Id { get; set; }

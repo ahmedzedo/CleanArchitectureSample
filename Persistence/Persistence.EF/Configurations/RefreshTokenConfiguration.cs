@@ -1,11 +1,6 @@
 ﻿using CleanArchitecture.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitecture.Persistence.EF.Configurations
 {
@@ -19,7 +14,7 @@ namespace CleanArchitecture.Persistence.EF.Configurations
                    .HasMaxLength(200);
             builder.HasIndex(r => r.Token)
                    .IsUnique();
-          
+
         }
     }
 }

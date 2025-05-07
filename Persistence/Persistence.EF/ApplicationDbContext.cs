@@ -1,6 +1,6 @@
-﻿using CleanArchitecture.Application.Carts.IEntitySets;
+﻿using System.Reflection;
+using CleanArchitecture.Application.Carts.IEntitySets;
 using CleanArchitecture.Application.Categories.IEntitySets;
-using CleanArchitecture.Application.Common.Abstracts.Account;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Products.IEntitySets;
 using CleanArchitecture.Application.Users.IEntitySet;
@@ -12,8 +12,6 @@ using Common.DependencyInjection.Extensions;
 using Common.ORM.EntityFramework;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
-using System.Reflection.Emit;
 
 namespace CleanArchitecture.Persistence.EF
 {

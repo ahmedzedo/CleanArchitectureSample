@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using CleanArchitecture.Application.Carts;
 using CleanArchitecture.Application.Carts.Commands.RemoveCartItem;
 using CleanArchitecture.Application.Carts.Services;
@@ -7,7 +8,6 @@ using CleanArchitecture.Application.Common.Errors;
 using CleanArchitecture.Domain.Carts.Entities;
 using FluentAssertions;
 using Moq;
-using System.Net;
 
 namespace Application.Test.Carts.Commands.RemoveCartItem
 {

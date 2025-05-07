@@ -1,6 +1,6 @@
-﻿using CleanArchitecture.Application.Common.Messaging;
+﻿using System.Diagnostics;
+using CleanArchitecture.Application.Common.Messaging;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics;
 
 namespace CleanArchitecture.Application.Common.Behaviours
 {

@@ -1,5 +1,4 @@
-﻿using CleanArchitecture.Domain.Common.Entities;
-using CleanArchitecture.Domain.Users;
+﻿using CleanArchitecture.Domain.Users;
 using Microsoft.AspNetCore.Identity;
 
 namespace CleanArchitecture.Infrastructure.Identity

@@ -1,6 +1,6 @@
-﻿using Common.DependencyInjection.Exceptions;
+﻿using System.Reflection;
+using Common.DependencyInjection.Exceptions;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace Common.DependencyInjection.Extensions
 {

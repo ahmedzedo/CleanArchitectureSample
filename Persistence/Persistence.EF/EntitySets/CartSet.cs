@@ -1,12 +1,9 @@
 ﻿using CleanArchitecture.Application.Carts.IEntitySets;
 using CleanArchitecture.Domain.Carts.Entities;
-using CleanArchitecture.Domain.Common.Entities;
 using CleanArchitecture.Domain.Products.Entites;
 using CleanArchitecture.Infrastructure.Identity;
 using Common.Linq;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
-using System.Linq.Expressions;
 
 namespace CleanArchitecture.Persistence.EF.EntitySets
 {

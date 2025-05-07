@@ -1,3 +1,4 @@
+using System.Reflection;
 using AutoMapper;
 using CleanArchitecture.Application.Carts.Commands.AddItemToCart;
 using CleanArchitecture.Application.Carts.Services;
@@ -5,7 +6,6 @@ using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Domain.Carts.Entities;
 using Moq;
-using System.Reflection;
 namespace Application.Test.Carts.Commands.AddItemToCart
 {
     public class AddItemToCartCommandHandlerTests

@@ -1,9 +1,9 @@
-﻿using CleanArchitecture.Application.Common.Abstracts.Caching;
+﻿using System.Reflection;
+using CleanArchitecture.Application.Common.Abstracts.Caching;
 using CleanArchitecture.Application.Common.Caching;
 using CleanArchitecture.Application.Common.Messaging;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Reflection;
 namespace CleanArchitecture.Application.Common.Behaviours
 {
     public class InvalidateCacheBehavior<TRequest, TResponse> : IRequestResponsePipeline<TRequest, TResponse>

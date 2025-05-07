@@ -1,5 +1,5 @@
-﻿using CleanArchitecture.Application.Common.Models;
-using System.Net;
+﻿using System.Net;
+using CleanArchitecture.Application.Common.Models;
 
 namespace CleanArchitecture.Application.Carts
 {

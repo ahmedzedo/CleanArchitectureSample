@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using CleanArchitecture.Application.Common.Abstracts.Account;
 using CleanArchitecture.Application.Common.Abstracts.ClinetInfo;
 using CleanArchitecture.Persistence.EF;
@@ -6,7 +7,6 @@ using CleanArchitecture.WebAPI.Configuration;
 using CleanArchitecture.WebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;

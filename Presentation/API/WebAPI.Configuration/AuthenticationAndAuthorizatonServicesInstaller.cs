@@ -1,5 +1,4 @@
 ﻿using CleanArchitecture.Application.Common.Abstracts.Account;
-using CleanArchitecture.Domain.Users;
 using CleanArchitecture.Infrastructure.Identity;
 using CleanArchitecture.Infrastructure.Identity.JwtSetupOtions;
 using CleanArchitecture.Infrastructure.Identity.Services;

@@ -1,7 +1,7 @@
-﻿using CleanArchitecture.Application.Common.Abstracts.Caching;
+﻿using System.Collections.Concurrent;
+using CleanArchitecture.Application.Common.Abstracts.Caching;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using System.Collections.Concurrent;
 
 namespace CleanArchitecture.Infrastructure.Caching;
 

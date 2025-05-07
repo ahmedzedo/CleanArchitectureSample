@@ -1,13 +1,7 @@
 ﻿using CleanArchitecture.Application.Users.IEntitySet;
-using CleanArchitecture.Domain.Common.Entities;
 using CleanArchitecture.Domain.Users;
 using CleanArchitecture.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitecture.Persistence.EF.EntitySets
 {
@@ -19,7 +13,7 @@ namespace CleanArchitecture.Persistence.EF.EntitySets
         public async Task<RefreshToken?> GetRefreshTokenWithUser(string token, CancellationToken cancellationToken = default)
         {
             EntityQuery = EntityQuery.Where(r => r.Token == token);
-           
+
             return await this.JoinUser(cancellationToken);
         }
         public async Task<RefreshToken?> JoinUser(CancellationToken cancellationToken = default)

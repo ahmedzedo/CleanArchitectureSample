@@ -1,15 +1,8 @@
 ﻿using CleanArchitecture.Application.Common.Abstracts.Account;
 using CleanArchitecture.Application.Common.Messaging;
 using CleanArchitecture.Application.Users.Commands.Dtos;
-using CleanArchitecture.Domain.Users;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Identity.Services
 {

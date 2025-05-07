@@ -1,9 +1,9 @@
-﻿using CleanArchitecture.Application.Carts.Commands.RemoveCartItem;
+﻿using System.Net;
+using CleanArchitecture.Application.Carts.Commands.RemoveCartItem;
 using CleanArchitecture.Application.Common.Behaviours;
 using CleanArchitecture.Application.Common.Messaging;
 using FluentAssertions;
 using Moq;
-using System.Net;
 
 namespace Application.Test.Carts.Commands.RemoveCartItem
 {

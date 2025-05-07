@@ -1,19 +1,11 @@
-﻿using CleanArchitecture.Application.Common.Abstracts.Account;
+﻿using System.Security.Cryptography;
+using CleanArchitecture.Application.Common.Abstracts.Account;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Common.Errors;
 using CleanArchitecture.Application.Common.Messaging;
 using CleanArchitecture.Application.Users.Commands.Dtos;
 using CleanArchitecture.Domain.Users;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Identity.Services
 {
@@ -105,7 +97,7 @@ namespace CleanArchitecture.Infrastructure.Identity.Services
         {
             var refreshToken = await _dbContext.RefreshTokens.FirstOrDefaultAsync(t => t.Token == token);
             var result = false;
-           
+
             if (refreshToken != null && refreshToken.UserId.ToString() == userId)
             {
                 refreshToken.IsRevoked = true;

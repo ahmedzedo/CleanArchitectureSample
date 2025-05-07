@@ -4,8 +4,11 @@ using CleanArchitecture.Domain.Products.Entites;
 
 namespace CleanArchitecture.Application.Carts.Queries.GetCart
 {
+
     public record CartDto
     {
+
+
         public Guid Id { get; init; }
         public Guid UserId { get; init; }
         public IReadOnlyCollection<CartItemDto> CartItems { get; init; } = [];

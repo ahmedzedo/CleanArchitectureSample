@@ -1,5 +1,5 @@
-﻿using CleanArchitecture.Application.Common.Messaging;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using CleanArchitecture.Application.Common.Messaging;
 
 namespace CleanArchitecture.Application.Common.Behaviours
 {

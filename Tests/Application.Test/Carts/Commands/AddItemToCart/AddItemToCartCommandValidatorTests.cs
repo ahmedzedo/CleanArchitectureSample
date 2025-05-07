@@ -1,9 +1,9 @@
-﻿using CleanArchitecture.Application.Carts.Commands.AddItemToCart;
+﻿using System.Net;
+using CleanArchitecture.Application.Carts.Commands.AddItemToCart;
 using CleanArchitecture.Application.Common.Behaviours;
 using CleanArchitecture.Application.Common.Messaging;
 using FluentAssertions;
 using Moq;
-using System.Net;
 
 namespace Application.Test.Carts.Commands.AddItemToCart
 {

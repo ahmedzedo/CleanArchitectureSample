@@ -23,7 +23,7 @@ namespace CleanArchitecture.Application.Products.Commands.AddProduct
     }
     #endregion
 
-    #region Rquest Handler
+    #region Request Handler
     public class AddProductCommandHandler : BaseCommandHandler<AddProductCommand, Guid>
     {
         #region Dependencies

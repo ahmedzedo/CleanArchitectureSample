@@ -1,6 +1,6 @@
-﻿using CleanArchitecture.Application.Common.Abstracts.Account;
+﻿using System.Security.Claims;
+using CleanArchitecture.Application.Common.Abstracts.Account;
 using Microsoft.IdentityModel.JsonWebTokens;
-using System.Security.Claims;
 
 namespace CleanArchitecture.WebAPI.Services
 {

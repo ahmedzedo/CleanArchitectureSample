@@ -10,7 +10,7 @@ namespace CleanArchitecture.WebAPI.Controllers
     public class CategoryController : BaseApiController
     {
         #region Actions
-       
+
         [Authorize(Roles = Roles.Administrator)]
         [HttpPost("add-category")]
         public async Task<IActionResult> AddCategpry([FromBody] AddCategoryCommand model)

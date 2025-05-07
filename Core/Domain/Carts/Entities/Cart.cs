@@ -1,7 +1,6 @@
 ﻿using CleanArchitecture.Domain.Common.Entities;
 using CleanArchitecture.Domain.Common.Exceptions;
 using CleanArchitecture.Domain.Users;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CleanArchitecture.Domain.Carts.Entities
 {
@@ -26,7 +25,7 @@ namespace CleanArchitecture.Domain.Carts.Entities
 
         #region Manage CartItems List
 
-    
+
         public void AddCartItem(CartItem Item)
         {
             ArgumentNullException.ThrowIfNull(Item);

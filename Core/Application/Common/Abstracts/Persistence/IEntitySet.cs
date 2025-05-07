@@ -1,8 +1,8 @@
-﻿using CleanArchitecture.Domain.Common.Entities;
+﻿using System.ComponentModel;
+using System.Linq.Expressions;
+using CleanArchitecture.Domain.Common.Entities;
 using Common.Linq.Model;
 using Microsoft.EntityFrameworkCore.Query;
-using System.ComponentModel;
-using System.Linq.Expressions;
 
 namespace CleanArchitecture.Application.Common.Abstracts.Persistence
 {

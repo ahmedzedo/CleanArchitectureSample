@@ -1,15 +1,7 @@
 ﻿using CleanArchitecture.Application.Common.Abstracts.Account;
 using CleanArchitecture.Application.Common.Abstracts.Persistence;
-using CleanArchitecture.Application.Common.Errors;
 using CleanArchitecture.Application.Common.Messaging;
-using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Users.Commands.Dtos;
-using Microsoft.AspNetCore.Authentication;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitecture.Application.Users.Commands.RefreshToken
 {

@@ -1,8 +1,8 @@
-﻿using CleanArchitecture.Application.Common.Abstracts.Persistence;
+﻿using System.Globalization;
+using CleanArchitecture.Application.Common.Abstracts.Persistence;
 using CleanArchitecture.Application.Common.Exceptions;
 using CleanArchitecture.Domain.Products.Entites;
 using FluentAssertions;
-using System.Globalization;
 
 namespace Presistence.Test
 {

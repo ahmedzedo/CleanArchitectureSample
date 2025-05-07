@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.Domain.Users;
-
-namespace CleanArchitecture.Application.Users.Commands.Dtos
+﻿namespace CleanArchitecture.Application.Users.Commands.Dtos
 {
     public record TokenResponse
     {

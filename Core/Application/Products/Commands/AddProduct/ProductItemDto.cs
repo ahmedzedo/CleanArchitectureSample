@@ -2,7 +2,7 @@
 
 namespace CleanArchitecture.Application.Products.Commands.AddProduct
 {
-    public class ProductItemDto
+    public record ProductItemDto
     {
         #region Properties
         public Guid Id { get; set; }

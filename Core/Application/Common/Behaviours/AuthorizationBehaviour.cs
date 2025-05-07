@@ -1,9 +1,9 @@
-﻿using CleanArchitecture.Application.Common.Abstracts.Account;
+﻿using System.Reflection;
+using CleanArchitecture.Application.Common.Abstracts.Account;
 using CleanArchitecture.Application.Common.Errors;
 using CleanArchitecture.Application.Common.Messaging;
 using CleanArchitecture.Application.Common.Security;
 using CleanArchitecture.Domain.Constants;
-using System.Reflection;
 
 namespace CleanArchitecture.Application.Common.Behaviours
 {

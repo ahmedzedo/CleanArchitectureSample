@@ -18,13 +18,13 @@ namespace CleanArchitecture.WebAPI.Controllers
         }
 
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand  refreshTokenCommand)
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand refreshTokenCommand)
         {
             return Result(await Mediator.Send(refreshTokenCommand));
         }
         [Authorize]
         [HttpPost("revoke-refreshtoken")]
-        public async Task<IActionResult> RevokeRefreshToken([FromBody] RevokeRefreshTokenCommand  revokeRefreshTokenCommand)
+        public async Task<IActionResult> RevokeRefreshToken([FromBody] RevokeRefreshTokenCommand revokeRefreshTokenCommand)
         {
             return Result(await Mediator.Send(revokeRefreshTokenCommand));
         }

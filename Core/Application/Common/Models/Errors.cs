@@ -1,5 +1,5 @@
-﻿using CleanArchitecture.Application.Common.Messaging;
-using System.Net;
+﻿using System.Net;
+using CleanArchitecture.Application.Common.Messaging;
 
 namespace CleanArchitecture.Application.Common.Models
 {

@@ -1,7 +1,7 @@
-﻿using CleanArchitecture.Infrastructure.Caching.RedisSetupConfigurationOptions;
+﻿using System.Text;
+using CleanArchitecture.Infrastructure.Caching.RedisSetupConfigurationOptions;
 using Microsoft.Extensions.Configuration;
 using StackExchange.Redis;
-using System.Text;
 
 namespace CleanArchitecture.Infrastructure.Caching;
 

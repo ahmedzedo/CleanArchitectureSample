@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using System.Reflection;
+using AutoMapper;
 using CleanArchitecture.Application.Carts;
 using CleanArchitecture.Application.Carts.Commands.UpdateCartItem;
 using CleanArchitecture.Application.Carts.Services;
@@ -8,8 +10,6 @@ using CleanArchitecture.Domain.Products.Entites;
 using Common.Reflection;
 using FluentAssertions;
 using Moq;
-using System.Net;
-using System.Reflection;
 
 namespace Application.Test.Carts.Commands.UpdateCartItem
 {

@@ -1,6 +1,6 @@
-﻿using CleanArchitecture.Application.Common.Messaging;
+﻿using System.Diagnostics;
+using CleanArchitecture.Application.Common.Messaging;
 using MediatR;
-using System.Diagnostics;
 
 namespace CleanArchitecture.Application.Common.Behaviours
 {

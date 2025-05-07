@@ -2,7 +2,6 @@
 using CleanArchitecture.Application.Carts.Commands.RemoveCartItem;
 using CleanArchitecture.Application.Carts.Commands.UpdateCartItem;
 using CleanArchitecture.Application.Carts.Queries.GetCart;
-using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.WebAPI.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
